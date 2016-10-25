@@ -26,6 +26,6 @@ class DefaultController extends AbstractController
      */
     public function indexAction(Request $request)
     {
-        return $this->render('BuilderBundle:Default:index.html.twig');
+        return $this->redirectToRoute('fos_user_security_login');
     }
 }
