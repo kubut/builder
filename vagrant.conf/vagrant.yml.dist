@@ -1,0 +1,18 @@
+server:
+  box_name: "bento/ubuntu-15.04"
+  share_type: "nfs"
+
+  name: builder
+  ip: 10.10.10.159
+  ssh_port: 22150
+  memory: 2048
+  cpu: 1
+
+
+database:
+  name: builder
+  user: root
+  password: root
+
+github:
+  token: SOME_API_TOKEN
