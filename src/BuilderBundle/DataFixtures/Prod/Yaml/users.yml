@@ -1,0 +1,18 @@
+ADMIN:
+  email: admin@builder.pl
+  username: admin
+  password: cosistupik
+  last_login:
+  roles: ["ROLE_ADMIN"]
+LUKASZ:
+  email: lukasz.b.urbanski@gmail.com
+  username: lukasz
+  password: cosistupik
+  last_login:
+  roles: ["ROLE_ADMIN"]
+KUBUT:
+  email: fotokubut@gmail.com
+  username: kubut
+  password: cosistupik
+  last_login:
+  roles: ["ROLE_ADMIN"]

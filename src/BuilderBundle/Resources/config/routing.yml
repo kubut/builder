@@ -1,0 +1,9 @@
+main:
+    resource: "@BuilderBundle/Controller/"
+    type: annotation
+    prefix: /
+
+security:
+    resource: "@BuilderBundle/Controller/Security/"
+    type: annotation
+    prefix: /
