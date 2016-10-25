@@ -6,7 +6,7 @@ use BuilderBundle\DataFixtures\Model\UserData as BaseData;
 /**
  * Class ProvincesData
  *
- * @package ED\AppBundle\DataFixtures\Provinces\PROD\Model
+ * @package BuilderBundle\DataFixtures\Provinces\PROD\Model
  */
 final class UsersData extends BaseData
 {
