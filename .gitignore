@@ -50,3 +50,7 @@
 
 # IDE's files
 /.idea/
+
+# Other
+*.DS_Store
+/.vagrant/
