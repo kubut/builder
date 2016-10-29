@@ -16,7 +16,7 @@ class SecurityController extends AbstractController
     /**
      * @internal param Request $request
      *
-     * @Route("/user/add", name="register", options={"expose"=true})
+     * @Route("/user/add", name="user_add", options={"expose"=true})
      *
      * @Method("POST")
      *
