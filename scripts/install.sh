@@ -204,7 +204,11 @@ function installFront {
 ########################################################################################33
 ########################################################################################33
 ########################################################################################33
-#Install as sudo
+if (( $EUID != 0 )); then
+    printError "Please run as root"
+    exit 4
+fi
+
 if [ $(isProgramInstalled apt-get) == 1 ]; then
     pm="apt-get"
     printInfo "Setting apt-get as package manager"
@@ -213,7 +217,7 @@ elif [ $(isProgramInstalled yum) == 1 ]; then
     printInfo "Setting yum as package manager"
 else
     printError "This script supports only systems with apt-get or yum"
-    exit 1
+    exit 5
 fi
 
 if [ $(isProgramInstalled apache2) == 1 ]; then
@@ -224,7 +228,7 @@ elif [ $(isProgramInstalled httpd) == 1 ]; then
     printInfo "Setting httpd as server service"
 else
     printError "This script supports only systems with httpd or apache"
-    exit 1
+    exit 6
 fi
 
 printInfo "Cloning repository..."
