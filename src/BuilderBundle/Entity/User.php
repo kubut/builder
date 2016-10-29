@@ -5,8 +5,8 @@ use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity()
  * @ORM\Table(name="users")
+ * @ORM\Entity(repositoryClass="BuilderBundle\Repository\UserRepository")
  */
 class User extends BaseUser
 {
@@ -16,17 +16,4 @@ class User extends BaseUser
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
-
-    /**
-     * Set salt
-     *
-     * @param string $salt
-     * @return User
-     */
-    public function setSalt($salt)
-    {
-        $this->salt = $salt;
-
-        return $this;
-    }
 }

@@ -3,6 +3,7 @@
 namespace BuilderBundle\Controller\Security;
 
 use BuilderBundle\Controller\AbstractController;
+use BuilderBundle\Util\Role;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -15,18 +16,33 @@ class SecurityController extends AbstractController
     /**
      * @internal param Request $request
      *
-     * @Route("/register", name="register", options={"expose"=true})
+     * @Route("/user/add", name="register", options={"expose"=true})
      *
-     * @Method("GET")
+     * @Method("POST")
      *
      * @ApiDoc(
-     *  description="register"
+     *  description="register",
+     *  requirements={
+     *      {"name"="username", "dataType"="string", "description"="username"},
+     *      {"name"="email", "dataType"="string", "description"="email"}
+     *  },
      * )
-     * @internal param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param Request $request
+     * @return JsonResponse
      */
     public function registerAction(Request $request)
     {
-        return $this->render('BuilderBundle:Default:index.html.twig');
+        $this->requireRole(Role::ADMIN);
+
+        $inputData = json_decode($request->getContent(), true);
+        if ($request->isMethod('POST')){
+            try {
+                $generatedPassword = $this->get('app.builder.service.register')->register($inputData);
+
+                return $this->returnSuccess(['password' => $generatedPassword]);
+            } catch (\Exception $exception) {
+                return $this->returnError($exception->getMessage());
+            }
+        }
     }
 }

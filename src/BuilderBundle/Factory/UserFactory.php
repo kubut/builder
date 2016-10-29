@@ -24,9 +24,7 @@ class UserFactory implements EntityFactoryInterface
         $template = [
             "email" => '',
             "password" => null,
-//            "password" => '$2y$13$k92e7kinctso04gkkkc4sO5wUEieXvphPhkVe2WfMU.PH0Idk0L52',
             "username" => '',
-//            "salt" => 'k92e7kinctso04gkkkc4scw84ck0c0g',
             "last_login" => null,
             "roles" => ["ROLE_USER"],
         ];

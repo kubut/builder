@@ -1,2 +1,5 @@
 imports:
   - { resource: services/factory.yml }
+  - { resource: services/sevices.yml }
+  - { resource: services/repository.yml }
+  - { resource: services/model.yml }

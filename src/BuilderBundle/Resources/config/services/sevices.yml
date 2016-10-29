@@ -1,0 +1,5 @@
+services:
+    app.builder.service.register:
+        class: BuilderBundle\Services\SecurityService
+        arguments:
+          userModel: '@app.builder.model.user'
