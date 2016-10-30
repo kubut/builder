@@ -6,8 +6,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use BuilderBundle\Util\Role;
+
 
 class DefaultController extends AbstractController
 {
@@ -26,6 +29,12 @@ class DefaultController extends AbstractController
      */
     public function indexAction(Request $request)
     {
-        return $this->redirectToRoute('fos_user_security_login');
+        // TODO: this is temporary (because frontend was blocked by backend) and should be reviewed
+        try {
+            $this->requireOneOfRoles(array(Role::ADMIN, Role::USER));
+            return $this->render('@Builder/Default/index.html.twig');
+        } catch (\Exception $e) {
+            return $this->redirectToRoute('fos_user_security_login');
+        }
     }
 }

@@ -1,1 +1,22 @@
-Hello World!
+<!doctype html>
+<html lang="pl" ng-app="app">
+<head>
+    <meta charset="utf-8">
+    <title>Builder</title>
+    <link rel="stylesheet" href="{{ asset('dist/css/main.min.css') }}">
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
+    <script src="{{ asset('dist/js/app_lib.min.js') }}"></script>
+    <script src="{{ asset('dist/js/app.min.js') }}"></script>
+    <script>
+        angular.module('app')
+                .config(['RoutingProvider', function (routingProvider) {
+                    routingProvider.setRouting(Routing);
+                }]);
+    </script>
+</head>
+<body>
+
+<ui-view></ui-view>
+</body>
+</html>
