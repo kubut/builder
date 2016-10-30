@@ -1,0 +1,26 @@
+md-dialog.add-user-modal
+    md-dialog-content
+        .md-dialog-content
+            form(name="addUserForm" layout="column" novalidate ng-submit="modalCtrl.addUser()")
+                md-input-container
+                    label Imię
+                    input(name="name" minlength="3" maxlength="30" required ng-model="modalCtrl.user.name")
+                    div(ng-messages="addUserForm.name.$error")
+                        div(ng-message="required") To pole jest wymagane
+                        div(ng-message="md-maxlength") Imię nie może być dłuższe niż 30 znaków
+                        div(ng-message="minlength") Nazwisko nie może być krótsze niż 3 znaki
+                md-input-container
+                    label Nazwisko
+                    input(name="surname" minlength="3" maxlength="60" required ng-model="modalCtrl.user.surname")
+                    div(ng-messages="addUserForm.surname.$error")
+                        div(ng-message="required") To pole jest wymagane
+                        div(ng-message="maxlength") Nazwisko nie może być dłuższe niż 60 znaków
+                        div(ng-message="minlength") Nazwisko nie może być krótsze niż 3 znaki
+                md-input-container
+                    label Rola
+                    md-select(name="role" ng-model="modalCtrl.user.role")
+                        md-option(value="0") Użytkownik
+                        md-option(value="1") Administrator
+    md-dialog-actions
+        md-button(ng-click="modalCtrl.close()") Anuluj
+        md-button(ng-click="modalCtrl.addUser()" ng-disabled="!addUserForm.$valid") Dodaj

@@ -1,0 +1,7 @@
+md-card
+    md-card-title
+        md-card-title-text Użytkownicy systemu
+    md-card-content
+        md-progress-circular(md-mode="indeterminate" ng-show="usersCtrl.usersService.busy")
+    md-card-actions(layout="row" layout-align="end center")
+        md-button.md-raised(ng-click="usersCtrl.addUser($event)") Dodaj

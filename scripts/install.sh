@@ -198,7 +198,10 @@ function installFront {
 
     printInfo "Installing NPM dependencies..."
     npm i
-    printInfo "Done"
+    sudo npm install -g gulp
+
+    printInfo "Building front..."
+    gulp build
 }
 
 ########################################################################################33
