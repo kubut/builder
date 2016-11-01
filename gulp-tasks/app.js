@@ -2,9 +2,7 @@ module.exports = function (gulp, plugins, paths) {
     return {
         clean: function () {
             return plugins.del([
-                paths.app_build + '**/*',
-                paths.app_test + '**/*',
-                '!' + paths.app_test + '.gitkeep'
+                paths.app_build + '**/*'
             ]);
         },
         pug: function () {
@@ -112,6 +110,19 @@ module.exports = function (gulp, plugins, paths) {
                     .pipe(plugins.concat('app_lib.min.js'))
                     .pipe(plugins.uglify({mangle: false}))
                     .pipe(gulp.dest(paths.dist + 'js'));
+            }
+        },
+        karma: {
+            default: function (cb) {
+                new plugins.karma.Server({
+                    configFile: __dirname + '/../karma.conf.js'
+                }, function(status) {
+                    if(status == 0){
+                        cb();
+                    } else {
+                        process.exit();
+                    }
+                }).start();
             }
         }
     };

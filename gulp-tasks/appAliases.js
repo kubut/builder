@@ -7,6 +7,7 @@ module.exports = function (gulp, plugins, paths, tasks) {
     gulp.task('app:pug', tasks.pug);
     gulp.task('app:ng-templates', ['app:pug'], tasks.ngTemplates);
     gulp.task('app:typescript:default', ['app:typings', 'app:tslint'], tasks.typescript.default);
+    gulp.task('app:typescript:karma', tasks.typescript.karma);
     gulp.task('app:uglify:default', ['app:ng-templates', 'app:typescript:default'], tasks.uglify.default);
     gulp.task('app:uglify:libs', tasks.uglify.libs);
     gulp.task('app:uglify:default:templates', ['app:ng-templates'], tasks.uglify.default);
@@ -18,4 +19,6 @@ module.exports = function (gulp, plugins, paths, tasks) {
     gulp.task('app:build:js:libs', ['app:uglify:libs']);
 
     gulp.task('build', ['app:build:css', 'app:build:js']);
+    gulp.task('karma', ['app:typescript:default'], tasks.karma.default);
+    gulp.task('karma:dev', tasks.karma.default);
 };
