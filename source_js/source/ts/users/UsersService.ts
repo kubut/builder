@@ -16,6 +16,7 @@ module APP.Users {
             this.$http.post(this.routing.generate('user_add'), {
                 name: user.name,
                 surname: user.surname,
+                email: user.email,
                 role: user.role
             }).finally(() => {
                 this.reloadUserList();

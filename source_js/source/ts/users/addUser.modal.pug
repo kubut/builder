@@ -16,6 +16,12 @@ md-dialog.add-user-modal
                         div(ng-message="required") To pole jest wymagane
                         div(ng-message="maxlength") Nazwisko nie może być dłuższe niż 60 znaków
                         div(ng-message="minlength") Nazwisko nie może być krótsze niż 3 znaki
+
+                md-input-container
+                    label Email
+                    input(name="email" required minlength="10" maxlength="100" ng-pattern='/^.+@.+\..+$/' ng-model="modalCtrl.user.email")
+                    div(ng-messages="addUserForm.surname.$error")
+                        div(ng-message-exp="['required', 'minlength', 'maxlength', 'pattern']") Email musi mieć od 10 do 100 znaków i wyglądać jak prawdziwy adres
                 md-input-container
                     label Rola
                     md-select(name="role" ng-model="modalCtrl.user.role")

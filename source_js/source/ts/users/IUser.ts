@@ -5,6 +5,7 @@ module APP.Users {
         id: number;
         name: string;
         surname: string;
+        email: string;
         role: UserRole;
         activationCode?: string;
     }

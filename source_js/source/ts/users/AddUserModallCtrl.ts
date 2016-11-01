@@ -10,6 +10,7 @@ module APP.Users {
                 id: 0,
                 name: '',
                 surname: '',
+                email: '',
                 role: UserRole.User
             };
         }
