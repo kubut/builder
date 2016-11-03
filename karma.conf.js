@@ -12,13 +12,15 @@ module.exports = function(config) {
         preprocessors: {
             "**/*.ts": ["karma-typescript"]
         },
+        karmaTypescriptConfig: {
+            include: ["source_js/build/typings/**/*.ts", "source_js/source/**/*.ts"]
+        },
         singleRun: true,
         port: 9876,
         colors: true,
         reporters: ["nyan", "karma-typescript"],
         browsers: ["PhantomJS"],
-        // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
-        logLevel: config.LOG_INFO,
+        logLevel: config.LOG_INFO, //config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
         autoWatch: false,
         concurrency: Infinity
     });

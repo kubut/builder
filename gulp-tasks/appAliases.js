@@ -19,6 +19,6 @@ module.exports = function (gulp, plugins, paths, tasks) {
     gulp.task('app:build:js:libs', ['app:uglify:libs']);
 
     gulp.task('build', ['app:build:css', 'app:build:js']);
-    gulp.task('karma', ['app:typescript:default'], tasks.karma.default);
-    gulp.task('karma:dev', tasks.karma.default);
+    gulp.task('karma', tasks.karma.default);
+    gulp.task('karma:full', ['app:typescript:default'], tasks.karma.default);
 };
