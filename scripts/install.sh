@@ -1,26 +1,36 @@
 #!/usr/bin/env bash
 
 gitPath="https://github.com/kubut/builder.git"
+quiet=false
+flag=''
+npmFlag=''
 
-function printError {
-    echo -e "\e[7m\e[1m\e[91mERROR:\e[0m ${1}"
+printError() {
+    echo "$(tput setab 1)$(tput bold)--ERROR:$(tput sgr0) ${1}"
 }
 
-function printWarning {
-    echo -e "\e[7m\e[1m\e[33mWARNING:\e[0m ${1}"
+printWarning() {
+    echo "$(tput setab 3)$(tput bold)--WARNING:$(tput sgr0) ${1}"
 }
 
-function printInfo {
-    echo -e "\e[7m\e[1m\e[34mINFO:\e[0m ${1}"
+printInfo() {
+    echo "$(tput setab 4)$(tput bold)--INFO:$(tput sgr0) ${1}"
 }
 
-function printQuestion {
-    echo -e "\e[7m\e[45mQUESTION:\e[0m ${1}"
+printQuestion() {
+    echo "$(tput setab 5)$(tput bold)--QUESTION:$(tput sgr0) ${1}"
 }
 
-function checkPHPVersion {
+cloneRepo() {
+    printInfo "Cloning repository..."
+    installIfNeeded git
+
+    git clone ${gitPath} builder ${flag}
+}
+
+checkPHPVersion() {
     PHPVersion=$(php -v|grep --only-matching --perl-regexp "5\.\\d+\.\\d+");
-    currentVersion=${PHPVersion::0-2};
+    currentVersion=${PHPVersion:0:2};
     minimumRequiredVersion=$1;
     if [ $(echo " $currentVersion >= $minimumRequiredVersion" | bc) -eq 1 ]; then
         printInfo "PHP Version is valid ...";
@@ -30,36 +40,36 @@ function checkPHPVersion {
     fi
 }
 
-function isProgramInstalled {
+isProgramInstalled() {
     local return_=1
     type $1 >/dev/null 2>&1 || { local return_=0; }
     echo "$return_"
 }
 
-function requireSuccess {
+requireSuccess() {
     if [[ $? > 0 ]]; then
         printError "Command failed! Installation aborted!"
         exit 2
     fi
 }
 
-function installAsRoot {
-    eval sudo ${pm} install ${1} -y
+installAsRoot() {
+    eval sudo ${pm} ${flag} install ${1} -y
     if [[ $? > 0 ]]; then
         printError "Installation failed - Builder may not working correctly"
     fi
 }
 
-function installIfNeeded {
-    if [ $(isProgramInstalled ${1}) == 0 ]; then
+installIfNeeded() {
+    if [ $(isProgramInstalled ${1}) -eq 0 ]; then
         printWarning "$1 not detected... Installing..."
         installAsRoot ${1}
     fi
 }
 
-function setSeLinux {
+setSeLinux() {
     printInfo "Checking SElinux"
-    if [ $(isProgramInstalled sestatus) == 1 ]; then
+    if [ $(isProgramInstalled sestatus) -eq 1 ]; then
         printQuestion "SELinux detected... Should I try to set permissions for you (y/N)?"
         read agree
         if [ ${agree} == "y" ]; then
@@ -72,10 +82,10 @@ function setSeLinux {
     fi
 }
 
-function setApache {
+setApache() {
     if [ -d "/etc/apache2/sites-enabled" ]; then
         serverPath="/etc/apache2/sites-enabled"
-    elif [-d "/etc/httpd/sites-enabled"]; then
+    elif [ -d "/etc/httpd/sites-enabled" ]; then
         serverPath="/etc/httpd/sites-enabled"
     else
         printError "Directory with virtual hosts configuration doesn't found (I searched in /etc/apache2/sites-enabled and /etc/httpd/sites-enabled)"
@@ -106,8 +116,8 @@ EOF
     requireSuccess
 }
 
-function setDatabase {
-    if [ $(isProgramInstalled ${1}) == 0 ]; then
+setDatabase() {
+    if [ $(isProgramInstalled ${1}) -eq 0 ]; then
         printError "MySQL is required!"
         exit 3
     fi
@@ -125,14 +135,11 @@ function setDatabase {
     mysql -h 127.0.0.1 -u ${dbRootUser} -p${dbRootPass}  -t -e "CREATE DATABASE IF NOT EXISTS ${dbName}; GRANT ALL ON ${dbName}.* to '${dbUser}'@'127.0.0.1' identified by '${dbPassword}'; GRANT ALL ON ${dbName}.* to '${dbUser}'@'localhost' identified by '${dbPassword}';"
 }
 
-function installBackend {
+installBackend() {
     checkPHPVersion 5
 
     printInfo "Downloading composer.phar..."
-    php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
-    php -r "if (hash_file('SHA384', 'composer-setup.php') === 'e115a8dc7871f15d853148a7fbac7da27d6c0030b848d9b3dc09e2a0388afed865e6a3d6b3c0fad45c48e2b5fc1196ae') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
-    php composer-setup.php
-    php -r "unlink('composer-setup.php');"
+    curl -sS https://getcomposer.org/installer | php
 
     printInfo "Setting permissions for Symfony cache"
     HTTPDUSER=`ps axo user,comm | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1`
@@ -147,7 +154,11 @@ function installBackend {
     setSeLinux
     requireSuccess
 
-    installIfNeeded php5-mysql
+    if [ ${pm} == "apt-get" ]; then
+        installIfNeeded php5-mysql
+    else
+        installIfNeeded php-mysql
+    fi
 
     setDatabase
     requireSuccess
@@ -164,11 +175,11 @@ function installBackend {
     php app/console doctrine:fixtures:load --fixtures=src/BuilderBundle/DataFixtures/Prod/
 }
 
-function installFront {
+installFront() {
     installIfNeeded npm
 
     printInfo "Checking NodeJS..."
-    if [ $(isProgramInstalled nodejs) == 0 ] && [ $(isProgramInstalled node) == 0 ]; then
+    if [ $(isProgramInstalled nodejs) -eq 0 ] && [ $(isProgramInstalled node) -eq 0 ]; then
         printWarning "NodeJS not detected... Installing..."
 
         if [ ${pm} == "apt-get" ]; then
@@ -179,26 +190,27 @@ function installFront {
 
         installAsRoot nodejs
         sudo ln -s `which nodejs` /usr/bin/node
-        sudo npm update -g npm@4.0.1
+        sudo npm update -g ${npmFlag} npm@4.0.1
     else
         sudo ln -s `which nodejs` /usr/bin/node
         printQuestion "Recommended version of NodeJS is 6.9.x. Should I update it (y/N)?"
         read agree
         if [ ${agree} == "y" ]; then
-            sudo npm install -g n
+            sudo npm install -g ${npmFlag} n
             sudo n 6.9.1
         fi
 
         printQuestion "Recommended version of NPM is 4.0.x. Should I update it (y/N)?"
         read agree
         if [ ${agree} == "y" ]; then
-            sudo npm update -g npm@4.0.1
+            sudo npm update -g ${npmFlag} npm@4.0.1
         fi
     fi
 
     printInfo "Installing NPM dependencies..."
-    npm i
-    sudo npm install -g gulp
+    npm ${npmFlag} i
+    sudo npm install -g ${npmFlag} gulp
+    sudo npm install ${npmFlag} gulp
 
     printInfo "Building front..."
     gulp build
@@ -207,15 +219,22 @@ function installFront {
 ########################################################################################33
 ########################################################################################33
 ########################################################################################33
-if (( $EUID != 0 )); then
+if [ "$(whoami)" != "root" ]; then
     printError "Please run as root"
     exit 4
 fi
 
-if [ $(isProgramInstalled apt-get) == 1 ]; then
+if [ "$1" = '-q' ]; then
+    printInfo "Running in quiet mode"
+    quiet=true
+    flag="-q"
+    npmFlag="--silent"
+fi
+
+if [ $(isProgramInstalled apt-get) -eq 1 ]; then
     pm="apt-get"
     printInfo "Setting apt-get as package manager"
-elif [ $(isProgramInstalled yum) == 1 ]; then
+elif [ $(isProgramInstalled yum) -eq 1 ]; then
     pm="yum"
     printInfo "Setting yum as package manager"
 else
@@ -223,10 +242,10 @@ else
     exit 5
 fi
 
-if [ $(isProgramInstalled apache2) == 1 ]; then
+if [ $(isProgramInstalled apache2) -eq 1 ]; then
     serverService="apache2"
     printInfo "Setting apache2 as server service"
-elif [ $(isProgramInstalled httpd) == 1 ]; then
+elif [ $(isProgramInstalled httpd) -eq 1 ]; then
     serverService="httpd"
     printInfo "Setting httpd as server service"
 else
@@ -234,9 +253,7 @@ else
     exit 6
 fi
 
-printInfo "Cloning repository..."
-installIfNeeded git
-git clone ${gitPath} builder
+cloneRepo
 cd builder
 
 installBackend
