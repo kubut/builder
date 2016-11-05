@@ -9,7 +9,7 @@ module APP.Configuration {
                 .primaryPalette('blue', {
                     'default': '700'
                 })
-                .accentPalette('green')
+                .accentPalette('deep-orange')
                 .backgroundPalette('grey', {
                     'default': '200'
                 });

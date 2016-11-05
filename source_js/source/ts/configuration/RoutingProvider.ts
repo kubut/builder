@@ -16,7 +16,7 @@ module APP.Common {
     }
 }
 
-angular.module('app')
+angular.module('configuration')
     .provider('Routing', [function () {
         return new APP.Common.RoutingProvider();
     }]);

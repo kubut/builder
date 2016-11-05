@@ -39,5 +39,5 @@ module APP.Configuration {
     }
 }
 
-angular.module('app')
+angular.module('configuration')
     .factory('httpInterceptor', APP.Configuration.HttpInterceptorFactory.Factory());
