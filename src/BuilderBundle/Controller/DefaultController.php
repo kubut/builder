@@ -34,7 +34,8 @@ class DefaultController extends AbstractController
             $this->requireOneOfRoles(array(Role::ADMIN, Role::USER));
             return $this->render('@Builder/Default/index.html.twig');
         } catch (\Exception $e) {
-            return $this->redirectToRoute('fos_user_security_login');
+            return $this->render('@Builder/Default/demo-login.html.twig');
+//            return $this->redirectToRoute('fos_user_security_login');
         }
     }
 }
