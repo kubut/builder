@@ -22,7 +22,7 @@ module APP.Users {
             };
 
             angular.mock.module(($provide) => {
-                $provide.value('$mdDialog', mdDialogMock)
+                $provide.value('$mdDialog', mdDialogMock);
             });
 
             angular.mock.inject(($mdDialog) => {

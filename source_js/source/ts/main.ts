@@ -1,5 +1,6 @@
 /// <reference path="routes.ts"/>
 /// <reference path="configuration/mdConfig.ts"/>
+import IHttpProvider = angular.IHttpProvider;
 (() => {
     let app;
 
@@ -15,4 +16,7 @@
 
     app.config(['$stateProvider', '$urlRouterProvider', APP.Routes.configure]);
     app.config(['$mdThemingProvider', APP.Configuration.MdConfig.configure]);
+    app.config(['$httpProvider', ($httpProvider:IHttpProvider) => {
+        $httpProvider.interceptors.push('httpInterceptor');
+    }]);
 })();

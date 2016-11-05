@@ -3,9 +3,9 @@ module APP.Users {
     import IDialogService = angular.material.IDialogService;
 
     export class AddUserModalCtrl {
-        private _user:IUser;
+        private _user: IUser;
 
-        public constructor(private $mdDialog:IDialogService) {
+        public constructor(private $mdDialog: IDialogService) {
             this._user = {
                 id: 0,
                 name: '',
@@ -35,6 +35,6 @@ module APP.Users {
 }
 
 angular.module('users')
-.controller('AddUserModalCtrl', ['$mdDialog', function($mdDialog) {
-    return new APP.Users.AddUserModalCtrl($mdDialog);
-}]);
+    .controller('AddUserModalCtrl', ['$mdDialog', function ($mdDialog) {
+        return new APP.Users.AddUserModalCtrl($mdDialog);
+    }]);
