@@ -24,5 +24,8 @@ md-card
                             md-button.md-icon-button(ng-click="usersCtrl.deleteUser($event, user)")
                                 md-tooltip(md-direction="top") Usuń użytkownika
                                 i.material-icons.grey delete
+                            md-button.md-icon-button(ng-click="usersCtrl.resetPassword($event, user)")
+                                md-tooltip(md-direction="top") Resetuj hasło
+                                i.material-icons.grey settings_backup_restore
     md-card-actions(layout="row" layout-align="end center")
         md-button.md-raised.md-primary(ng-click="usersCtrl.addUser($event)") Dodaj

@@ -116,6 +116,27 @@ module APP.Users {
             });
         });
 
+        describe('resetPassword', () => {
+            beforeEach(() => {
+                httpBackend.expectPATCH('/url/').respond({});
+                spyOn(service, 'reloadUserList');
+            });
+
+            it('should call reloadUserList', () => {
+                service.resetPassword(3);
+                httpBackend.flush();
+
+                expect(service.reloadUserList).toHaveBeenCalled();
+            });
+
+            it('should call proper API', () => {
+                service.resetPassword(3);
+                httpBackend.flush();
+
+                expect(routingMock.generate).toHaveBeenCalledWith('delete_user', {id: 3});
+            });
+        });
+
         describe('reloadUserList', () => {
             beforeEach(() => {
                 httpBackend.expectGET('/url/').respond(userListMock);

@@ -21,6 +21,7 @@ import IHttpProvider = angular.IHttpProvider;
     app.config(['$stateProvider', '$urlRouterProvider', APP.Configuration.Routes.configure]);
     app.config(['$mdThemingProvider', APP.Configuration.MdConfig.configure]);
     app.config(['$httpProvider', ($httpProvider:IHttpProvider) => {
+        $httpProvider.defaults.headers.patch = {'Content-Type': 'application/json'};
         $httpProvider.interceptors.push('httpInterceptor');
     }]);
 })();

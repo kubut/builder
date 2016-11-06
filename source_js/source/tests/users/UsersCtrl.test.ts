@@ -37,7 +37,8 @@ module APP.Users {
 
             userServiceMock = {
                 addUser: jasmine.createSpy('userService.addUser'),
-                deleteUser: jasmine.createSpy('userService.deleteUser')
+                deleteUser: jasmine.createSpy('userService.deleteUser'),
+                resetPassword: jasmine.createSpy('userService.resetPassword')
             };
 
             userMock = {
@@ -126,6 +127,43 @@ module APP.Users {
                 rootScope.$apply();
 
                 expect(userServiceMock.deleteUser).not.toHaveBeenCalled();
+            });
+        });
+
+        describe('resetPassword', () => {
+            it('should show confirmation modal', () => {
+                let defer = q.defer();
+                mdDialogMock.show.and.returnValue(defer.promise);
+                defer.reject();
+
+                ctrl.resetPassword(document.createEvent('MouseEvents'), userMock);
+
+                expect(mdDialogMock.confirm).toHaveBeenCalled();
+                expect(mdDialogMock.show).toHaveBeenCalledWith(dialogMock);
+            });
+
+            it('should call resetPassword method in service when user confirm action', () => {
+                let defer = q.defer();
+                mdDialogMock.show.and.returnValue(defer.promise);
+                defer.resolve();
+
+                ctrl.resetPassword(document.createEvent('MouseEvents'), userMock);
+
+                rootScope.$apply();
+
+                expect(userServiceMock.resetPassword).toHaveBeenCalledWith(10);
+            });
+
+            it('shouldn\'t call resetPassword method in service when user don\'t confirm action', () => {
+                let defer = q.defer();
+                mdDialogMock.show.and.returnValue(defer.promise);
+                defer.reject();
+
+                ctrl.resetPassword(document.createEvent('MouseEvents'), userMock);
+
+                rootScope.$apply();
+
+                expect(userServiceMock.resetPassword).not.toHaveBeenCalled();
             });
         });
     });

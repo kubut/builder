@@ -32,6 +32,14 @@ module APP.Users {
             });
         }
 
+        public resetPassword(id: number) {
+            this._busy = true;
+
+            this.$http.patch(this.routing.generate('delete_user', {id: id}), {isActive: false}).finally(() => {
+                this.reloadUserList();
+            });
+        }
+
         public reloadUserList() {
             this._users = [];
             this._busy = true;
