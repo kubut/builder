@@ -29,4 +29,4 @@ md-dialog.add-user-modal
                         md-option(value="1") Administrator
     md-dialog-actions
         md-button(ng-click="modalCtrl.close()") Anuluj
-        md-button(ng-click="modalCtrl.addUser()" ng-disabled="!addUserForm.$valid") Dodaj
+        md-button.md-raised.md-primary(ng-click="modalCtrl.addUser()" ng-disabled="!addUserForm.$valid") Dodaj

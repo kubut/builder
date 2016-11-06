@@ -44,6 +44,7 @@ module.exports = function (gulp, plugins, paths) {
             return gulp.src([
                     paths.libs + 'font-awesome/css/font-awesome.css',
                     paths.libs + 'angular-material/angular-material.css',
+                    paths.libs + 'angular-material-data-table/dist/md-data-table.min.css',
                     paths.app_build + 'css/main.min.css'
                 ])
                 .pipe(plugins.cleanCss())
@@ -105,7 +106,8 @@ module.exports = function (gulp, plugins, paths) {
                         paths.libs + 'angular-material/angular-material.js',
                         paths.libs + 'angular-animate/angular-animate.js',
                         paths.libs + 'angular-messages/angular-messages.js',
-                        paths.libs + 'angular-aria/angular-aria.js'
+                        paths.libs + 'angular-aria/angular-aria.js',
+                        paths.libs + 'angular-material-data-table/dist/md-data-table.min.js'
                     ])
                     .pipe(plugins.concat('app_lib.min.js'))
                     .pipe(plugins.uglify({mangle: false}))
@@ -116,13 +118,7 @@ module.exports = function (gulp, plugins, paths) {
             default: function (cb) {
                 new plugins.karma.Server({
                     configFile: __dirname + '/../karma.conf.js'
-                }, function(status) {
-                    if(status == 0){
-                        cb();
-                    } else {
-                        process.exit();
-                    }
-                }).start();
+                }, cb).start();
             }
         }
     };

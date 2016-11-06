@@ -3,9 +3,10 @@ module APP.Users {
     import IHttpService = angular.IHttpService;
 
     export class UsersService {
-        private _busy:boolean;
+        private _busy: boolean;
+        private _users: IUser[];
 
-        public constructor(private routing: IRoutingService, private $http:IHttpService) {
+        public constructor(private routing: IRoutingService, private $http: IHttpService) {
             this._busy = true;
             this.reloadUserList();
         }
@@ -24,11 +25,37 @@ module APP.Users {
         }
 
         public reloadUserList() {
-            this._busy = false;
+            this._users = [];
+            this._busy = true;
+
+            this.$http.get(this.routing.generate('get_users')).then((data: any) => {
+                _.forEach(data.data, (userData) => {
+                    let user: IUser = {
+                        id: userData.id,
+                        name: userData.name,
+                        surname: userData.surname,
+                        email: userData.email,
+                        role: userData.role,
+                        isActive: userData.isActive
+                    };
+
+                    if (!userData.isActive) {
+                        user.activationCode = userData.activationCode;
+                    }
+
+                    this._users.push(user);
+                });
+            }).finally(() => {
+                this._busy = false;
+            });
         }
 
         get busy(): boolean {
             return this._busy;
+        }
+
+        get users(): APP.Users.IUser[] {
+            return this._users;
         }
     }
 }

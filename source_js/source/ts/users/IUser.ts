@@ -7,6 +7,8 @@ module APP.Users {
         surname: string;
         email: string;
         role: UserRole;
+        isActive: boolean;
+
         activationCode?: string;
     }
 }

@@ -11,7 +11,8 @@ module APP.Users {
                 name: '',
                 surname: '',
                 email: '',
-                role: UserRole.User
+                role: UserRole.User,
+                isActive: false
             };
         }
 

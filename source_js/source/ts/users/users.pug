@@ -2,6 +2,22 @@ md-card
     md-card-title
         md-card-title-text Użytkownicy systemu
     md-card-content
-        md-progress-circular(md-mode="indeterminate" ng-show="usersCtrl.usersService.busy")
+        md-progress-circular.center(md-mode="indeterminate" ng-show="usersCtrl.usersService.busy")
+        md-table-container(ng-hide="usersCtrl.usersService.busy")
+            table(md-table)
+                thead(md-head)
+                    tr(md-row)
+                        th(md-column) Imię
+                        th(md-column) Nazwisko
+                        th(md-column) Adres e-mail
+                        th(md-column) Rola
+                        th(md-column) Kod aktywacyjny
+                tbody(md-body)
+                    tr(md-row ng-repeat="user in usersCtrl.usersService.users track by user.id")
+                        td(md-cell) {{ user.name }}
+                        td(md-cell) {{ user.surname }}
+                        td(md-cell) {{ user.email }}
+                        td(md-cell) {{ user.role ? 'Administrator' : 'Użytkownik' }}
+                        td(md-cell) {{ !user.isActive ? user.activationCode : '-' }}
     md-card-actions(layout="row" layout-align="end center")
-        md-button.md-raised(ng-click="usersCtrl.addUser($event)") Dodaj
+        md-button.md-raised.md-primary(ng-click="usersCtrl.addUser($event)") Dodaj

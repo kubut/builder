@@ -1,9 +1,10 @@
 module APP.Users {
     import UserRole = APP.Common.UserRole;
     describe('UsersService', () => {
-        let service:UsersService,
+        let service: UsersService,
             routingMock,
             httpBackend,
+            userListMock,
             userMock;
 
         beforeEach(() => {
@@ -13,12 +14,42 @@ module APP.Users {
                 generate: jasmine.createSpy('routing.generate').and.returnValue('/url/')
             };
 
+            userListMock = [
+                {
+                    'id': 0,
+                    'name': 'Wincenty',
+                    'surname': 'Rogala',
+                    'email': 'Pawe_Adamski10@gmail.com',
+                    'isActive': false,
+                    'role': 0,
+                    'activationCode': 'acuHqkkWEb'
+                },
+                {
+                    'id': 1,
+                    'name': 'Samuel',
+                    'surname': 'Tarnowski',
+                    'email': 'Arseniusz40@yahoo.com',
+                    'isActive': true,
+                    'role': 0
+                },
+                {
+                    'id': 2,
+                    'name': 'Jeremiasz',
+                    'surname': 'Węgrzyn',
+                    'email': 'Teresa.Krawczyk37@gmail.com',
+                    'isActive': false,
+                    'role': 1,
+                    'activationCode': 'S3YqzVrtAE'
+                }
+            ];
+
             userMock = {
                 id: 10,
                 name: 'name',
                 surname: 'surname',
                 email: 'mail@ma.il',
-                role: UserRole.Admin
+                role: UserRole.Admin,
+                isActive: false
             };
 
             angular.mock.module(($provide) => {
@@ -27,6 +58,9 @@ module APP.Users {
 
             angular.mock.inject((Routing, $http, $httpBackend) => {
                 httpBackend = $httpBackend;
+
+                httpBackend.expectGET('/url/').respond({});
+
                 service = new UsersService(Routing, $http);
             });
 
@@ -41,21 +75,10 @@ module APP.Users {
             beforeEach(() => {
                 httpBackend.expectPOST('/url/').respond({});
             });
-            afterEach(() => {
-                httpBackend.verifyNoOutstandingExpectation();
-                httpBackend.verifyNoOutstandingRequest();
-            });
-
-            it('should set busy to true', () => {
-                expect(service.busy).toBeFalsy();
-
-                service.addUser(userMock);
-
-                expect(service.busy).toBeTruthy();
-                httpBackend.flush();
-            });
 
             it('should call proper API', () => {
+                spyOn(service, 'reloadUserList');
+
                 service.addUser(userMock);
                 httpBackend.flush();
 
@@ -69,6 +92,61 @@ module APP.Users {
                 httpBackend.flush();
 
                 expect(service.reloadUserList).toHaveBeenCalled();
+            });
+        });
+
+        describe('reloadUserList', () => {
+            beforeEach(() => {
+                httpBackend.expectGET('/url/').respond(userListMock);
+            });
+
+            it('should call proper API', () => {
+                service.reloadUserList();
+
+                httpBackend.flush();
+
+                expect(routingMock.generate).toHaveBeenCalledWith('get_users');
+            });
+
+            it('should load users', () => {
+                service.reloadUserList();
+
+                httpBackend.flush();
+
+                expect(service.users.length).toBe(3);
+            });
+
+            it('should load activationCode for users[0] and shouldn\'t for users[1]', () => {
+                service.reloadUserList();
+
+                httpBackend.flush();
+
+                expect(service.users[0].activationCode).toBe('acuHqkkWEb');
+                expect(service.users[1].activationCode).toBeUndefined();
+            });
+
+            it('should change busy to false', () => {
+                service.reloadUserList();
+                expect(service.busy).toBeTruthy();
+
+                httpBackend.flush();
+
+                expect(service.busy).toBeFalsy();
+            });
+
+            it('shouldn\'t load double users', () => {
+                service.reloadUserList();
+                httpBackend.flush();
+
+                httpBackend.expectGET('/url/').respond(userListMock);
+                service.reloadUserList();
+                httpBackend.flush();
+
+                httpBackend.expectGET('/url/').respond(userListMock);
+                service.reloadUserList();
+                httpBackend.flush();
+
+                expect(service.users.length).toBe(3);
             });
         });
     });

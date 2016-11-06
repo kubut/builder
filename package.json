@@ -28,12 +28,13 @@
     "angular-messages": "1.5.8",
     "angular-ui-router": "0.3.1",
     "angular-material": "1.1.1",
+    "angular-material-data-table": "0.10.9",
     "font-awesome": "4.7.0",
     "jquery": "2.2.4",
     "lodash": "4.16.4",
     "typings": "1.5.0",
     "tslint": "3.15.1",
-    "typescript": "2.0.6"
+    "typescript": "2.0.7"
   },
   "devDependencies": {
     "del": "2.2.2",
@@ -61,6 +62,7 @@
     "karma-typescript": "git://github.com/monounity/karma-typescript.git#2.1",
     "merge2": "1.0.2",
     "run-sequence": "1.2.2",
-    "json-server": "0.8.23"
+    "json-server": "0.8.23",
+    "faker": "3.1.0"
   }
 }

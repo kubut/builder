@@ -4,7 +4,7 @@ import IHttpProvider = angular.IHttpProvider;
 (() => {
     let app;
 
-    angular.module('users', ['ngMessages']);
+    angular.module('users', ['ngMessages', 'md.data.table']);
     angular.module('common', []);
     angular.module('configuration', []);
 

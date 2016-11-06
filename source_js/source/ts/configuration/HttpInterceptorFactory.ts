@@ -11,7 +11,7 @@ module APP.Configuration {
                 let toastService: IToastService = <IToastService>$injector.get('$mdToast'),
                     message = _.get(rejection, 'data.error.message', 'Wystąpił błąd, spróbuj ponownie'),
                     toast = toastService.simple()
-                        .textContent(message + message + message + message + message + message + message + message)
+                        .textContent(message)
                         .action('OK')
                         .highlightAction(true)
                         .highlightClass('md-warn')
