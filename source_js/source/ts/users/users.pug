@@ -12,6 +12,7 @@ md-card
                         th(md-column) Adres e-mail
                         th(md-column) Rola
                         th(md-column) Kod aktywacyjny
+                        th.center-align(md-column) Akcje
                 tbody(md-body)
                     tr(md-row ng-repeat="user in usersCtrl.usersService.users track by user.id")
                         td(md-cell) {{ user.name }}
@@ -19,5 +20,9 @@ md-card
                         td(md-cell) {{ user.email }}
                         td(md-cell) {{ user.role ? 'Administrator' : 'Użytkownik' }}
                         td(md-cell) {{ !user.isActive ? user.activationCode : '-' }}
+                        td.center-align(md-cell)
+                            md-button.md-icon-button(ng-click="usersCtrl.deleteUser($event, user)")
+                                md-tooltip(md-direction="top") Usuń użytkownika
+                                i.material-icons.grey delete
     md-card-actions(layout="row" layout-align="end center")
         md-button.md-raised.md-primary(ng-click="usersCtrl.addUser($event)") Dodaj

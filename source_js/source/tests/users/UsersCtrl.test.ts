@@ -1,20 +1,52 @@
 module APP.Users {
+    import UserRole = APP.Common.UserRole;
     describe('UsersCtrl', () => {
-        let ctrl:UsersCtrl,
+        let ctrl: UsersCtrl,
             rootScope,
             mdDialogMock,
             userServiceMock,
+            dialogMock,
+            userMock,
             q;
 
         beforeEach(() => {
             angular.mock.module('users');
 
+            dialogMock = {
+                title: () => {
+                    return dialogMock;
+                },
+                textContent: () => {
+                    return dialogMock;
+                },
+                targetEvent: () => {
+                    return dialogMock;
+                },
+                ok: () => {
+                    return dialogMock;
+                },
+                cancel: () => {
+                    return dialogMock;
+                }
+            };
+
             mdDialogMock = {
-                show: jasmine.createSpy('mdDialog.show')
+                show: jasmine.createSpy('mdDialog.show'),
+                confirm: jasmine.createSpy('mdDialog.confirm').and.returnValue(dialogMock)
             };
 
             userServiceMock = {
-                addUser: jasmine.createSpy('userService.addUser')
+                addUser: jasmine.createSpy('userService.addUser'),
+                deleteUser: jasmine.createSpy('userService.deleteUser')
+            };
+
+            userMock = {
+                id: 10,
+                name: 'name',
+                surname: 'surname',
+                email: 'mail@ma.il',
+                role: UserRole.Admin,
+                isActive: false
             };
 
             angular.mock.module(($provide) => {
@@ -49,9 +81,7 @@ module APP.Users {
 
             it('Should call addUser in service when modal is closed', () => {
                 let defer = q.defer();
-
                 mdDialogMock.show.and.returnValue(defer.promise);
-
                 defer.resolve('test');
 
                 ctrl.addUser(document.createEvent('MouseEvents'));
@@ -59,6 +89,43 @@ module APP.Users {
                 rootScope.$apply();
 
                 expect(userServiceMock.addUser).toHaveBeenCalledWith('test');
+            });
+        });
+
+        describe('deleteUser', () => {
+            it('should show confirmation modal', () => {
+                let defer = q.defer();
+                mdDialogMock.show.and.returnValue(defer.promise);
+                defer.reject();
+
+                ctrl.deleteUser(document.createEvent('MouseEvents'), userMock);
+
+                expect(mdDialogMock.confirm).toHaveBeenCalled();
+                expect(mdDialogMock.show).toHaveBeenCalledWith(dialogMock);
+            });
+
+            it('should call deleteUser method in service when user confirm action', () => {
+                let defer = q.defer();
+                mdDialogMock.show.and.returnValue(defer.promise);
+                defer.resolve();
+
+                ctrl.deleteUser(document.createEvent('MouseEvents'), userMock);
+
+                rootScope.$apply();
+
+                expect(userServiceMock.deleteUser).toHaveBeenCalledWith(10);
+            });
+
+            it('shouldn\'t call deleteUser method in service when user don\'t confirm action', () => {
+                let defer = q.defer();
+                mdDialogMock.show.and.returnValue(defer.promise);
+                defer.reject();
+
+                ctrl.deleteUser(document.createEvent('MouseEvents'), userMock);
+
+                rootScope.$apply();
+
+                expect(userServiceMock.deleteUser).not.toHaveBeenCalled();
             });
         });
     });

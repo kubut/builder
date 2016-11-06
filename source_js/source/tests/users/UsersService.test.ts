@@ -95,6 +95,27 @@ module APP.Users {
             });
         });
 
+        describe('deleteUser', () => {
+            beforeEach(() => {
+                httpBackend.expectDELETE('/url/').respond({});
+                spyOn(service, 'reloadUserList');
+            });
+
+            it('should call reloadUserList', () => {
+                service.deleteUser(3);
+                httpBackend.flush();
+
+                expect(service.reloadUserList).toHaveBeenCalled();
+            });
+
+            it('should call proper API', () => {
+                service.deleteUser(3);
+                httpBackend.flush();
+
+                expect(routingMock.generate).toHaveBeenCalledWith('delete_user', {id: 3});
+            });
+        });
+
         describe('reloadUserList', () => {
             beforeEach(() => {
                 httpBackend.expectGET('/url/').respond(userListMock);

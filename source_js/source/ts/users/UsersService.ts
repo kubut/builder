@@ -24,6 +24,14 @@ module APP.Users {
             });
         }
 
+        public deleteUser(id: number) {
+            this._busy = true;
+
+            this.$http.delete(this.routing.generate('delete_user', {id: id})).finally(() => {
+                this.reloadUserList();
+            });
+        }
+
         public reloadUserList() {
             this._users = [];
             this._busy = true;
