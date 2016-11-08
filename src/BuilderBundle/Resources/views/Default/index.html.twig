@@ -15,6 +15,11 @@
                 .config(['RoutingProvider', 'ConfigurationProvider', function (routingProvider, configurationProvider) {
                     routingProvider.setRouting(Routing);
                     configurationProvider.setUserRole('ROLE_ADMIN');
+                }])
+                .run(['ChangePasswordService', function(changePasswordService) {
+                    if(true) {
+                        changePasswordService.showModal();
+                    }
                 }]);
     </script>
 </head>

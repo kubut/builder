@@ -15,8 +15,7 @@ module APP.Configuration {
                         .action('OK')
                         .highlightAction(true)
                         .highlightClass('md-warn')
-                        .hideDelay(0)
-                        .position('top right');
+                        .hideDelay(0);
 
                 if (!_.get(rejection, 'config.params.ignoreExceptions', false)) {
                     toastService.show(toast);

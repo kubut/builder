@@ -6,6 +6,7 @@ import IHttpProvider = angular.IHttpProvider;
 
     angular.module('users', ['ngMessages', 'md.data.table']);
     angular.module('common', []);
+    angular.module('security', ['ngPassword']);
     angular.module('configuration', []);
 
     app = angular.module('app', [
@@ -15,7 +16,8 @@ import IHttpProvider = angular.IHttpProvider;
         'ngMaterial',
         'users',
         'common',
-        'configuration'
+        'configuration',
+        'security'
     ]);
 
     app.config(['$stateProvider', '$urlRouterProvider', APP.Configuration.Routes.configure]);

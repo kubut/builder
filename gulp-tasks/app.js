@@ -107,6 +107,7 @@ module.exports = function (gulp, plugins, paths) {
                         paths.libs + 'angular-animate/angular-animate.js',
                         paths.libs + 'angular-messages/angular-messages.js',
                         paths.libs + 'angular-aria/angular-aria.js',
+                        paths.libs + 'angular-password/angular-password.js',
                         paths.libs + 'angular-material-data-table/dist/md-data-table.min.js'
                     ])
                     .pipe(plugins.concat('app_lib.min.js'))
