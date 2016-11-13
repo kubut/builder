@@ -3,6 +3,7 @@ module APP.Configuration {
     import IStateService = angular.ui.IStateService;
     import ITimeoutService = angular.ITimeoutService;
     import IQService = angular.IQService;
+    import ProjectsService = APP.Projects.ProjectsService;
 
     export class Routes {
         public static $inject = ['$stateProvider', '$urlRouterProvider'];
@@ -15,7 +16,12 @@ module APP.Configuration {
             stateProvider
                 .state('app', {
                     abstract: true,
-                    templateUrl: '/templates/main.html'
+                    templateUrl: '/templates/main.html',
+                    resolve: {
+                        projects: ['ProjectsService', (projectService:ProjectsService) => {
+                            return projectService.loadProjectList();
+                        }]
+                    }
                 })
                 .state('app.dashboard', {
                     templateUrl: '/templates/dashboard.html',

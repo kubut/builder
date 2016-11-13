@@ -8,6 +8,7 @@ import IHttpProvider = angular.IHttpProvider;
     angular.module('common', []);
     angular.module('security', ['ngPassword']);
     angular.module('configuration', []);
+    angular.module('projects', []);
 
     app = angular.module('app', [
         'ui.router',
@@ -17,7 +18,8 @@ import IHttpProvider = angular.IHttpProvider;
         'users',
         'common',
         'configuration',
-        'security'
+        'security',
+        'projects'
     ]);
 
     app.config(['$stateProvider', '$urlRouterProvider', APP.Configuration.Routes.configure]);

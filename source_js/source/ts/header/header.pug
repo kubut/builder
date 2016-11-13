@@ -1,5 +1,7 @@
 md-toolbar(ng-controller="NavigationCtrl as ctrl" layout="row" layout-align="center start")
     .container.navigaion
+        .pull-left
+            a.navigation-button(ng-repeat="project in ctrl.projectsService.projects") {{ project.name }}
         .pull-right
             a.navigation-button(ng-if="ctrl.configuration.user.isAdmin()" ui-sref="app.admin.users" ui-sref-active="active") Użytkownicy
             a.navigation-button(href="/") Wyloguj

@@ -1,19 +1,27 @@
-module.exports = function(config) {
+module.exports = function (config) {
     config.set({
-        basePath: '',
-        exclude: [],
         frameworks: ["jasmine", "karma-typescript"],
         files: [
             'web/dist/js/app_lib.min.js',
             'node_modules/angular-mocks/angular-mocks.js',
             'web/dist/js/app.min.js',
-            {pattern: 'source_js/source/tests/**/*.ts'}
+            {pattern: 'source_js/build/typings/globals/**/*', included: false},
+            {pattern: 'source_js/source/tests/**/*.ts', included: true},
+            {pattern: 'source_js/source/ts/**/*.ts', included: false}
         ],
         preprocessors: {
-            "**/*.ts": ["karma-typescript"]
+            "source_js/source/**/*.ts": ["karma-typescript"]
         },
         karmaTypescriptConfig: {
-            include: ["source_js/build/typings/**/*.ts", "source_js/source/**/*.ts"]
+            compilerOptions: {
+                noImplicitAny: false,
+                target: 'ES5',
+                module: 'amd',
+                removeComments: true,
+                declaration: true,
+                experimentalDecorators: true
+            },
+            include: ['source_js/source/tests/**/*.ts', 'source_js/source/ts/**/*.ts', 'source_js/build/typings/globals/**/*']
         },
         singleRun: true,
         port: 9876,
