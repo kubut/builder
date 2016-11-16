@@ -3,6 +3,7 @@ module APP.Projects {
         let service: ProjectsService,
             httpBackend,
             projectsMock,
+            sqlsMock,
             routingMock;
 
         beforeEach(() => {
@@ -22,6 +23,11 @@ module APP.Projects {
                 {id: 3, name: 'three'}
             ];
 
+            sqlsMock = [
+                'orchid.sql',
+                'stravenue.sql'
+            ];
+
             angular.mock.inject((Routing, $httpBackend, $http) => {
                 httpBackend = $httpBackend;
 
@@ -32,6 +38,26 @@ module APP.Projects {
         afterEach(() => {
             httpBackend.verifyNoOutstandingExpectation();
             httpBackend.verifyNoOutstandingRequest();
+        });
+
+        describe('loadSqlFiles', () => {
+            beforeEach(() => {
+                httpBackend.expectGET('/url/5').respond(sqlsMock);
+            });
+
+            it('should load 2 files', () => {
+                service.loadSqlFiles();
+                httpBackend.flush();
+
+                expect(service.sqlFiles.length).toBe(2);
+            });
+
+            it('should call proper API', () => {
+                service.loadSqlFiles();
+                httpBackend.flush();
+
+                expect(routingMock.generate).toHaveBeenCalledWith('get_databases_files');
+            });
         });
 
         describe('loadProjectList', () => {
@@ -50,7 +76,41 @@ module APP.Projects {
                 service.loadProjectList();
                 httpBackend.flush();
 
-                expect(routingMock.generate).toHaveBeenCalledWith('get_projects_list');
+                expect(routingMock.generate).toHaveBeenCalledWith('projects');
+            });
+        });
+
+        describe('saveProject', () => {
+            it('should call proper API', () => {
+                let projectMock = {
+                    id: 0,
+                    name: 'name',
+                    installScript: 'installScript',
+                    sqlFile: 'sqlFile',
+                    sqlUser: 'sqlUser',
+                    configScript: 'configScript',
+                    domain: 'domain',
+                    gitPath: 'gitPath',
+                    gitLogin: 'gitLogin',
+                    gitPass: 'gitPass'
+                };
+
+                httpBackend.expectPOST('/url/5', {
+                    name: projectMock.name,
+                    installScript: projectMock.installScript,
+                    sqlFile: projectMock.sqlFile,
+                    sqlUser: projectMock.sqlUser,
+                    configScript: projectMock.configScript,
+                    domain: projectMock.domain,
+                    gitPath: projectMock.gitPath,
+                    gitLogin: projectMock.gitLogin,
+                    gitPass: projectMock.gitPass
+                }).respond({});
+
+                service.saveProject(new ProjectModel(projectMock));
+                httpBackend.flush();
+
+                expect(routingMock.generate).toHaveBeenCalledWith('projects');
             });
         });
     });

@@ -7,7 +7,7 @@ module.exports = function (config) {
             'web/dist/js/app.min.js',
             {pattern: 'source_js/build/typings/globals/**/*', included: false},
             {pattern: 'source_js/source/tests/**/*.ts', included: true},
-            {pattern: 'source_js/source/ts/**/*.ts', included: false}
+            {pattern: 'source_js/source/ts/**/*.ts', included: true}
         ],
         preprocessors: {
             "source_js/source/**/*.ts": ["karma-typescript"]
@@ -21,7 +21,10 @@ module.exports = function (config) {
                 declaration: true,
                 experimentalDecorators: true
             },
-            include: ['source_js/source/tests/**/*.ts', 'source_js/source/ts/**/*.ts', 'source_js/build/typings/globals/**/*']
+            include: ['source_js/source/tests/**/*.ts', 'source_js/source/ts/**/*.ts', 'source_js/build/typings/globals/**/*'],
+            reporters: {
+                "html": "source_js/coverage"
+            }
         },
         singleRun: true,
         port: 9876,

@@ -18,7 +18,7 @@ module APP.Configuration {
                     abstract: true,
                     templateUrl: '/templates/main.html',
                     resolve: {
-                        projects: ['ProjectsService', (projectService:ProjectsService) => {
+                        projects: ['ProjectsService', (projectService: ProjectsService) => {
                             return projectService.loadProjectList();
                         }]
                     }
@@ -52,6 +52,21 @@ module APP.Configuration {
                     controller: 'UsersCtrl as usersCtrl',
                     url: '/users',
                     templateUrl: '/templates/users.html'
+                })
+                .state('app.admin.project', {
+                    abstract: true,
+                    resolve: {
+                        sqlFiles: ['ProjectsService', (projectsService: ProjectsService) => {
+                            return projectsService.loadSqlFiles();
+                        }]
+                    },
+                    url: '/project',
+                    template: '<ui-view>'
+                })
+                .state('app.admin.project.create', {
+                    controller: 'ProjectCtrl as projectCtrl',
+                    url: '/create',
+                    templateUrl: '/templates/projectSettings.html'
                 });
         }
     }

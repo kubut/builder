@@ -6,7 +6,7 @@ server:
   ip: 10.10.10.159
   ssh_port: 22150
   memory: 2048
-  cpu: 1
+  cpu: 8
 
 
 database:

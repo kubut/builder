@@ -1,15 +1,21 @@
 module APP.Header {
     import IConfigurationService = APP.Configuration.IConfigurationService;
     import ProjectsService = APP.Projects.ProjectsService;
+    import IStateService = angular.ui.IStateService;
 
     export class NavigationCtrl {
-        public constructor(public configuration:IConfigurationService,
-                           public projectsService:ProjectsService) {
+        public constructor(public configuration: IConfigurationService,
+                           public projectsService: ProjectsService,
+                           private $state: IStateService) {
+        }
+
+        public newProject(): void {
+            this.$state.go('app.admin.project.create');
         }
     }
 }
 
 angular.module('users')
-    .controller('NavigationCtrl', ['Configuration', 'ProjectsService', function (Configuration, projectsService) {
-        return new APP.Header.NavigationCtrl(Configuration, projectsService);
+    .controller('NavigationCtrl', ['Configuration', 'ProjectsService', '$state', function (Configuration, projectsService, $state) {
+        return new APP.Header.NavigationCtrl(Configuration, projectsService, $state);
     }]);
