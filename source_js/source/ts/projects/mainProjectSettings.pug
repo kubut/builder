@@ -1,6 +1,6 @@
 md-card
     md-card-title
-        md-card-title-text Ustawienia projektu
+        block project-title
     md-card-content
         .md-dialog-content
             form(name="projectForm" layout="column" novalidate ng-submit="projectCtrl.saveProject()")
@@ -83,4 +83,4 @@ md-card
                         md-tooltip Plik konfiguracji Symfony. Musi zawierać zmienną $DATABASE_NAME$ pod którą zostanie wstawiona nazwa bazy danych wwygenerowanej z podanego wyżej pliku SQL. Pamiętaj o zdefiniowaniu w nim pozostałych dostępów do bazy danych oraz wszystkich potrzebnych parametrów
     md-dialog-actions
         .md-dialog-content
-            md-button.md-raised.md-primary.pull-right(ng-click="projectCtrl.saveProject()" ng-disabled="!projectForm.$valid") Zapisz
+            block project-actions

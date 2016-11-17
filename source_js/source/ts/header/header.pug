@@ -1,7 +1,10 @@
 md-toolbar(ng-controller="NavigationCtrl as ctrl" layout="row" layout-align="center start")
     .container.navigaion
         .pull-left
-            a.navigation-button(ng-repeat="project in ctrl.projectsService.projects") {{ project.name }}
+            span.navigation-button(ng-repeat="project in ctrl.projectsService.projects")
+                a {{ project.name }}
+                md-button.md-icon-button.edit-project-button(ng-if="ctrl.configuration.user.isAdmin()" ng-click="ctrl.editProject(project.id)")
+                    i.material-icons edit
             div.add-new-project-button(ng-if="ctrl.configuration.user.isAdmin()")
                 md-tooltip(ng-if="ctrl.projectsService.projects.length >= 4") Możesz posiadać maksymalnie 4 projekty
                 md-button.md-icon-button(ng-click="ctrl.newProject()" ng-disabled="ctrl.projectsService.projects.length >= 4")

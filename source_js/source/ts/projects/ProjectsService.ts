@@ -23,8 +23,33 @@ module APP.Projects {
             });
         }
 
-        public saveProject(project: ProjectModel):IPromise<any> {
-            return this.$http.post(this.routing.generate('projects'), {
+        public loadProjectSettings(id: number): IPromise<ProjectModel> {
+            return this.$http.get(this.routing.generate('project_details', {id: id})).then((respond: any) => {
+                return new ProjectModel({
+                    id: respond.data.id,
+                    name: respond.data.name,
+                    installScript: respond.data.installScript,
+                    sqlFile: respond.data.sqlFile,
+                    sqlUser: respond.data.sqlUser,
+                    configScript: respond.data.configScript,
+                    domain: respond.data.domain,
+                    gitPath: respond.data.gitPath,
+                    gitLogin: respond.data.gitLogin,
+                    gitPass: respond.data.gitPass
+                });
+            });
+        }
+
+        public saveProject(project: ProjectModel): IPromise<any> {
+            let path: string;
+
+            if (project.id >= 0) {
+                path = this.routing.generate('edit_project', {id: project.id});
+            } else {
+                path = this.routing.generate('projects');
+            }
+
+            return this.$http.put(path, {
                 name: project.name,
                 installScript: project.installScript,
                 sqlFile: project.sqlFile,

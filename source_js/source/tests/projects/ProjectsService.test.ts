@@ -79,11 +79,22 @@ module APP.Projects {
                 expect(routingMock.generate).toHaveBeenCalledWith('projects');
             });
         });
+        
+        describe('loadProjectSettings', () => {
+            it('should call proper API', () => {
+                httpBackend.expectGET('/url/5').respond({});
+
+                service.loadProjectSettings(42);
+                httpBackend.flush();
+
+                expect(routingMock.generate).toHaveBeenCalledWith('project_details', {id: 42});
+            });
+        });
 
         describe('saveProject', () => {
-            it('should call proper API', () => {
+            it('should call proper API for create new project', () => {
                 let projectMock = {
-                    id: 0,
+                    id: -1,
                     name: 'name',
                     installScript: 'installScript',
                     sqlFile: 'sqlFile',
@@ -95,7 +106,7 @@ module APP.Projects {
                     gitPass: 'gitPass'
                 };
 
-                httpBackend.expectPOST('/url/5', {
+                httpBackend.expectPUT('/url/5', {
                     name: projectMock.name,
                     installScript: projectMock.installScript,
                     sqlFile: projectMock.sqlFile,
@@ -111,6 +122,38 @@ module APP.Projects {
                 httpBackend.flush();
 
                 expect(routingMock.generate).toHaveBeenCalledWith('projects');
+            });
+
+            it('should call proper API for edit project', () => {
+                let projectMock = {
+                    id: 42,
+                    name: 'name',
+                    installScript: 'installScript',
+                    sqlFile: 'sqlFile',
+                    sqlUser: 'sqlUser',
+                    configScript: 'configScript',
+                    domain: 'domain',
+                    gitPath: 'gitPath',
+                    gitLogin: 'gitLogin',
+                    gitPass: 'gitPass'
+                };
+
+                httpBackend.expectPUT('/url/5', {
+                    name: projectMock.name,
+                    installScript: projectMock.installScript,
+                    sqlFile: projectMock.sqlFile,
+                    sqlUser: projectMock.sqlUser,
+                    configScript: projectMock.configScript,
+                    domain: projectMock.domain,
+                    gitPath: projectMock.gitPath,
+                    gitLogin: projectMock.gitLogin,
+                    gitPass: projectMock.gitPass
+                }).respond({});
+
+                service.saveProject(new ProjectModel(projectMock));
+                httpBackend.flush();
+
+                expect(routingMock.generate).toHaveBeenCalledWith('edit_project', {id: 42});
             });
         });
     });

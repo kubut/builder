@@ -4,6 +4,7 @@ module APP.Configuration {
     import ITimeoutService = angular.ITimeoutService;
     import IQService = angular.IQService;
     import ProjectsService = APP.Projects.ProjectsService;
+    import IStateParamsService = angular.ui.IStateParamsService;
 
     export class Routes {
         public static $inject = ['$stateProvider', '$urlRouterProvider'];
@@ -64,9 +65,20 @@ module APP.Configuration {
                     template: '<ui-view>'
                 })
                 .state('app.admin.project.create', {
-                    controller: 'ProjectCtrl as projectCtrl',
+                    controller: 'NewProjectCtrl as projectCtrl',
                     url: '/create',
-                    templateUrl: '/templates/projectSettings.html'
+                    templateUrl: '/templates/newProject.html'
+                })
+                .state('app.admin.project.edit', {
+                    controller: 'EditProjectCtrl as projectCtrl',
+                    resolve: {
+                        project: ['ProjectsService', '$stateParams',
+                            (projectsService: ProjectsService, $stateParams: IStateParamsService) => {
+                                return projectsService.loadProjectSettings($stateParams['id']);
+                            }]
+                    },
+                    url: '/edit/:id',
+                    templateUrl: '/templates/editProject.html'
                 });
         }
     }

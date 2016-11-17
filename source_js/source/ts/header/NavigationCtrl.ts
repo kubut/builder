@@ -12,6 +12,10 @@ module APP.Header {
         public newProject(): void {
             this.$state.go('app.admin.project.create');
         }
+
+        public editProject(id:number): void {
+            this.$state.go('app.admin.project.edit', {id: id});
+        }
     }
 }
 

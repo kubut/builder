@@ -1,10 +1,11 @@
 module APP.Projects {
-    describe('ProjectCtrl', () => {
-        let ctrl: ProjectCtrl,
+    describe('NewProjectCtrl', () => {
+        let ctrl: NewProjectCtrl,
             projectsServiceMock,
             $mdToastMock,
             q,
-            rootScope;
+            rootScope,
+            $stateMock;
 
         beforeEach(() => {
             angular.mock.module('projects');
@@ -18,42 +19,44 @@ module APP.Projects {
                 showSimple: jasmine.createSpy('toast.showSimple')
             };
 
+            $stateMock = {
+                go: jasmine.createSpy('state.go')
+            };
+
             angular.mock.module(($provide) => {
                 $provide.value('ProjectsService', projectsServiceMock);
                 $provide.value('$mdToast', $mdToastMock);
+                $provide.value('$state', $stateMock);
             });
 
-            angular.mock.inject((ProjectsService, $mdToast, $q, $rootScope) => {
+            angular.mock.inject((ProjectsService, $mdToast, $state, $q, $rootScope) => {
                 q = $q;
                 rootScope = $rootScope;
 
-                ctrl = new ProjectCtrl(ProjectsService, $mdToast);
+                ctrl = new NewProjectCtrl(ProjectsService, $mdToast, $state);
             });
         });
 
         describe('saveProject', () => {
-            it('should call saveProject from service', () => {
+            beforeEach(() => {
                 let defer = q.defer();
-                defer.resolve();
+                defer.resolve({data: {id: 2}});
 
                 projectsServiceMock.saveProject.and.returnValue(defer.promise);
                 ctrl.saveProject();
 
                 rootScope.$apply();
+            });
 
+            it('should call saveProject from service', () => {
                 expect(projectsServiceMock.saveProject).toHaveBeenCalledWith(ctrl.project);
             });
             it('should show toast and reload projects list', () => {
-                let defer = q.defer();
-                defer.resolve();
-
-                projectsServiceMock.saveProject.and.returnValue(defer.promise);
-                ctrl.saveProject();
-
-                rootScope.$apply();
-
                 expect(projectsServiceMock.loadProjectList).toHaveBeenCalled();
                 expect($mdToastMock.showSimple).toHaveBeenCalledWith('Dodano pomyślnie');
+            });
+            it('should go to edit page', () => {
+                expect($stateMock.go).toHaveBeenCalledWith('app.admin.project.edit', {id: 2});
             });
         });
     });
