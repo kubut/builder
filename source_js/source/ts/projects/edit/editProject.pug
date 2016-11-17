@@ -5,3 +5,4 @@ block project-title
 
 block project-actions
     md-button.md-raised.md-primary.pull-right(ng-click="projectCtrl.saveProject()" ng-disabled="!projectForm.$valid || !projectForm.$dirty") Zapisz
+    md-button.md-raised.md-warn.pull-right(ng-click="projectCtrl.deleteProject($event, projectCtrl.project.id)") Usuń

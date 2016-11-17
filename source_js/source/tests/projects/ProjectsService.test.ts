@@ -79,7 +79,7 @@ module APP.Projects {
                 expect(routingMock.generate).toHaveBeenCalledWith('projects');
             });
         });
-        
+
         describe('loadProjectSettings', () => {
             it('should call proper API', () => {
                 httpBackend.expectGET('/url/5').respond({});
@@ -154,6 +154,17 @@ module APP.Projects {
                 httpBackend.flush();
 
                 expect(routingMock.generate).toHaveBeenCalledWith('edit_project', {id: 42});
+            });
+        });
+
+        describe('deleteProject', () => {
+            it('should call proper API for project deletion', () => {
+                httpBackend.expectDELETE('/url/5').respond({});
+
+                service.deleteProject(42);
+                httpBackend.flush();
+
+                expect(routingMock.generate).toHaveBeenCalledWith('projects', {id: 42});
             });
         });
     });
