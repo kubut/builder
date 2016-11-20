@@ -1,0 +1,79 @@
+.md-dialog-content
+    form(name="projectForm" layout="column" novalidate ng-submit="projectCtrl.saveProject()")
+        input(ng-show="false", type="password")
+        div(layout="row")
+            md-input-container(flex)
+                label Nazwa projektu
+                input(name="name" minlength="3" maxlength="20" required ng-model="projectCtrl.project.name")
+                md-icon.helper
+                    i.material-icons.grey help_outline
+                    md-tooltip Nazwa projektu widoczna w górnym pasku
+                div(ng-messages="projectForm.name.$error")
+                    div(ng-message="required") To pole jest wymagane
+                    div(ng-message="maxlength") Nazwa nie może być dłuższa niż 20 znaków
+                    div(ng-message="minlength") Nazwa nie może być krótsza niż 3 znaki
+            md-input-container(flex)
+                label Domena
+                input(name="domain" required ng-model="projectCtrl.project.domain")
+                md-icon.helper
+                    i.material-icons.grey help_outline
+                    md-tooltip Domena pod którą będą dostępne poszczególne środowiska testerskie. Pamiętaj o rejestracji jej w systemie DNS
+                div(ng-messages="projectForm.domain.$error")
+                    div(ng-message="required") To pole jest wymagane
+        div(layout="row")
+            md-input-container(flex)
+                label Użytkownik bazy danych
+                input(name="sqlUser" required ng-model="projectCtrl.project.sqlUser")
+                md-icon.helper
+                    i.material-icons.grey help_outline
+                    md-tooltip Nazwa użytkownika mysql, któremu będą przypisywane uprawnienia do dynamicznie tworzonych baz danych. Pamiętaj, zby podac jego dane w pliku konfiguracyjnym poniżej
+                div(ng-messages="projectForm.sqlUser.$error")
+                    div(ng-message="required") To pole jest wymagane
+            md-input-container(flex)
+                label Plik bazy danych
+                md-select.helped-select(name="sqlFile" required ng-model="projectCtrl.project.sqlFile")
+                    md-option(ng-repeat="sqlFile in projectCtrl.projectsService.sqlFiles" ng-value="sqlFile") {{ sqlFile }}
+                md-icon.helper
+                    i.material-icons.grey help_outline
+                    md-tooltip Plik SQL na podstawie którego ma być utworzona baza danych (aby dodać nowy umieść go w katalogu web/sql Buildera)
+
+        div(layout="row")
+            md-input-container(flex)
+                label Ścieżka do repozytorium (git)
+                input(name="gitPath" required ng-model="projectCtrl.project.gitPath")
+                md-icon.helper
+                    i.material-icons.grey help_outline
+                    md-tooltip Ścieżka dla git clone
+                div(ng-messages="projectForm.gitPath.$error")
+                    div(ng-message="required") To pole jest wymagane
+            md-input-container(flex)
+                label Login do repozytorium
+                input(name="gitLogin" autocomplete="off" required ng-model="projectCtrl.project.gitLogin")
+                md-icon.helper
+                    i.material-icons.grey help_outline
+                    md-tooltip Użytkownik mający uprawnienia do operacji git clone
+                div(ng-messages="projectForm.gitLogin.$error")
+                    div(ng-message="required") To pole jest wymagane
+            md-input-container(flex)
+                label Hasło do repozytorium
+                input(name="gitPass" type="password" autocomplete="off" required ng-model="projectCtrl.project.gitPass")
+                md-icon.helper
+                    i.material-icons.grey help_outline
+                    md-tooltip Hasło użytkownika mającego uprawnienia do git clone
+                div(ng-messages="projectForm.gitPass.$error")
+                    div(ng-message="required") To pole jest wymagane
+        md-input-container
+            label Skrypt instalacyjny (bash)
+            textarea(name="installScript" ng-model="projectCtrl.project.installScript")
+            md-icon.helper
+                i.material-icons.grey help_outline
+                md-tooltip Skrypt instalacyjny zostanie wykonany po każdorazowym wystawieniu środowiska (git checkout). Powinien zawierać wszystkie niezbędne kroki potrzebne do działania projektu (instalacja bibliotek itp.) oraz być napisany w Bashu
+        md-input-container
+            label Plik konfiguracyjny (parameters.yml)
+            textarea(name="configScript" ng-model="projectCtrl.project.configScript" required ng-pattern="projectCtrl.regex")
+            div(ng-messages="projectForm.configScript.$error")
+                div(ng-message="required") To pole jest wymagane
+                div(ng-message="pattern") To pole wymaga umeijscowienia zmiennej $DATABASE_NAME$
+            md-icon.helper
+                i.material-icons.grey help_outline
+                md-tooltip Plik konfiguracji Symfony. Musi zawierać zmienną $DATABASE_NAME$ pod którą zostanie wstawiona nazwa bazy danych wwygenerowanej z podanego wyżej pliku SQL. Pamiętaj o zdefiniowaniu w nim pozostałych dostępów do bazy danych oraz wszystkich potrzebnych parametrów
