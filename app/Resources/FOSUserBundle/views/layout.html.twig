@@ -8,6 +8,10 @@
 </head>
 
 <body>
+{% if error %}
+    <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+{% endif %}
+
 <div class="container">
     <div class="row">
         <div id="login-box" class="col s12 m4">
@@ -16,20 +20,24 @@
                     <span class="card-title">Logowanie</span>
                 </div>
                 <div class="card-content ">
-                    <form action="/">
+                    <form action="{{ path("fos_user_security_check") }}" method="post">
+                        {% if csrf_token %}
+                            <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+                        {% endif %}
                         <div class="row no-margin-bottom ">
                             <div class="input-field col s12 m12 l12">
-                                <input id="login" type="email" class="validate">
-                                <label for="login">Adres e-mail</label>
+                                <input id="username" name="_username" type="email" class="validate">
+                                <label for="username">Adres e-mail</label>
                             </div>
                             <div class="input-field col s12 m12 l12">
-                                <input id="password" type="password" class="validate">
+                                <input id="password" name="_password" type="password" class="validate">
                                 <label for="password">Hasło</label>
+                                <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
                             </div>
                         </div>
                         <div class="row no-margin-bottom ">
                             <div class="col s12 m12 l12">
-                                <button type="submit" class="right waves-effect waves-light btn blue darken-2">Loguj
+                                <button type="submit" id="_submit" class="right waves-effect waves-light btn blue darken-2">Loguj
                                 </button>
                             </div>
                         </div>
