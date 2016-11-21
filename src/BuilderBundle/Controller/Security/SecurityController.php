@@ -13,9 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SecurityController extends AbstractController
 {
-    /**
-     * @internal param Request $request
-     *
+    /***
      * @Route("/user/add", name="user_add", options={"expose"=true})
      *
      * @Method("POST")
@@ -23,14 +21,42 @@ class SecurityController extends AbstractController
      * @ApiDoc(
      *  description="register",
      *  requirements={
-     *      {"name"="username", "dataType"="string", "description"="username"},
-     *      {"name"="email", "dataType"="string", "description"="email"}
+     *      {"name"="name", "dataType"="string", "description"="username"},
+     *      {"name"="surname", "dataType"="string", "description"="username"},
+     *      {"name"="email", "dataType"="string", "description"="email"},
+     *      {"name"="role", "dataType"="bool", "requirement"="bool", "description"="isAdmin"}
      *  },
      * )
      * @param Request $request
      * @return JsonResponse
      */
     public function registerAction(Request $request)
+    {
+        $this->requireRole(Role::ADMIN);
+
+        $inputData = json_decode($request->getContent(), true);
+        if ($request->isMethod('POST')){
+            try {
+                $generatedPassword = $this->get('app.builder.service.register')->register($inputData);
+
+                return $this->returnSuccess(['password' => $generatedPassword]);
+            } catch (\Exception $exception) {
+                return $this->returnError($exception->getMessage());
+            }
+        }
+    }
+    /***
+     * @Route("/user/list", name="user_list", options={"expose"=true})
+     *
+     * @Method("POST")
+     *
+     * @ApiDoc(
+     *  description="user list"
+     * )
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function userListAction(Request $request)
     {
         $this->requireRole(Role::ADMIN);
 

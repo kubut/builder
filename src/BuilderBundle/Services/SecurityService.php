@@ -31,6 +31,10 @@ class SecurityService
         }
         $generatedPassword = $this->generateStrongPassword();
         $data['password'] = $generatedPassword;
+        if ($data['role']){
+            $data['roles'] = ['ROLE_ADMIN'];
+        }
+
         $this->userModel->createUser($data);
 
         return $generatedPassword;
@@ -43,7 +47,7 @@ class SecurityService
      */
     private function validateData($data)
     {
-        return isset($data['email']) && isset($data['username']);
+        return isset($data['email']) && isset($data['name']) && isset($data['surname']) && isset($data['role']);
     }
 
     /**

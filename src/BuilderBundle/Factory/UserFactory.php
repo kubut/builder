@@ -3,7 +3,6 @@ namespace BuilderBundle\Factory;
 
 use BuilderBundle\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
-use FOS\UserBundle\Model\UserManagerInterface;
 
 /**
  * Class UserFactory
@@ -11,10 +10,6 @@ use FOS\UserBundle\Model\UserManagerInterface;
  */
 class UserFactory implements EntityFactoryInterface
 {
-//    public function __construct(UserManagerInterface $userManager)
-//    {
-//    }
-
     /**
      * @param array $parameters
      * @return mixed
@@ -23,19 +18,22 @@ class UserFactory implements EntityFactoryInterface
     {
         $template = [
             "email" => '',
+            "name" => '',
+            "surname" => '',
             "password" => null,
-            "username" => '',
             "last_login" => null,
             "roles" => ["ROLE_USER"],
         ];
         $parameters = array_merge($template, $parameters);
 
         $user = new User();
-        $user->setEmail($parameters['email'])
+        $user->setName($parameters['name'])
+            ->setSurname($parameters['surname'])
+            ->setEmail($parameters['email'])
             ->setPlainPassword($parameters['password'])
             ->setLastLogin($parameters['last_login'])
             ->setRoles($parameters['roles'])
-            ->setUsername($parameters['username'])
+            ->setUsername($parameters['email'])
             ->setEnabled(true);
 
         return $user;

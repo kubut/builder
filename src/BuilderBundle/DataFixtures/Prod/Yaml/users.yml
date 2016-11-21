@@ -1,15 +1,18 @@
 ADMIN:
   email: admin@builder.pl
-  username: admin
+  name: Admin
+  surname: Adminowy
   password: cosistupik
   roles: ["ROLE_ADMIN"]
 LUKASZ:
   email: lukasz.b.urbanski@gmail.com
-  username: lukasz
+  name: Łukasz
+  surname: Urbański
   password: cosistupik
   roles: ["ROLE_ADMIN"]
 KUBUT:
   email: fotokubut@gmail.com
-  username: kubut
+  name: Jakub
+  surname: Górowski
   password: cosistupik
   roles: ["ROLE_ADMIN"]

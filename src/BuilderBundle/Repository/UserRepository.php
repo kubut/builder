@@ -22,18 +22,15 @@ class UserRepository extends EntityRepository
 
     /**
      * @param string $email
-     * @param string $username
      *
      * @return bool
      */
-    public function checkUserUniqueness($email, $username)
+    public function checkUserUniqueness($email)
     {
         $user = $this->createQueryBuilder('u')
             ->where('u.email = :email')
-            ->orWhere('u.username = :username')
             ->setParameters([
                 'email' => $email,
-                'username' => $username
             ])
             ->getQuery()
             ->getOneOrNullResult();

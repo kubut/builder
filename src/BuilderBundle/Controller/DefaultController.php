@@ -15,8 +15,6 @@ use BuilderBundle\Util\Role;
 class DefaultController extends AbstractController
 {
     /**
-     * @internal param Request $request
-     *
      * @Route("/", name="main_page", options={"expose"=true})
      *
      * @Method("GET")
@@ -24,14 +22,12 @@ class DefaultController extends AbstractController
      * @ApiDoc(
      *  description="Main page"
      * )
-     * @internal param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request)
+    public function indexAction()
     {
-        // TODO: this is temporary (because frontend was blocked by backend) and should be reviewed
         try {
-            $this->requireOneOfRoles(array(Role::ADMIN, Role::USER));
+            $this->requireOneOfRoles([Role::ADMIN, Role::USER]);
             return $this->render('@Builder/Default/index.html.twig');
         } catch (\Exception $e) {
             return $this->redirectToRoute('fos_user_security_login');

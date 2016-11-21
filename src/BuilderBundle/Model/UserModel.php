@@ -33,7 +33,7 @@ class UserModel
 
     public function createUser($data)
     {
-        if (!$this->userRepository->checkUserUniqueness($data['email'],$data['username'])) {
+        if (!$this->userRepository->checkUserUniqueness($data['email'])) {
             throw new \Exception('Not unique username or email', ExceptionCode::USER_NOT_UNIQUE);
         }
         $user = $this->userFactory->createFromArray($data);
