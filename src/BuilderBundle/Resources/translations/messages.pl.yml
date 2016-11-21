@@ -3,3 +3,11 @@ security:
     username: login
 
 general: Wystąpił błąd wewnętrzny systemu. Spróbuj ponownie później.
+
+permission_denied: Brak dostępu.
+
+user:
+  not_unique: Użytkownik nie jest unikalny.
+
+params:
+  not_enough: Brak wystarczających parametrów.

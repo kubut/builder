@@ -15,7 +15,9 @@ class ExceptionCodeTranslator
 
     public static $transCodes = [
         ExceptionCode::GENERAL_ERROR => 'general',
-
+        ExceptionCode::PERMISSION_DENIED => 'permission_denied',
+        ExceptionCode::USER_NOT_UNIQUE => 'user.not_unique',
+        ExceptionCode::OMITTED_PARAMS => 'params.not_enough'
     ];
 
     /**
