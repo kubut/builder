@@ -11,4 +11,4 @@ md-toolbar(ng-controller="NavigationCtrl as ctrl" layout="row" layout-align="cen
                     i.material-icons add_circle_outline
         .pull-right
             a.navigation-button(ng-if="ctrl.configuration.user.isAdmin()" ui-sref="app.admin.users" ui-sref-active="active") Użytkownicy
-            a.navigation-button(href="/") Wyloguj
+            a.navigation-button(href="/logout") Wyloguj

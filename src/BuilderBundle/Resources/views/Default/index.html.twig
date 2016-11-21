@@ -14,7 +14,7 @@
         angular.module('app')
                 .config(['RoutingProvider', 'ConfigurationProvider', function (routingProvider, configurationProvider) {
                     routingProvider.setRouting(Routing);
-                    configurationProvider.setUserRole('ROLE_ADMIN');
+                    configurationProvider.setUserRole({{ USER_ROLE }});
                 }])
                 .run(['ChangePasswordService', function(changePasswordService) {
                     if(false) {

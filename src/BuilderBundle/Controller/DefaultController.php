@@ -29,7 +29,9 @@ class DefaultController extends AbstractController
     {
         try {
             $this->requireOneOfRoles([Role::ADMIN, Role::USER]);
-            return $this->render('@Builder/Default/index.html.twig');
+            $USER_ROLE = $this->isGranted(Role::ADMIN)? Role::ADMIN : Role::USER;
+
+            return $this->render('@Builder/Default/index.html.twig', ['USER_ROLE' => $USER_ROLE]);
         } catch (\Exception $e) {
             return $this->redirectToRoute('fos_user_security_login');
         }
