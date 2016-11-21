@@ -6,6 +6,7 @@ namespace BuilderBundle\Exception;
  */
 class ExceptionCode
 {
+    const GENERAL_ERROR = 400;
 
     const PERMISSION_DENIED = 666;
     const USER_NOT_UNIQUE = 667;

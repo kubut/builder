@@ -2,6 +2,7 @@
 
 namespace BuilderBundle\Controller;
 
+use BuilderBundle\Exception\ExceptionCode;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;

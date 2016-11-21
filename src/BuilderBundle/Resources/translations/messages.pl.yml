@@ -1,3 +1,5 @@
 security:
   login:
     username: login
+
+general: Wystąpił błąd wewnętrzny systemu. Spróbuj ponownie później.

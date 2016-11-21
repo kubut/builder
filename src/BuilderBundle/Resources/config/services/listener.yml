@@ -1,0 +1,6 @@
+services:
+  app.builder.listener.exception:
+    class: BuilderBundle\Listener\ExceptionListener
+    arguments: ['@translator.default', '%kernel.environment%']
+    tags:
+      - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
