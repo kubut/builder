@@ -1,23 +1,32 @@
-.navigaion {
-  bottom: 0;
-  position: absolute;
-  line-height: 59px;
+.main-toolbar {
+  margin-bottom: 30px;
 
-  .navigation-button {
-    border-bottom: 3px solid rgba(0,0,0,0);
-    padding: 0 10px;
-    display: inline-block;
-    text-transform: uppercase;
-    font-size: 16px;
+  .navigaion {
+    bottom: 0;
+    position: absolute;
+    line-height: 59px;
+    width: 90%;
 
-    &, &:hover, &:focus, &:visited, &active {
-      color: white;
-      text-decoration: none;
-    }
+    .navigation-button {
+      border-bottom: 3px solid rgba(0,0,0,0);
+      padding: 0 10px;
+      display: inline-block;
+      text-transform: uppercase;
+      font-size: 16px;
+      margin: 0 0 0 20px;
 
-    &.active {
-      font-weight: bold;
-      border-bottom: 3px solid $accent500;
+      &:hover {
+        border-bottom: 3px solid $accent500;
+      }
+
+      &, &:hover, &:focus, &:visited, &active {
+        color: white;
+        text-decoration: none;
+      }
+
+      &.active {
+        border-bottom: 3px solid $accent500;
+      }
     }
 
     .edit-project-button {
@@ -26,16 +35,20 @@
       width: 25px;
 
       i {
+        color: white;
         font-size: 17px;
+      }
+    }
+
+    .add-new-project-button {
+      display: inline-block;
+
+      i {
+        color: white;
+        font-size: 20px;
       }
     }
   }
 
-  .add-new-project-button {
-    display: inline-block;
-
-    i {
-      font-size: 20px;
-    }
-  }
 }
+

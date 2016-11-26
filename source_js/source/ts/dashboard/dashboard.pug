@@ -1,3 +1,10 @@
-md-card
-    md-card-title
-        md-card-title-text Brak aktywnych projektów. Poproś administratora systemu o skonfigurowanie potrzebnych zasobów.
+div
+    md-card(ng-if="dashboardCtrl.projectsService.projects.length === 0")
+        md-card-title
+            md-card-title-text Brak aktywnych projektów. Poproś administratora systemu o skonfigurowanie potrzebnych zasobów.
+    .container(ng-if="dashboardCtrl.projectsService.projects.length > 0" layout="row")
+        md-card(flex="70")
+            md-card-title
+                md-card-title-text Instancja...
+        md-card(flex="30")
+            checklist-list

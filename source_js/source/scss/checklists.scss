@@ -1,0 +1,13 @@
+.checklist-list {
+  li {
+    cursor: pointer;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+
+    &:hover {
+      background: $background;
+    }
+  }
+}
+

@@ -1,0 +1,8 @@
+md-card-title
+    md-card-title-text Twoje checklisty
+md-card-content
+    ul.checklist-list
+        li(ng-repeat="list in ctrl.checklistService.list track by $index" ng-click="ctrl.openChecklist(list.id)") {{ list.name }}
+md-card-actions(layout="row" layout-align="space-between center")
+    md-button.md-raised(ng-disabled="!ctrl.isPrev()" ng-click="ctrl.prevPage()") Poprzednie
+    md-button.md-raised(ng-disabled="!ctrl.isNext()" ng-click="ctrl.nextPage()") Następne
