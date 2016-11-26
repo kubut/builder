@@ -1,11 +1,12 @@
-md-card-title
-    md-card-title-text Twoje checklisty
-md-card-content
-    ul.checklist-list.grey
-        li(ng-repeat="list in ctrl.checklistService.list track by $index" ng-click="ctrl.openChecklist(list.id)") {{ list.name }}
-    div(layout="row" layout-align="center")
-        md-button.md-fab.md-accent.white(ng-click="ctrl.addChecklist($event)")
-            i.material-icons.reset-line-height add
-    md-card-actions.grey(layout="row" layout-align="space-between center")
-        md-button.md-raised(ng-disabled="!ctrl.isPrev()" ng-click="ctrl.prevPage()") Poprzednie
-        md-button.md-raised(ng-disabled="!ctrl.isNext()" ng-click="ctrl.nextPage()") Następne
+md-card
+    md-card-title
+        md-card-title-text Twoje checklisty
+    md-card-content
+        ul.checklist-list.grey
+            li(ng-repeat="list in ctrl.checklistService.list track by $index" ng-click="ctrl.openChecklist(list.id)") {{ list.name }}
+        div(layout="row" layout-align="center")
+            md-button.md-fab.md-accent.white(ng-click="ctrl.addChecklist($event)")
+                i.material-icons.reset-line-height add
+        md-card-actions.grey(layout="row" layout-align="space-between center")
+            md-button.md-raised(ng-disabled="!ctrl.isPrev()" ng-click="ctrl.prevPage()") Poprzednie
+            md-button.md-raised(ng-disabled="!ctrl.isNext()" ng-click="ctrl.nextPage()") Następne

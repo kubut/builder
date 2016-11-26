@@ -39,9 +39,10 @@ module APP.Configuration {
 
                                 return true;
                             }],
-                        checklists: ['ChecklistService', (checklistService: ChecklistService) => {
-                            return checklistService.loadListOfChecklists();
-                        }]
+                        checklists: ['ChecklistService', '$stateParams',
+                            (checklistService: ChecklistService, $stateParams: IStateParamsService) => {
+                                return checklistService.loadListOfChecklists(+$stateParams['id']);
+                            }]
                     },
                     url: '/project/:id',
                     template: '<ui-view></ui-view>'
@@ -54,9 +55,15 @@ module APP.Configuration {
                 .state('app.project.checklist', {
                     controller: 'ChecklistCtrl as checklistCtrl',
                     resolve: {
-                        checklist: ['checklists', 'ChecklistService', '$stateParams',
-                            (checklists, checklistService: ChecklistService, $stateParams: IStateParamsService) => {
-                                return checklistService.getChecklist(+$stateParams['checklistId']);
+                        checklist: ['checklists', 'ChecklistService', '$stateParams', '$state',
+                            (checklists, checklistService: ChecklistService, $stateParams: IStateParamsService, $state: IStateService) => {
+                                let checklist = checklistService.getChecklist(+$stateParams['checklistId']);
+
+                                if (_.isUndefined(checklist)) {
+                                    $state.go('app.project.dashboard');
+                                }
+
+                                return checklist;
                             }]
                     },
                     templateUrl: '/templates/checklist.html',

@@ -10,6 +10,10 @@ module APP.Checklist {
             this._items = items;
         }
 
+        public addItem(name: string):void {
+            this.items.push({name: name, solved: false});
+        }
+
         get id(): number {
             return this._id;
         }

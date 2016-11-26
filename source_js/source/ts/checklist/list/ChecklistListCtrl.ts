@@ -2,6 +2,7 @@ module APP.Checklist {
     import IStateService = angular.ui.IStateService;
     import IDialogService = angular.material.IDialogService;
     import IToastService = angular.material.IToastService;
+    import IStateParamsService = angular.ui.IStateParamsService;
 
     export class ChecklistListCtrl {
         private page = 1;
@@ -9,7 +10,8 @@ module APP.Checklist {
         public constructor(public checklistService: ChecklistService,
                            private $state: IStateService,
                            private $mdDialog: IDialogService,
-                           private $mdToast: IToastService) {
+                           private $mdToast: IToastService,
+                           private $stateParams: IStateParamsService) {
 
         }
 
@@ -31,7 +33,7 @@ module APP.Checklist {
 
                 this.checklistService.createChecklist(result).then(() => {
                     this.page = 1;
-                    this.checklistService.loadListOfChecklists(this.page);
+                    this.checklistService.loadListOfChecklists(this.$stateParams['id'], this.page);
                 });
             });
         }
@@ -41,11 +43,11 @@ module APP.Checklist {
         }
 
         public nextPage(): void {
-            this.checklistService.loadListOfChecklists(++this.page);
+            this.checklistService.loadListOfChecklists(this.$stateParams['id'], ++this.page);
         }
 
         public prevPage(): void {
-            this.checklistService.loadListOfChecklists(--this.page);
+            this.checklistService.loadListOfChecklists(this.$stateParams['id'], --this.page);
         }
 
         public isPrev(): boolean {
@@ -59,7 +61,7 @@ module APP.Checklist {
 }
 
 angular.module('checklist')
-    .controller('ChecklistListCtrl', ['ChecklistService', '$state', '$mdDialog', '$mdToast',
-        function (checklistService, $state, $mdDialog, $mdToast) {
-            return new APP.Checklist.ChecklistListCtrl(checklistService, $state, $mdDialog, $mdToast);
+    .controller('ChecklistListCtrl', ['ChecklistService', '$state', '$mdDialog', '$mdToast', '$stateParams',
+        function (checklistService, $state, $mdDialog, $mdToast, $stateParams) {
+            return new APP.Checklist.ChecklistListCtrl(checklistService, $state, $mdDialog, $mdToast, $stateParams);
         }]);

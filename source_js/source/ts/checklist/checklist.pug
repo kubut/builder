@@ -1,12 +1,19 @@
 .container(layout="row")
-    md-card(flex="70")
-        md-card-title
-            md-card-title-text {{ checklistCtrl.checklist.name }}
-        md-card-content
-            ul
-                li(ng-repeat="item in checklistCtrl.checklist.items") {{ item.name }}
-            md-card-actions.grey(layout="row")
-                md-button.md-raised.md-warn(ng-click="checklistCtrl.deleteChecklist($event)") Usuń checklistę
-                md-button.md-raised.md-primary() Zapisz
-    md-card(flex="30")
+    div(flex="70")
+        md-card
+            md-card-title
+                md-card-title-text {{ checklistCtrl.checklist.name }}
+            md-card-content.checklist-details
+                ul.grey.checklist-items
+                    li(ng-repeat="item in checklistCtrl.checklist.items" ng-class="item.solved ? 'solved-item' : ''") {{ item.name }}
+                form(name="newItemForm" novalidate ng-submit="checklistCtrl.addItem()")
+                    md-input-container
+                        label Nowy element
+                        input(name="newItem" required ng-model="checklistCtrl.newItem")
+                        div(ng-messages="newItemForm.newItem.$error")
+                            div(ng-message="required") To pole jest wymagane
+                md-card-actions.grey.pull-right(layout="row")
+                    md-button.md-raised.md-warn(ng-click="checklistCtrl.deleteChecklist($event)") Usuń checklistę
+                    md-button.md-raised.md-primary() Zapisz
+    div(flex="30")
         checklist-list

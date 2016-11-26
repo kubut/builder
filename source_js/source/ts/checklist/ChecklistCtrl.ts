@@ -4,11 +4,15 @@ module APP.Checklist {
     import IStateParamsService = angular.ui.IStateParamsService;
 
     export class ChecklistCtrl {
+        private defaultItemValue = 'Nowe zadanie';
+        private _newItem: string;
+
         public constructor(private checklistService: ChecklistService,
                            private checklist: ChecklistModel,
                            private $mdDialog: IDialogService,
                            private $state: IStateService,
                            private $stateParams: IStateParamsService) {
+            this.newItem = this.defaultItemValue;
         }
 
 
@@ -22,10 +26,23 @@ module APP.Checklist {
                 .clickOutsideToClose(true);
 
             this.$mdDialog.show(dialog).then(() => {
-                this.checklistService.deleteChecklist(this.checklist.id).then(() => {
+                this.checklistService.deleteChecklist(this.checklist.id, +this.$stateParams['id']).then(() => {
                     this.$state.go('app.project.dashboard', {id: this.$stateParams['id']});
                 });
             });
+        }
+
+        public addItem(): void {
+            this.checklist.addItem(this.newItem);
+            this.newItem = this.defaultItemValue;
+        }
+
+        get newItem(): string {
+            return this._newItem;
+        }
+
+        set newItem(value: string) {
+            this._newItem = value;
         }
     }
 }
