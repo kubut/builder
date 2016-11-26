@@ -14,6 +14,10 @@ module APP.Checklist {
             this.items.push({name: name, solved: false});
         }
 
+        public removeItem(item:{name: string, solved?: boolean}) {
+            _.remove(this.items, item);
+        }
+
         get id(): number {
             return this._id;
         }

@@ -5,7 +5,10 @@
                 md-card-title-text {{ checklistCtrl.checklist.name }}
             md-card-content.checklist-details
                 ul.grey.checklist-items
-                    li(ng-repeat="item in checklistCtrl.checklist.items" ng-class="item.solved ? 'solved-item' : ''") {{ item.name }}
+                    li(ng-repeat="item in checklistCtrl.checklist.items" ng-class="item.solved ? 'solved-item' : ''")
+                        span.item-name {{ item.name }}
+                        md-button.md-icon-button.pull-right(ng-click="checklistCtrl.checklist.removeItem(item)")
+                            i.material-icons delete
                 form(name="newItemForm" novalidate ng-submit="checklistCtrl.addItem()")
                     md-input-container
                         label Nowy element

@@ -24,17 +24,26 @@
   margin-bottom: 20px;
 
   li {
-    text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    padding: 0 10px;
 
     &:nth-child(odd) {
       background: $background;
     }
 
-    &.solved-item {
+    &.solved-item span{
       text-decoration: line-through;
       font-style: italic;
+    }
+
+    .item-name {
+      width: calc(100% - 70px);
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      display: inline-block;
+      line-height: 36px;
     }
   }
 }
