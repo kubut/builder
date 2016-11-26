@@ -9,7 +9,7 @@ module APP.Checklist {
         public constructor(public checklistService: ChecklistService,
                            private $state: IStateService,
                            private $mdDialog: IDialogService,
-                           private $mdToast: IToastService,) {
+                           private $mdToast: IToastService) {
 
         }
 
@@ -37,7 +37,7 @@ module APP.Checklist {
         }
 
         public openChecklist(id: number): void {
-            this.$state.go('app.checklist', {id: id});
+            this.$state.go('app.project.checklist', {checklistId: id});
         }
 
         public nextPage(): void {

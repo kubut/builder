@@ -8,6 +8,15 @@
     &:hover {
       background: $background;
     }
+
+    .delete-checklist {
+      float: right;
+    }
+
+    .list-name {
+      width: calc(100% - 40px);
+      display: inline-block;
+    }
   }
 }
 

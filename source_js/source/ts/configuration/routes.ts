@@ -11,9 +11,9 @@ module APP.Configuration {
         public static $inject = ['$stateProvider', '$urlRouterProvider'];
 
         public static configure(stateProvider: any, urlRouterProvider: IUrlRouterProvider) {
-            let defaultState = 'app.dashboard';
+            let defaultState = 'app.project.dashboard';
 
-            urlRouterProvider.otherwise('/dashboard/');
+            urlRouterProvider.otherwise('/project//dashboard');
 
             stateProvider
                 .state('app', {
@@ -25,19 +25,16 @@ module APP.Configuration {
                         }]
                     }
                 })
-                .state('app.checklist', {
-                    url: '/checklist/:id'
-                })
-                .state('app.dashboard', {
-                    controller: 'DashboardCtrl as dashboardCtrl',
+                .state('app.project', {
+                    abstract: true,
                     resolve: {
                         project: ['projects', '$stateParams', 'ProjectsService', '$state',
-                            (projects, $stateParams: IStateService, projectsService: ProjectsService, $state: IStateService) => {
+                            (projects, $stateParams: IStateParamsService, projectsService: ProjectsService, $state: IStateService) => {
                                 let id = $stateParams['id'] || undefined,
                                     isCorrectId = !_.isUndefined(id) && _.findIndex(projectsService.projects, {id: +id}) >= 0;
 
                                 if (!isCorrectId && projectsService.projects.length > 0) {
-                                    $state.go('app.dashboard', {id: projectsService.projects[0].id});
+                                    $state.go('app.project.dashboard', {id: projectsService.projects[0].id});
                                 }
 
                                 return true;
@@ -46,8 +43,24 @@ module APP.Configuration {
                             return checklistService.loadListOfChecklists();
                         }]
                     },
+                    url: '/project/:id',
+                    template: '<ui-view></ui-view>'
+                })
+                .state('app.project.dashboard', {
+                    controller: 'DashboardCtrl as dashboardCtrl',
                     templateUrl: '/templates/dashboard.html',
-                    url: '/dashboard/:id'
+                    url: '/dashboard'
+                })
+                .state('app.project.checklist', {
+                    controller: 'ChecklistCtrl as checklistCtrl',
+                    resolve: {
+                        checklist: ['checklists', 'ChecklistService', '$stateParams',
+                            (checklists, checklistService: ChecklistService, $stateParams: IStateParamsService) => {
+                                return checklistService.getChecklist(+$stateParams['checklistId']);
+                            }]
+                    },
+                    templateUrl: '/templates/checklist.html',
+                    url: '/checklist/:checklistId'
                 })
                 .state('app.admin', {
                     abstract: true,

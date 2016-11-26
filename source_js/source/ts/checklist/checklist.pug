@@ -1,0 +1,12 @@
+.container(layout="row")
+    md-card(flex="70")
+        md-card-title
+            md-card-title-text {{ checklistCtrl.checklist.name }}
+        md-card-content
+            ul
+                li(ng-repeat="item in checklistCtrl.checklist.items") {{ item.name }}
+            md-card-actions.grey(layout="row")
+                md-button.md-raised.md-warn(ng-click="checklistCtrl.deleteChecklist($event)") Usuń checklistę
+                md-button.md-raised.md-primary() Zapisz
+    md-card(flex="30")
+        checklist-list

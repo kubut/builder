@@ -31,7 +31,7 @@ module APP.Projects {
             this.$mdDialog.show(dialog).then(() => {
                 this.projectsService.deleteProject(id).then(() => {
                     this.projectsService.loadProjectList();
-                    this.$state.go('app.dashboard');
+                    this.$state.go('app.project.dashboard');
                 });
             });
         }

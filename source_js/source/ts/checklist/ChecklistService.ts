@@ -28,7 +28,17 @@ module APP.Checklist {
             return this.$http.post(this.routing.generate('checklist'), {name: name});
         }
 
-        get list(): {id: number; name: string}[] {
+        public deleteChecklist(id: number): IPromise<any> {
+            return this.$http.delete(this.routing.generate('checklist', {id: id})).then(() => {
+                this.loadListOfChecklists();
+            });
+        }
+
+        public getChecklist(id:number): ChecklistModel {
+            return _.find(this.list, {id: id});
+        }
+
+        get list(): ChecklistModel[] {
             return this._list;
         }
 
