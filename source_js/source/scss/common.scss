@@ -1,6 +1,5 @@
 * {
   font-family: 'Roboto', sans-serif;
-  color: $background600;
 }
 
 .container {
@@ -29,7 +28,11 @@ input:-webkit-autofill {
 }
 
 .grey {
-  color: $background600;
+  color: $background600 !important;
+}
+
+.white {
+  color: white !important;
 }
 
 .no-bottom-padding {
@@ -43,6 +46,10 @@ md-card {
       color: $accent500;
     }
   }
+}
+
+.material-icons.reset-line-height {
+  line-height: inherit;
 }
 
 a {

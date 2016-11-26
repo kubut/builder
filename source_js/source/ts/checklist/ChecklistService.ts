@@ -24,6 +24,10 @@ module APP.Checklist {
             });
         }
 
+        public createChecklist(name): IPromise<any> {
+            return this.$http.post(this.routing.generate('checklist'), {name: name});
+        }
+
         get list(): {id: number; name: string}[] {
             return this._list;
         }
