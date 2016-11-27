@@ -12,14 +12,19 @@ module APP.Checklist {
 
         }
 
-        public loadListOfChecklists(page = 1): IPromise<any> {
+        public loadListOfChecklists(projectId, page = 1): IPromise<any> {
             let offset = (page - 1) * this._limit;
-            return this.$http.get(this.routing.generate('checklist'), {offset: offset, limit: this.limit}).then((response:any) => {
+
+            return this.$http.get(this.routing.generate('checklist', {
+                offset: offset,
+                limit: this.limit,
+                projectId: projectId
+            })).then((response: any) => {
                 this._total = response.headers('X-Total-Count');
                 this._list = [];
 
                 _.forEach(response.data, (checklist: any) => {
-                    this._list.push(new ChecklistModel(checklist.id, checklist.name, checklist.items));
+                    this._list.push(new ChecklistModel(+checklist.id, checklist.name, checklist.items));
                 });
             });
         }
@@ -28,13 +33,20 @@ module APP.Checklist {
             return this.$http.post(this.routing.generate('checklist'), {name: name});
         }
 
-        public deleteChecklist(id: number): IPromise<any> {
+        public deleteChecklist(id: number, projectId: number): IPromise<any> {
             return this.$http.delete(this.routing.generate('checklist', {id: id})).then(() => {
-                this.loadListOfChecklists();
+                this.loadListOfChecklists(projectId);
             });
         }
 
-        public getChecklist(id:number): ChecklistModel {
+        public saveChecklist(checklist: ChecklistModel): IPromise<any> {
+            return this.$http.put(this.routing.generate('checklist', checklist.id), {
+                name: checklist.name,
+                items: checklist.items
+            });
+        }
+
+        public getChecklist(id: number): ChecklistModel {
             return _.find(this.list, {id: id});
         }
 

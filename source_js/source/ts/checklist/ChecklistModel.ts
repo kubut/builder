@@ -2,19 +2,19 @@ module APP.Checklist {
     export class ChecklistModel {
         private _id: number;
         private _name: string;
-        private _items: {name: string, solved?: boolean}[];
+        private _items: {id?: number, name: string, solved?: boolean}[];
 
-        constructor(id: number, name: string, items: {name: string; solved?: boolean}[]) {
+        constructor(id: number, name: string, items: {id: number, name: string; solved?: boolean}[]) {
             this._id = id;
             this._name = name;
             this._items = items;
         }
 
-        public addItem(name: string):void {
+        public addItem(name: string): void {
             this.items.push({name: name, solved: false});
         }
 
-        public removeItem(item:{name: string, solved?: boolean}) {
+        public removeItem(item: {id?:number, name: string, solved?: boolean}) {
             _.remove(this.items, item);
         }
 

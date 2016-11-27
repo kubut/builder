@@ -32,6 +32,12 @@ module APP.Checklist {
             });
         }
 
+        public saveChecklist():void {
+            this.checklistService.saveChecklist(this.checklist).then(() => {
+                this.$state.go('app.project.dashboard', {id: this.$stateParams['id']});
+            });
+        }
+
         public addItem(): void {
             this.checklist.addItem(this.newItem);
             this.newItem = this.defaultItemValue;

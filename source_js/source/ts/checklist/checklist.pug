@@ -17,6 +17,6 @@
                             div(ng-message="required") To pole jest wymagane
                 md-card-actions.grey.pull-right(layout="row")
                     md-button.md-raised.md-warn(ng-click="checklistCtrl.deleteChecklist($event)") Usuń checklistę
-                    md-button.md-raised.md-primary() Zapisz
+                    md-button.md-raised.md-primary(ng-click="checklistCtrl.saveChecklist()") Zapisz
     div(flex="30")
         checklist-list
