@@ -1,12 +1,20 @@
 module APP.Checklist {
+    export interface IChecklistItem {
+        id?: number;
+        name: string;
+        solved?: boolean;
+    }
+
     export class ChecklistModel {
         private _id: number;
         private _name: string;
-        private _items: {id?: number, name: string, solved?: boolean}[];
+        private _token: string;
+        private _items: IChecklistItem[];
 
-        constructor(id: number, name: string, items: {id: number, name: string; solved?: boolean}[]) {
+        constructor(id: number, token:string, name: string, items: IChecklistItem[]) {
             this._id = id;
             this._name = name;
+            this._token = token;
             this._items = items;
         }
 
@@ -14,8 +22,12 @@ module APP.Checklist {
             this.items.push({name: name, solved: false});
         }
 
-        public removeItem(item: {id?:number, name: string, solved?: boolean}) {
+        public removeItem(item: {id?: number, name: string, solved?: boolean}) {
             _.remove(this.items, item);
+        }
+
+        public getSortedItems(): IChecklistItem[] {
+            return _.sortBy(this._items, ['solved']);
         }
 
         get id(): number {
@@ -26,8 +38,12 @@ module APP.Checklist {
             return this._name;
         }
 
-        get items(): {name: string; solved?: boolean}[] {
+        get items(): IChecklistItem[] {
             return this._items;
+        }
+
+        get token(): string {
+            return this._token;
         }
     }
 }

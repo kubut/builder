@@ -2,8 +2,30 @@ body {
     background: #EEEEEE;
 }
 
+.center-box {
+    float: none !important;
+    margin: 30px auto;
+}
+
+ul{
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    padding: 10px 15px;
+}
+
+li.solved {
+    text-decoration: line-through;
+    font-style: italic;
+}
+
+li:nth-child(odd) {
+    background: #EEEEEE;
+}
+
 #login-box {
-    float: none;
     margin: 10% auto 0;
 }
 

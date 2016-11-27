@@ -24,7 +24,7 @@ module APP.Checklist {
                 this._list = [];
 
                 _.forEach(response.data, (checklist: any) => {
-                    this._list.push(new ChecklistModel(+checklist.id, checklist.name, checklist.items));
+                    this._list.push(new ChecklistModel(+checklist.id, checklist.token, checklist.name, checklist.items));
                 });
             });
         }

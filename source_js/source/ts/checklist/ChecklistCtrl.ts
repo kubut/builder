@@ -2,6 +2,7 @@ module APP.Checklist {
     import IDialogService = angular.material.IDialogService;
     import IStateService = angular.ui.IStateService;
     import IStateParamsService = angular.ui.IStateParamsService;
+    import ILocationService = angular.ILocationService;
 
     export class ChecklistCtrl {
         private defaultItemValue = 'Nowe zadanie';
@@ -11,10 +12,17 @@ module APP.Checklist {
                            private checklist: ChecklistModel,
                            private $mdDialog: IDialogService,
                            private $state: IStateService,
-                           private $stateParams: IStateParamsService) {
+                           private $stateParams: IStateParamsService,
+                           private $location: ILocationService) {
             this.newItem = this.defaultItemValue;
         }
 
+        public getPublicLink(): string {
+            return this.$location.protocol() +
+                '://' + this.$location.host() +
+                ':' + this.$location.port() +
+                '/checklist/' + this.checklist.token;
+        }
 
         public deleteChecklist(ev: MouseEvent): void {
             let dialog = this.$mdDialog.confirm()
@@ -32,7 +40,7 @@ module APP.Checklist {
             });
         }
 
-        public saveChecklist():void {
+        public saveChecklist(): void {
             this.checklistService.saveChecklist(this.checklist).then(() => {
                 this.$state.go('app.project.dashboard', {id: this.$stateParams['id']});
             });
@@ -54,7 +62,7 @@ module APP.Checklist {
 }
 
 angular.module('checklist')
-    .controller('ChecklistCtrl', ['ChecklistService', 'checklist', '$mdDialog', '$state', '$stateParams',
-        function (ChecklistService, checklist, $mdDialog, $state, $stateParams) {
-            return new APP.Checklist.ChecklistCtrl(ChecklistService, checklist, $mdDialog, $state, $stateParams);
+    .controller('ChecklistCtrl', ['ChecklistService', 'checklist', '$mdDialog', '$state', '$stateParams', '$location',
+        function (ChecklistService, checklist, $mdDialog, $state, $stateParams, $location) {
+            return new APP.Checklist.ChecklistCtrl(ChecklistService, checklist, $mdDialog, $state, $stateParams, $location);
         }]);
