@@ -9,7 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 /**
  * Class AbstractController
  *
- * @package BuilderBundle\Controller\Api
+ * @package BuilderBundle\Controller
  */
 abstract class AbstractController extends Controller
 {

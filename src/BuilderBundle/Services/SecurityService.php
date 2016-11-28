@@ -31,7 +31,7 @@ class SecurityService
         }
         $generatedPassword = $this->generateStrongPassword();
         $data['password'] = $generatedPassword;
-        if ($data['role']){
+        if ($data['role']) {
             $data['roles'] = ['ROLE_ADMIN'];
         }
 

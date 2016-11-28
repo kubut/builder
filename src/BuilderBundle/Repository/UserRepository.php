@@ -37,4 +37,19 @@ class UserRepository extends EntityRepository
 
         return is_null($user);
     }
+
+    /**
+     * @param $userId
+     * @return array
+     */
+    public function fetchAllUserBesides($userId)
+    {
+        return $this->createQueryBuilder('u')
+            ->where('u.id != :id')
+            ->setParameters([
+                'id' => $userId,
+            ])
+            ->getQuery()
+            ->getResult();
+    }
 }

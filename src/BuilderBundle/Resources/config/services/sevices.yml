@@ -3,3 +3,8 @@ services:
         class: BuilderBundle\Services\SecurityService
         arguments:
           userModel: '@app.builder.model.user'
+
+    app.builder.service.user:
+        class: BuilderBundle\Services\UserService
+        arguments:
+          userModel: '@app.builder.model.user'

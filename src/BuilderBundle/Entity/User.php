@@ -32,6 +32,13 @@ class User extends BaseUser
     protected $surname;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="activation_code", type="string", length=100, nullable=true)
+     */
+    protected $activationCode;
+
+    /**
      * @return string
      */
     public function getName()
@@ -69,5 +76,25 @@ class User extends BaseUser
         $this->surname = $surname;
 
        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getActivationCode()
+    {
+        return $this->activationCode;
+    }
+
+    /**
+     * @param string $activationCode
+     *
+     * @return User
+     */
+    public function setActivationCode($activationCode)
+    {
+        $this->activationCode = $activationCode;
+
+        return $this;
     }
 }
