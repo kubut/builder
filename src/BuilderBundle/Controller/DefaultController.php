@@ -15,7 +15,7 @@ use BuilderBundle\Util\Role;
 class DefaultController extends AbstractController
 {
     /**
-     * @Route("/aa", name="main_page", options={"expose"=true})
+     * @Route("/", name="main_page", options={"expose"=true})
      *
      * @Method("GET")
      *
