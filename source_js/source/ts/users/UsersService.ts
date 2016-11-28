@@ -35,7 +35,7 @@ module APP.Users {
         public resetPassword(id: number) {
             this._busy = true;
 
-            this.$http.patch(this.routing.generate('delete_user', {id: id}), {isActive: false}).finally(() => {
+            this.$http.patch(this.routing.generate('reset_user_password', {id: id}), {isActive: false}).finally(() => {
                 this.reloadUserList();
             });
         }
