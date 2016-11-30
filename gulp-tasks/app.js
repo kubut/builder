@@ -64,6 +64,8 @@ module.exports = function (gulp, plugins, paths) {
         typescript: {
             default: function () {
                 var tsResult = gulp.src([
+                        paths.app_src + 'ts/main.ts',
+                        paths.app_src + 'ts/configuration/**/*.ts',
                         paths.app_src + 'ts/**/*.ts',
                         paths.app_build + 'typings/index.d.ts'
                     ])

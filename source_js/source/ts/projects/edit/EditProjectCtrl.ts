@@ -2,16 +2,34 @@ module APP.Projects {
     import IStateService = angular.ui.IStateService;
     import IToastService = angular.material.IToastService;
     import IDialogService = angular.material.IDialogService;
+    import IRootScopeService = angular.IRootScopeService;
+    import ITimeoutService = angular.ITimeoutService;
+    import IScope = angular.IScope;
 
     export class EditProjectCtrl extends MainProjectCtrl {
-        public constructor(projectsService: ProjectsService,
+        private _databaseList: IDatabase[] = [];
+
+        public constructor($scope: IScope,
+                           projectsService: ProjectsService,
                            $mdToast: IToastService,
+                           public project: ProjectModel,
                            protected $state: IStateService,
-                           project: ProjectModel,
-                           private $mdDialog: IDialogService) {
+                           private $mdDialog: IDialogService,
+                           private databasesService: DatabasesService,
+                           private $rootScope: IRootScopeService,
+                           private $timeout: ITimeoutService) {
             super(projectsService, $mdToast, $state);
 
-            this.project = project;
+            this.databasesService.connect();
+            this.databasesService.sendSynchronizationRequest(this.project.id);
+
+            $rootScope.$on('Databases:changes', () => {
+                $timeout(this.loadDatabases.bind(this));
+            });
+
+            $scope.$on('$destroy', () => {
+                this.databasesService.close();
+            });
         }
 
         public showToast(): void {
@@ -51,11 +69,22 @@ module APP.Projects {
 
             });
         }
+
+        private loadDatabases(): void {
+            this._databaseList = this.databasesService.getDatabasesForProjectId(this.project.id);
+        }
+
+        get databaseList(): APP.Projects.IDatabase[] {
+            return this._databaseList;
+        }
     }
 }
 
 angular.module('projects')
-    .controller('EditProjectCtrl', ['ProjectsService', '$mdToast', '$state', 'project', '$mdDialog',
-        function (projectsService, $mdToast, $state, project, $mdDialog) {
-            return new APP.Projects.EditProjectCtrl(projectsService, $mdToast, $state, project, $mdDialog);
-        }]);
+    .controller('EditProjectCtrl',
+        ['$scope', 'ProjectsService', '$mdToast', 'project', '$state', '$mdDialog', 'DatabasesService', '$rootScope', '$timeout',
+            function ($scope, projectsService, $mdToast, project, $state, $mdDialog, databasesService, $rootScope, $timeout) {
+                return new APP.Projects.EditProjectCtrl(
+                    $scope, projectsService, $mdToast, project, $state, $mdDialog, databasesService, $rootScope, $timeout
+                );
+            }]);

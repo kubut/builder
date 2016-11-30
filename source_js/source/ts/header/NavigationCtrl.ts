@@ -1,10 +1,10 @@
 module APP.Header {
-    import IConfigurationService = APP.Configuration.IConfigurationService;
+    import IUserConfigurationService = APP.Configuration.IUserConfigurationService;
     import ProjectsService = APP.Projects.ProjectsService;
     import IStateService = angular.ui.IStateService;
 
     export class NavigationCtrl {
-        public constructor(public configuration: IConfigurationService,
+        public constructor(public userConfiguration: IUserConfigurationService,
                            public projectsService: ProjectsService,
                            private $state: IStateService) {
         }
@@ -20,6 +20,6 @@ module APP.Header {
 }
 
 angular.module('users')
-    .controller('NavigationCtrl', ['Configuration', 'ProjectsService', '$state', function (Configuration, projectsService, $state) {
-        return new APP.Header.NavigationCtrl(Configuration, projectsService, $state);
+    .controller('NavigationCtrl', ['UserConfiguration', 'ProjectsService', '$state', function (UserConfiguration, projectsService, $state) {
+        return new APP.Header.NavigationCtrl(UserConfiguration, projectsService, $state);
     }]);

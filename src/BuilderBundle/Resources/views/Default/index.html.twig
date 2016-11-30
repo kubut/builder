@@ -12,12 +12,18 @@
     <script src="{{ asset('dist/js/app.min.js') }}"></script>
     <script>
         angular.module('app')
-                .config(['RoutingProvider', 'ConfigurationProvider', function (routingProvider, configurationProvider) {
-                    routingProvider.setRouting(Routing);
-                    configurationProvider.setUserRole('{{ USER_ROLE }}');
-                }])
-                .run(['ChangePasswordService', function(changePasswordService) {
-                    if(false) {
+                .config(['RoutingProvider', 'UserConfigurationProvider', 'ConfigurationProvider',
+                    function (routingProvider, userConfigurationProvider, configurationProvider) {
+                        routingProvider.setRouting(Routing);
+                        userConfigurationProvider
+                                .setUserRole('{{ USER_ROLE }}')
+                                .setUserId(0)
+                                .setUserToken('token')
+                                .createUser();
+                        configurationProvider.setDatabaseSocket('ws://builder-dev.vagrant:3001/databases');
+                    }])
+                .run(['ChangePasswordService', function (changePasswordService) {
+                    if (false) {
                         changePasswordService.showModal();
                     }
                 }]);

@@ -3,12 +3,12 @@ md-toolbar.main-toolbar(ng-controller="NavigationCtrl as ctrl" layout="row" layo
         .pull-left
             span(ng-repeat="project in ctrl.projectsService.projects")
                 a.navigation-button(ui-sref="app.project.dashboard({id: {{project.id}}})" ui-sref-active="active") {{ project.name }}
-                md-button.md-icon-button.edit-project-button(ng-if="ctrl.configuration.user.isAdmin()" ng-click="ctrl.editProject(project.id)")
+                md-button.md-icon-button.edit-project-button(ng-if="ctrl.userConfiguration.user.isAdmin()" ng-click="ctrl.editProject(project.id)")
                     i.material-icons edit
-            div.add-new-project-button(ng-if="ctrl.configuration.user.isAdmin()")
+            div.add-new-project-button(ng-if="ctrl.userConfiguration.user.isAdmin()")
                 md-tooltip(ng-if="ctrl.projectsService.projects.length >= 4") Możesz posiadać maksymalnie 4 projekty
                 md-button.md-icon-button(ng-click="ctrl.newProject()" ng-disabled="ctrl.projectsService.projects.length >= 4")
                     i.material-icons add_circle_outline
         .pull-right
-            a.navigation-button(ng-if="ctrl.configuration.user.isAdmin()" ui-sref="app.admin.users" ui-sref-active="active") Użytkownicy
+            a.navigation-button(ng-if="ctrl.userConfiguration.user.isAdmin()" ui-sref="app.admin.users" ui-sref-active="active") Użytkownicy
             a.navigation-button(href="/logout") Wyloguj

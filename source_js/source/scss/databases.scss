@@ -1,0 +1,32 @@
+.project-databases-instances {
+  .database-status {
+    width: 130px;
+
+    &.database-status-processing {
+      span {
+        background: $primary;
+      }
+    }
+
+    &.database-status-done {
+      span {
+        background: $green500;
+      }
+    }
+
+    &.database-status-error {
+      span {
+        background: $accent500;
+      }
+    }
+
+    span {
+      border-radius: 15px;
+      padding: 5px 0;
+      color: white;
+      display: inline-block;
+      width: 100%;
+    }
+  }
+
+}

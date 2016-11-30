@@ -72,8 +72,8 @@ module APP.Configuration {
                 .state('app.admin', {
                     abstract: true,
                     resolve: {
-                        isGranted: ['Configuration', '$q', '$state', '$timeout',
-                            (configuration: IConfigurationService, $q: IQService, $state: IStateService, $timeout: ITimeoutService) => {
+                        isGranted: ['UserConfiguration', '$q', '$state', '$timeout',
+                            (configuration: IUserConfigurationService, $q: IQService, $state: IStateService, $timeout: ITimeoutService) => {
                                 let deferred = $q.defer();
 
                                 $timeout(() => {

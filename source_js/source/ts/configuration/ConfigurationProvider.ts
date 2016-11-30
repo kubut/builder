@@ -1,31 +1,18 @@
 module APP.Configuration {
-    import UserRole = APP.Common.UserRole;
-    import UserModel = APP.Common.UserModel;
-
     export interface IConfigurationService {
-        user: UserModel;
+        databaseSocketUrl: string;
     }
 
     export class ConfigurationProvider {
-        private user: UserModel;
+        private databaseSocketUrl: string;
 
-
-        public setUserRole(role:string) {
-            switch (role) {
-                case 'ROLE_USER':
-                    this.user = new UserModel(UserRole.User);
-                    break;
-                case 'ROLE_ADMIN':
-                    this.user = new UserModel(UserRole.Admin);
-                    break;
-            }
-
-            return this;
+        public setDatabaseSocket(url:string):void {
+            this.databaseSocketUrl = url;
         }
 
         public $get(): IConfigurationService {
             return {
-                user: this.user
+                databaseSocketUrl: this.databaseSocketUrl
             };
         }
     }

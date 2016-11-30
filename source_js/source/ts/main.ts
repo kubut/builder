@@ -1,5 +1,6 @@
 /// <reference path="configuration/routes.ts"/>
 /// <reference path="configuration/mdConfig.ts"/>
+/// <reference path="common/UserRole.ts"/>
 import IHttpProvider = angular.IHttpProvider;
 (() => {
     let app;

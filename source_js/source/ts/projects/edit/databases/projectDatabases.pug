@@ -1,0 +1,25 @@
+.project-databases-instances
+    h4(ng-show="projectCtrl.databaseList.length === 0") Brak instniejących instancji bazy danych
+    h4(ng-show="projectCtrl.databaseList.length > 0") Poniżej znajduje się lista obecnych instancji baz danych:
+    md-table-container(ng-show="projectCtrl.databaseList.length > 0")
+        table(md-table)
+            thead(md-head)
+                tr(md-row)
+                    th(md-column) Nazwa
+                    th(md-column) Komentarz
+                    th.center-align(md-column) Status
+                    th.center-align(md-column) Akcje
+            tbody(md-body)
+                tr(md-row ng-repeat="database in projectCtrl.databaseList")
+                    td(md-cell) {{ database.name }}
+                    td(md-cell) {{ database.comment }}
+                    td.center-align.database-status.database-status-processing(md-cell ng-show="database.status === 0")
+                        span Trwa tworzenie...
+                    td.center-align.database-status.database-status-done(md-cell ng-show="database.status === 1")
+                        span Gotowe
+                    td.center-align.database-status.database-status-error(md-cell ng-show="database.status === 2")
+                        span Błąd
+                    td.center-align(md-cell)
+                        md-button.md-icon-button(ng-click="")
+                            md-tooltip(md-direction="top") Usuń instancję bazy
+                            i.material-icons.grey delete
