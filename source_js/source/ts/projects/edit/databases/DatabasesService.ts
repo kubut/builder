@@ -38,6 +38,10 @@ module APP.Projects {
             this.socketConnection.emit('synchronize', {projectId: projectId});
         }
 
+        public sendCreateRequest(projectId:number, comment: string):void {
+            this.socketConnection.emit('create', {projectId: projectId, comment: comment});
+        }
+
         private handleMessage(actionType: string, actionParams: Object): void {
             switch (actionType) {
                 case 'synchronize':
@@ -54,6 +58,19 @@ module APP.Projects {
                             });
                         }
                     });
+                    break;
+                case 'create':
+                    let projectDatabasesData = _.find(this._databases, {projectId: actionParams['projectId']});
+
+                    if(_.isUndefined(projectDatabasesData)){
+                        console.log('kubut', actionParams['database'])
+                        this._databases.push({projectId: actionParams['projectId'], databases: [actionParams['database']]});
+                    } else {
+                        console.log('kubut2', actionParams['database'])
+                        projectDatabasesData.databases.push(actionParams['database']);
+                    }
+                    console.log(this._databases);
+
                     break;
             }
 

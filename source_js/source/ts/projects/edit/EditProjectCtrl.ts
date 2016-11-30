@@ -57,7 +57,7 @@ module APP.Projects {
         public addDatabase(ev: MouseEvent): void {
             let dialog = this.$mdDialog.prompt()
                 .title('Nowa baza danych')
-                .textContent('Nowa instancja bazy danych zostanie utworzona z domyslnego pliku SQL dla projektu. ' +
+                .textContent('Nowa instancja bazy danych zostanie utworzona z domyżlnego pliku SQL dla projektu. ' +
                     'Jej nazwa zostanie wygenerowana dynamicznie.')
                 .placeholder('Komentarz do bazy...')
                 .targetEvent(ev)
@@ -66,7 +66,7 @@ module APP.Projects {
                 .clickOutsideToClose(true);
 
             this.$mdDialog.show(dialog).then((result: string) => {
-
+                this.databasesService.sendCreateRequest(this.project.id, result);
             });
         }
 
