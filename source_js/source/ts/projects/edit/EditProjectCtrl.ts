@@ -70,6 +70,21 @@ module APP.Projects {
             });
         }
 
+        public deleteDatabase(ev: MouseEvent, databaseId: number): void {
+            let dialog = this.$mdDialog.confirm()
+                .title('Może jeszcze to przemyśl?')
+                .textContent('Jesteś pewien że chcesz usunąć instancję bazy? ' +
+                    'Wszystkie dane z wybranej instancji zostaną bezpowrotnie utracone')
+                .targetEvent(ev)
+                .clickOutsideToClose(true)
+                .ok('Jestem pewien')
+                .cancel('Jeszcze to przemyślę');
+
+            this.$mdDialog.show(dialog).then(() => {
+                this.databasesService.sendDeleteRequest(this.project.id, databaseId);
+            });
+        }
+
         private loadDatabases(): void {
             this._databaseList = this.databasesService.getDatabasesForProjectId(this.project.id);
         }

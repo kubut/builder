@@ -27,7 +27,7 @@ module APP.Users {
         public deleteUser(id: number) {
             this._busy = true;
 
-            this.$http.delete(this.routing.generate('delete_user', {id: id})).finally(() => {
+            this.$http.delete(this.routing.generate('delete_user', {id: id})).then(() => {
                 this.reloadUserList();
             });
         }
@@ -35,7 +35,7 @@ module APP.Users {
         public resetPassword(id: number) {
             this._busy = true;
 
-            this.$http.patch(this.routing.generate('reset_user_password', {id: id}), {isActive: false}).finally(() => {
+            this.$http.patch(this.routing.generate('reset_user_password', {id: id}), {}).then(() => {
                 this.reloadUserList();
             });
         }

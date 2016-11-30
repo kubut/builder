@@ -38,8 +38,12 @@ module APP.Projects {
             this.socketConnection.emit('synchronize', {projectId: projectId});
         }
 
-        public sendCreateRequest(projectId:number, comment: string):void {
+        public sendCreateRequest(projectId: number, comment: string): void {
             this.socketConnection.emit('create', {projectId: projectId, comment: comment});
+        }
+
+        public sendDeleteRequest(projectId: number, databaseId: number): void {
+            this.socketConnection.emit('delete', {projectId: projectId, databaseId: databaseId});
         }
 
         private handleMessage(actionType: string, actionParams: Object): void {
@@ -59,19 +63,29 @@ module APP.Projects {
                         }
                     });
                     break;
-                case 'create':
+                case 'create': {
                     let projectDatabasesData = _.find(this._databases, {projectId: actionParams['projectId']});
 
-                    if(_.isUndefined(projectDatabasesData)){
-                        console.log('kubut', actionParams['database'])
-                        this._databases.push({projectId: actionParams['projectId'], databases: [actionParams['database']]});
+                    if (_.isUndefined(projectDatabasesData)) {
+                        this._databases.push({
+                            projectId: actionParams['projectId'],
+                            databases: [actionParams['database']]
+                        });
                     } else {
-                        console.log('kubut2', actionParams['database'])
                         projectDatabasesData.databases.push(actionParams['database']);
                     }
-                    console.log(this._databases);
-
+                }
                     break;
+
+                case 'delete': {
+                    let projectDatabasesData = _.find(this._databases, {projectId: actionParams['projectId']});
+
+                    if (!_.isUndefined(projectDatabasesData)) {
+                        _.remove(projectDatabasesData.databases, {id: actionParams['databaseId']});
+                    }
+                }
+                    break;
+
             }
 
             this.$rootScope.$emit('Databases:changes');
