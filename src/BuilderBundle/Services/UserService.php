@@ -1,8 +1,10 @@
 <?php
 namespace BuilderBundle\Services;
 
+use BuilderBundle\Entity\User;
 use BuilderBundle\Exception\ExceptionCode;
 use BuilderBundle\Model\UserModel;
+use BuilderBundle\Util\PasswordGenerator;
 
 /**
  * Class UserService
@@ -37,5 +39,39 @@ class UserService
         }
 
         return $userData;
+    }
+
+    /**
+     * @param integer $userId
+     */
+    public function removeUser($userId)
+    {
+        //TODO: remove mock
+    }
+
+    /**
+     * @param user $user
+     * @param string $password
+     *
+     * @throws \Exception
+     */
+    public function changePassword($user, $password)
+    {
+        if (strlen($password) < 8) {
+            throw new \Exception('Password is too short', ExceptionCode::PASSWORD_TOO_SHORT);
+        }
+        $user->setActivated(true);
+        $this->userModel->changePassword($user, $password);
+    }
+
+    /**
+     * @param integer $userId
+     */
+    public function resetPassword($userId)
+    {
+        $user = $this->userModel->getUserById($userId);
+        $password = PasswordGenerator::generateStrongPassword();
+        $user->setActivated(false);
+        $this->userModel->changePassword($user, $password, $password);
     }
 }

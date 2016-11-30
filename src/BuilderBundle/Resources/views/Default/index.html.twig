@@ -23,7 +23,7 @@
                         configurationProvider.setDatabaseSocket('ws://builder-dev.vagrant:3001/databases');
                     }])
                 .run(['ChangePasswordService', function (changePasswordService) {
-                    if (false) {
+                    if ({{ showModal }}) {
                         changePasswordService.showModal();
                     }
                 }]);

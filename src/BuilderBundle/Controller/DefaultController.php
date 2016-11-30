@@ -1,6 +1,7 @@
 <?php
 namespace BuilderBundle\Controller;
 
+use BuilderBundle\Entity\User;
 use BuilderBundle\Exception\ExceptionCode;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Nelmio\ApiDocBundle\Annotation\ApiDoc;
@@ -29,8 +30,13 @@ class DefaultController extends AbstractController
         try {
             $this->requireOneOfRoles([Role::ADMIN, Role::USER]);
             $USER_ROLE = $this->isGranted(Role::ADMIN)? Role::ADMIN : Role::USER;
+            /** @var User $user */
+            $user = $this->getUser();
 
-            return $this->render('@Builder/Default/index.html.twig', ['USER_ROLE' => $USER_ROLE]);
+            return $this->render('@Builder/Default/index.html.twig', [
+                'USER_ROLE' => $USER_ROLE,
+                'showModal' => $user->getActivated()? 'false' : 'true'
+            ]);
         } catch (\Exception $e) {
             return $this->redirectToRoute('fos_user_security_login');
         }

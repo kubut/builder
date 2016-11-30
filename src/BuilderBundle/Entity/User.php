@@ -39,6 +39,13 @@ class User extends BaseUser
     protected $activationCode;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="activated", type="boolean")
+     */
+    protected $activated = false;
+
+    /**
      * @return string
      */
     public function getName()
@@ -94,6 +101,26 @@ class User extends BaseUser
     public function setActivationCode($activationCode)
     {
         $this->activationCode = $activationCode;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getActivated()
+    {
+        return $this->activated;
+    }
+
+    /**
+     * @param int $activated
+     *
+     * @return User
+     */
+    public function setActivated($activated)
+    {
+        $this->activated = $activated;
 
         return $this;
     }

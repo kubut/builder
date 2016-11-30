@@ -58,26 +58,55 @@ class UserModel
     }
 
     /**
+     * @param integer $userId
+     *
+     * @return User
+     * @throws \Exception
+     */
+    public function getUserById($userId)
+    {
+        $user = $this->userRepository->find($userId);
+
+        if (is_null($user)) {
+            throw new \Exception('User not exist', ExceptionCode::USER_NOT_EXIST);
+        }
+
+        return $user;
+    }
+
+    /**
      * @param User $user
      *
      * @return array
      */
     public function toArray($user)
     {
-        $isEnabled = $user->isEnabled();
-        $userData =  [
+        $isActivated = $user->getActivated();
+        $userData = [
             "id" => $user->getId(),
             "name" => $user->getName(),
             "surname" => $user->getSurname(),
             "email" => $user->getEmail(),
-            "isActive" => $isEnabled,
+            "isActive" => $isActivated,
             "role" => $user->hasRole(Role::ADMIN),
         ];
 
-        if (!$isEnabled && is_null($user->getActivationCode())) {
+        if (!$isActivated && !is_null($user->getActivationCode())) {
             $userData['activationCode'] = $user->getActivationCode();
         }
 
         return $userData;
+    }
+
+    /**
+     * @param User $user
+     * @param string $password
+     * @param null|string $activationCode
+     */
+    public function changePassword($user, $password, $activationCode = null)
+    {
+        $user->setPlainPassword($password);
+        $user->setActivationCode($activationCode);
+        $this->userRepository->save($user);
     }
 }

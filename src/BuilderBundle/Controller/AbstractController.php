@@ -3,6 +3,7 @@ namespace BuilderBundle\Controller;
 
 use BuilderBundle\Exception\ExceptionCode;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -19,10 +20,7 @@ abstract class AbstractController extends Controller
      */
     public function returnSuccess(array $data = [])
     {
-        return new JsonResponse(array(
-            'success' => true,
-            'data' => $data
-        ));
+        return new JsonResponse($data);
     }
 
     /**
@@ -34,12 +32,27 @@ abstract class AbstractController extends Controller
     public function returnError($message, $code = 0, $httpCode = Response::HTTP_BAD_REQUEST)
     {
         return new JsonResponse([
-            'success' => false,
             'error' => [
                 'message' => $message,
                 'code' => $code
             ]
         ], $httpCode);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function parseRequest(Request $request)
+    {
+        $requestData = json_decode($request->getContent(), true);
+        if (is_null($request)) {
+            throw new \Exception('Invalid json strong', ExceptionCode::INVALID_JSON);
+        }
+
+        return $requestData;
     }
 
     /**

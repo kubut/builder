@@ -1,5 +1,5 @@
 <?php
-namespace BuilderBundle\Controller\Security;
+namespace BuilderBundle\Controller;
 
 use BuilderBundle\Controller\AbstractController;
 use BuilderBundle\Entity\User;
@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use BuilderBundle\Util\Role;
 
 
-class AdminController extends AbstractController
+class UserController extends AbstractController
 {
     /**
      * @Route("/user/add", name="user_add", options={"expose"=true})
@@ -37,7 +37,7 @@ class AdminController extends AbstractController
     {
         $this->requireRole(Role::ADMIN);
         $responseData = [];
-        $inputData = json_decode($request->getContent(), true);
+        $inputData = $this->parseRequest($request);
         if ($request->isMethod('POST')){
             try {
                 $generatedPassword = $this->get('app.builder.service.register')->register($inputData);
@@ -71,5 +71,76 @@ class AdminController extends AbstractController
         $data = $this->get('app.builder.service.user')->getAllUsers($user->getId());
 
         return $this->returnSuccess($data);
+    }
+
+    /**
+     * @Route("/user/delete/{id}", name="delete_user", options={"expose"=true})
+     *
+     * @Method("DELETE")
+     *
+     * @ApiDoc(
+     *  description="user delete mock",
+     *  requirements={
+     *      {"name"="id", "dataType"="int", "requirement"="int", "description"="id"}
+     *  }
+     * )
+     * @param integer $userId
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function deleteUserAction($userId)
+    {
+        $this->requireRole(Role::ADMIN);
+        $this->get('app.builder.service.user')->removeUser($userId);
+
+        return $this->returnSuccess();
+    }
+
+    /**
+     * @Route("/user/password/change", name="change_password", options={"expose"=true})
+     *
+     * @Method("PATCH")
+     *
+     * @ApiDoc(
+     *  description="password change"
+     * )
+     * @param Request $request
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function changePasswordAction(Request $request)
+    {
+        $this->requireRole(Role::USER);
+        $inputData = $this->parseRequest($request);
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $this->get('app.builder.service.user')->changePassword($user, $inputData['password']);
+
+        return $this->returnSuccess();
+    }
+
+    /**
+     * @Route("/user/password/reset/{id}", name="reset_user_password", options={"expose"=true})
+     *
+     * @Method("PATCH")
+     *
+     * @ApiDoc(
+     *  description="password reset",
+     *  requirements={
+     *      {"name"="id", "dataType"="int", "requirement"="int", "description"="id"}
+     *  }
+     * )
+     * @param integer $id
+     * @return JsonResponse
+     * @throws \Exception
+     */
+    public function resetPasswordAction($id)
+    {
+        $this->requireRole(Role::ADMIN);
+
+        $this->get('app.builder.service.user')->resetPassword($id);
+
+        return $this->returnSuccess();
     }
 }

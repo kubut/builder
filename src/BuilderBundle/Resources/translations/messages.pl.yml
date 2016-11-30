@@ -8,6 +8,11 @@ permission_denied: Brak dostępu.
 
 user:
   not_unique: Użytkownik nie jest unikalny.
+  not_exist: Użytkownik nie istnieje.
 
 params:
   not_enough: Brak wystarczających parametrów.
+
+validation:
+  password: Hasło jest za krótkie, wymagane jest conajmniej 8 znaków.
+  json: Parametry wejściowe nie są poprawne.

@@ -30,12 +30,13 @@ class UserFactory implements EntityFactoryInterface
         $user->setName($parameters['name'])
             ->setSurname($parameters['surname'])
             ->setActivationCode($parameters['password'])
+            ->setActivated(false)
             ->setEmail($parameters['email'])
             ->setPlainPassword($parameters['password'])
             ->setLastLogin($parameters['last_login'])
             ->setRoles($parameters['roles'])
             ->setUsername($parameters['email'])
-            ->setEnabled(false);
+            ->setEnabled(true);
 
         return $user;
     }
