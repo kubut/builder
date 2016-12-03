@@ -26,6 +26,7 @@ cloneRepo() {
     installIfNeeded git
 
     git clone ${gitPath} builder ${flag}
+    git pull
 }
 
 checkPHPVersion() {
@@ -131,8 +132,7 @@ setDatabase() {
     dbUser="builder_sql"
     printQuestion "Specify new password for mysql user for Builder (username: ${dbUser})"
     read -s dbPassword
-
-    mysql -h 127.0.0.1 -u ${dbRootUser} -p${dbRootPass}  -t -e "CREATE DATABASE IF NOT EXISTS ${dbName}; GRANT ALL ON ${dbName}.* to '${dbUser}'@'127.0.0.1' identified by '${dbPassword}'; GRANT ALL ON ${dbName}.* to '${dbUser}'@'localhost' identified by '${dbPassword}';"
+    mysql -h 127.0.0.1 -u ${dbRootUser} -p${dbRootPass}  -t -e "CREATE DATABASE IF NOT EXISTS ${dbName}; GRANT ALL ON ${dbName}.* to '${dbUser}'@'127.0.0.1' identified by '${dbPassword}'; GRANT ALL ON ${dbName}.* to '${dbUser}'@'localhost' identified by '${dbPassword}'; GRANT ALL ON \`bldrdb\\_%\`.* to '${dbUser}'@'127.0.0.1' identified by '${dbPassword}'; GRANT ALL ON \`bldrdb\\_%\`.* to '${dbUser}'@'localhost' identified by '${dbPassword}';"
 }
 
 installBackend() {
