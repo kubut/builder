@@ -47,3 +47,8 @@ input:-webkit-autofill {
     border-bottom: 1px solid #1976D2;
     box-shadow: 0 1px 0 0 #1976D2;
 }
+
+.error-box {
+    color: red;
+    padding: 10px 0;
+}
