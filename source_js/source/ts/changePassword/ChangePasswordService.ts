@@ -3,6 +3,7 @@ module APP.ChangePassword {
     import IHttpService = angular.IHttpService;
     import IRoutingService = APP.Common.IRoutingService;
     import IToastService = angular.material.IToastService;
+    import IPromise = angular.IPromise;
 
     export class ChangePasswordService {
         public constructor(private $mdDialog: IDialogService,
@@ -12,8 +13,8 @@ module APP.ChangePassword {
 
         }
 
-        public showModal(): void {
-            this.$mdDialog.show({
+        public showModal(): IPromise<any> {
+            return this.$mdDialog.show({
                 templateUrl: '/templates/changePassword.modal.html',
                 controller: 'ChangePasswordModalCtrl as modalCtrl',
                 clickOutsideToClose: false

@@ -14,6 +14,7 @@ module APP.Configuration {
             let defaultState = 'app.project.dashboard';
 
             urlRouterProvider.otherwise('/project//dashboard');
+            urlRouterProvider.deferIntercept();
 
             stateProvider
                 .state('app', {

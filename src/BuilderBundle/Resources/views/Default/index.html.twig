@@ -22,9 +22,17 @@
                                 .createUser();
                         configurationProvider.setDatabaseSocket('ws://builder-dev.vagrant:3001/databases');
                     }])
-                .run(['ChangePasswordService', function (changePasswordService) {
+                .run(['ChangePasswordService', '$rootScope', '$urlRouter', '$state', function (changePasswordService, $rootScope, $urlRouter, $state) {
                     if ({{ showModal }}) {
-                        changePasswordService.showModal();
+                        var locationChangeSubscriber = $rootScope.$on('$stateChangeStart', function(evt) {
+                            evt.preventDefault();
+                        });
+
+                        changePasswordService.showModal().then(function() {
+                            locationChangeSubscriber();
+                            $urlRouter.sync();
+                            $state.go('app.project.dashboard');
+                        });
                     }
                 }]);
     </script>
