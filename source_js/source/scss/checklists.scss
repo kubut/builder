@@ -32,7 +32,7 @@
       background: $background;
     }
 
-    &.solved-item span{
+    &.solved-item span {
       text-decoration: line-through;
       font-style: italic;
     }
@@ -51,5 +51,20 @@
 .checklist-details {
   md-input-container {
     width: 100%;
+  }
+
+  .checklist-actions {
+    position: relative;
+    height: 30px;
+
+    .left-actions {
+      position: absolute;
+      left: 0;
+    }
+
+    .right-actions {
+      position: absolute;
+      right: 0;
+    }
   }
 }

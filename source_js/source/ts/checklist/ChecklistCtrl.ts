@@ -51,6 +51,14 @@ module APP.Checklist {
             this.newItem = this.defaultItemValue;
         }
 
+        public showShareChecklistModal(ev: MouseEvent): void {
+            this.$mdDialog.show({
+                templateUrl: '/templates/share.modal.html',
+                target: ev,
+                clickOutsideToClose: true
+            })
+        }
+
         get newItem(): string {
             return this._newItem;
         }
