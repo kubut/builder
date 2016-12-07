@@ -2,7 +2,7 @@ md-toolbar.main-toolbar(ng-controller="NavigationCtrl as ctrl" layout="row" layo
     .navigaion
         .pull-left
             span(ng-repeat="project in ctrl.projectsService.projects")
-                a.navigation-button(ui-sref="app.project.dashboard({id: {{project.id}}})" ui-sref-active="active") {{ project.name }}
+                a.navigation-button(ui-sref="app.project.dashboard({projectId: {{project.id}}})" ng-class="ctrl.isActiveState(project.id) ? 'active' : ''") {{ project.name }}
                 md-button.md-icon-button.edit-project-button(ng-if="ctrl.userConfiguration.user.isAdmin()" ng-click="ctrl.editProject(project.id)")
                     i.material-icons edit
             div.add-new-project-button(ng-if="ctrl.userConfiguration.user.isAdmin()")

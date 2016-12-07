@@ -31,11 +31,11 @@ module APP.Configuration {
                     resolve: {
                         project: ['projects', '$stateParams', 'ProjectsService', '$state',
                             (projects, $stateParams: IStateParamsService, projectsService: ProjectsService, $state: IStateService) => {
-                                let id = $stateParams['id'] || undefined,
+                                let id = $stateParams['projectId'] || undefined,
                                     isCorrectId = !_.isUndefined(id) && _.findIndex(projectsService.projects, {id: +id}) >= 0;
 
                                 if (!isCorrectId && projectsService.projects.length > 0) {
-                                    $state.go('app.project.dashboard', {id: projectsService.projects[0].id});
+                                    $state.go('app.project.dashboard', {projectId: projectsService.projects[0].id});
                                 }
 
                                 return true;
@@ -45,7 +45,7 @@ module APP.Configuration {
                                 return checklistService.loadListOfChecklists(+$stateParams['id']);
                             }]
                     },
-                    url: '/project/:id',
+                    url: '/project/:projectId',
                     template: '<ui-view></ui-view>'
                 })
                 .state('app.project.dashboard', {
@@ -116,10 +116,10 @@ module APP.Configuration {
                     resolve: {
                         project: ['ProjectsService', '$stateParams',
                             (projectsService: ProjectsService, $stateParams: IStateParamsService) => {
-                                return projectsService.loadProjectSettings($stateParams['id']);
+                                return projectsService.loadProjectSettings($stateParams['projectId']);
                             }]
                     },
-                    url: '/edit/:id',
+                    url: '/edit/:projectId',
                     templateUrl: '/templates/editProject.html'
                 });
         }

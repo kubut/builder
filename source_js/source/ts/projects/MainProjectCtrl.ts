@@ -16,7 +16,7 @@ module APP.Projects {
             this.projectsService.saveProject(this.project).then((respond) => {
                 this.showToast();
                 this.projectsService.loadProjectList();
-                this.$state.go('app.admin.project.edit', {id: respond.data.id});
+                this.$state.go('app.admin.project.edit', {projectId: respond.data.id});
             });
         }
 
