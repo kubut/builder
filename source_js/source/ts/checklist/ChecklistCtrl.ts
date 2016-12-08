@@ -52,11 +52,7 @@ module APP.Checklist {
         }
 
         public showShareChecklistModal(ev: MouseEvent): void {
-            this.$mdDialog.show({
-                templateUrl: '/templates/share.modal.html',
-                target: ev,
-                clickOutsideToClose: true
-            })
+            alert('Jeszcze nie zaimplementowano!');
         }
 
         get newItem(): string {

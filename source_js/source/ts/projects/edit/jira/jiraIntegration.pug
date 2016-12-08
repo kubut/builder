@@ -1,0 +1,47 @@
+.jira-integration
+    h4 Konfiguracja integracji z Jirą
+    h5 Zacznij od poprawnego skonfigurowania Jiry. W ustawieniach aplikacji dodaj nowy link oraz skonfiguruj przychodzącą autentykację. Następnie uzupełnij poniższe pola
+    .md-dialog-content
+        form(name="jiraForm" layout="column" novalidate ng-submit="projectCtrl.saveJiraConfiguration()")
+            div(layout="row")
+                md-input-container(flex)
+                    label Adres
+                    input(name="url" required ng-model="projectCtrl.jiraConfigurationService.jiraConfig.url")
+                    md-icon.helper
+                        i.material-icons.grey help_outline
+                        md-tooltip Adres do Twojej Jiry
+                    div(ng-messages="jiraForm.url.$error")
+                        div(ng-message="required") To pole jest wymagane
+                md-input-container(flex)
+                    label Nazwa projektu w Jirze
+                    input(name="projectName" required ng-model="projectCtrl.jiraConfigurationService.jiraConfig.projectName")
+                    md-icon.helper
+                        i.material-icons.grey help_outline
+                        md-tooltip Nazwa projektu z którym chcesz nwiązać połączenie
+                    div(ng-messages="jiraForm.projectName.$error")
+                        div(ng-message="required") To pole jest wymagane
+            div(layout="row")
+                md-input-container(flex)
+                    label Klucz konsumenta
+                    input(name="consumerKey" required ng-model="projectCtrl.jiraConfigurationService.jiraConfig.consumerKey")
+                    md-icon.helper
+                        i.material-icons.grey help_outline
+                        md-tooltip Klucz konsumenta który podałeś w konfiguracji Jiry (pole "Consumer key")
+                    div(ng-messages="jiraForm.consumerKey.$error")
+                        div(ng-message="required") To pole jest wymagane
+                md-input-container(flex)
+                    label Nazwa konsumenta
+                    input(name="consumerName" required ng-model="projectCtrl.jiraConfigurationService.jiraConfig.consumerName")
+                    md-icon.helper
+                        i.material-icons.grey help_outline
+                        md-tooltip Nazwa konsumenta który podałeś w konfiguracji Jiry (pole "Consumer name")
+                    div(ng-messages="jiraForm.consumerName.$error")
+                        div(ng-message="required") To pole jest wymagane
+                md-input-container(flex)
+                    label Nazwa klucza prywatnego
+                    input(name="key" required ng-model="projectCtrl.jiraConfigurationService.jiraConfig.privateKeyFileName")
+                    md-icon.helper
+                        i.material-icons.grey help_outline
+                        md-tooltip Nazwa pliku z kluczem prywatnym odpowiadającym kluczowi publicznemu podanemu w konfiguracji Jiry. Plik powiniene znajdować się w katalogu web/keys Buildera
+                    div(ng-messages="jiraForm.key.$error")
+                        div(ng-message="required") To pole jest wymagane

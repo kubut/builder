@@ -13,3 +13,9 @@ md-card
             md-dialog-actions
                 .md-dialog-content
                     md-button.md-raised.md-primary.pull-right(ng-click="projectCtrl.addDatabase($event)") Dodaj bazę
+        md-tab(label="Integracja z Jirą")
+            md-card-content
+                include jira/jiraIntegration
+            md-dialog-actions
+                .md-dialog-content
+                    md-button.md-raised.md-primary.pull-right(ng-click="projectCtrl.saveJiraConfiguration()") Zapisz

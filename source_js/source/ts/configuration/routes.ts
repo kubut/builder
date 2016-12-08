@@ -6,6 +6,7 @@ module APP.Configuration {
     import ProjectsService = APP.Projects.ProjectsService;
     import IStateParamsService = angular.ui.IStateParamsService;
     import ChecklistService = APP.Checklist.ChecklistService;
+    import JiraConfigurationService = APP.Projects.JiraConfigurationService;
 
     export class Routes {
         public static $inject = ['$stateProvider', '$urlRouterProvider'];
@@ -114,6 +115,10 @@ module APP.Configuration {
                 .state('app.admin.project.edit', {
                     controller: 'EditProjectCtrl as projectCtrl',
                     resolve: {
+                        jiraConfig: ['JiraConfigurationService', '$stateParams',
+                            (jiraConfigurationService: JiraConfigurationService, $stateParams: IStateParamsService) => {
+                                return jiraConfigurationService.loadJiraConfiguration(+$stateParams['projectId']);
+                            }],
                         project: ['ProjectsService', '$stateParams',
                             (projectsService: ProjectsService, $stateParams: IStateParamsService) => {
                                 return projectsService.loadProjectSettings($stateParams['projectId']);

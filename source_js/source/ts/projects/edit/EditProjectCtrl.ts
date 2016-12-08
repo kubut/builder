@@ -17,7 +17,8 @@ module APP.Projects {
                            private $mdDialog: IDialogService,
                            private databasesService: DatabasesService,
                            private $rootScope: IRootScopeService,
-                           private $timeout: ITimeoutService) {
+                           private $timeout: ITimeoutService,
+                           private jiraConfigurationService: JiraConfigurationService) {
             super(projectsService, $mdToast, $state);
 
             this.databasesService.connect();
@@ -85,6 +86,12 @@ module APP.Projects {
             });
         }
 
+        public saveJiraConfiguration(): void {
+            this.jiraConfigurationService.saveConfiguration(this.project.id).then(() => {
+                this.showToast();
+            });
+        }
+
         private loadDatabases(): void {
             this._databaseList = this.databasesService.getDatabasesForProjectId(this.project.id);
         }
@@ -97,9 +104,18 @@ module APP.Projects {
 
 angular.module('projects')
     .controller('EditProjectCtrl',
-        ['$scope', 'ProjectsService', '$mdToast', 'project', '$state', '$mdDialog', 'DatabasesService', '$rootScope', '$timeout',
-            function ($scope, projectsService, $mdToast, project, $state, $mdDialog, databasesService, $rootScope, $timeout) {
+        ['$scope',
+            'ProjectsService',
+            '$mdToast',
+            'project',
+            '$state',
+            '$mdDialog',
+            'DatabasesService',
+            '$rootScope',
+            '$timeout',
+            'JiraConfigurationService',
+            function (scope, projectsService, mdToast, project, state, dialog, databasesService, rootScope, timeout, jiraConfigService) {
                 return new APP.Projects.EditProjectCtrl(
-                    $scope, projectsService, $mdToast, project, $state, $mdDialog, databasesService, $rootScope, $timeout
+                    scope, projectsService, mdToast, project, state, dialog, databasesService, rootScope, timeout, jiraConfigService
                 );
             }]);
