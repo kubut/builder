@@ -1,6 +1,8 @@
 services:
     app.builder.model.user:
         class: BuilderBundle\Model\UserModel
-        arguments:
-            userFactory: '@app.builder.factory.user'
-            userRepository: '@app.builder.repository.user'
+        arguments: ['@app.builder.factory.user', '@app.builder.repository.user']
+
+    app.builder.model.project:
+        class: BuilderBundle\Model\ProjectModel
+        arguments: ['@app.builder.factory.project', '@app.builder.repository.project']

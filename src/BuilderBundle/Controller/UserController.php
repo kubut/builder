@@ -84,14 +84,14 @@ class UserController extends AbstractController
      *      {"name"="id", "dataType"="int", "requirement"="int", "description"="id"}
      *  }
      * )
-     * @param integer $userId
+     * @param integer $id
      * @return JsonResponse
      * @throws \Exception
      */
-    public function deleteUserAction($userId)
+    public function deleteUserAction($id)
     {
         $this->requireRole(Role::ADMIN);
-        $this->get('app.builder.service.user')->removeUser($userId);
+        $this->get('app.builder.service.user')->removeUser($id);
 
         return $this->returnSuccess();
     }

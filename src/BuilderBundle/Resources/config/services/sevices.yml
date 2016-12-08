@@ -1,10 +1,12 @@
 services:
     app.builder.service.register:
         class: BuilderBundle\Services\SecurityService
-        arguments:
-          userModel: '@app.builder.model.user'
+        arguments: ['@app.builder.model.user']
 
     app.builder.service.user:
         class: BuilderBundle\Services\UserService
-        arguments:
-          userModel: '@app.builder.model.user'
+        arguments: ['@app.builder.model.user']
+
+    app.builder.service.file_finder:
+        class: BuilderBundle\Services\FileFinderService
+        arguments: ['%kernel.root_dir%']

@@ -1,7 +1,12 @@
 services:
     app.builder.repository.user:
         class: BuilderBundle\Repository\UserRepository
-        factory_service: doctrine.orm.entity_manager
-        factory_method: getRepository
+        factory: ['@doctrine.orm.entity_manager', getRepository]
         arguments:
           - BuilderBundle\Entity\User
+
+    app.builder.repository.project:
+        class: BuilderBundle\Repository\ProjectRepository
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments:
+          - BuilderBundle\Entity\Project

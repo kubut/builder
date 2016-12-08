@@ -18,7 +18,7 @@ module APP.Projects {
         }
 
         public loadProjectList():IPromise<any> {
-            return this.$http.get(this.routing.generate('projects')).then((data: any) => {
+            return this.$http.get(this.routing.generate('get_projects')).then((data: any) => {
                 this._projects = data.data;
             });
         }
@@ -46,7 +46,7 @@ module APP.Projects {
             if (project.id >= 0) {
                 path = this.routing.generate('edit_project', {id: project.id});
             } else {
-                path = this.routing.generate('projects');
+                path = this.routing.generate('add_project');
             }
 
             return this.$http.put(path, {
@@ -63,7 +63,7 @@ module APP.Projects {
         }
 
         public deleteProject(id: number): IPromise<any> {
-            return this.$http.delete(this.routing.generate('projects', {id: id}));
+            return this.$http.delete(this.routing.generate('delete_project', {id: id}));
         }
 
         get projects(): {id: number; name: string}[] {

@@ -20,7 +20,12 @@ class ExceptionCodeTranslator
         ExceptionCode::USER_NOT_EXIST => 'user.not_exist',
         ExceptionCode::OMITTED_PARAMS => 'params.not_enough',
         ExceptionCode::PASSWORD_TOO_SHORT => 'validation.password',
-        ExceptionCode::INVALID_JSON => 'validation.json'
+        ExceptionCode::INVALID_JSON => 'validation.json',
+        ExceptionCode::VALIDATION_PROJECT_CONFIG_FILE => 'validation.project.config_file',
+        ExceptionCode::VALIDATION_PROJECT_NAME => 'validation.project.name',
+        ExceptionCode::VALIDATION_PROJECT_TOO_MANY => 'validation.project.too_many',
+        ExceptionCode::VALIDATION_PROJECT_PARAMS => 'validation.project.params',
+        ExceptionCode::PROJECT_NOT_EXIST => 'validation.project.not_exist',
     ];
 
     /**

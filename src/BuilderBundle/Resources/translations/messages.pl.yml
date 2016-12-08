@@ -16,3 +16,9 @@ params:
 validation:
   password: Hasło jest za krótkie, wymagane jest conajmniej 8 znaków.
   json: Parametry wejściowe nie są poprawne.
+  project:
+    config_file: Skrypt configuracyjny nie zawiera $DATABASE_NAME$.
+    name: Nazwa projektu jest zbyt krótka.
+    too_many: Podiadasz juz maksymalną ilość projektów. Usuń jeden aby dodać następny.
+    params: Brak obligatoryjnych parametrów.
+    not_exist: Projekt nie istnieje

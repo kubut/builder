@@ -1,3 +1,6 @@
 services:
     app.builder.factory.user:
         class: BuilderBundle\Factory\UserFactory
+
+    app.builder.factory.project:
+        class: BuilderBundle\Factory\ProjectFactory
