@@ -8,6 +8,7 @@ module APP.Common.Socket {
         private pending: ISocketRequest[];
         private headers: Object;
         private ws: WebSocket;
+        private closingState = false;
         private onEventListeners: {
             connect: Array <Function> [],
             message: Array <Function> [],
@@ -30,6 +31,8 @@ module APP.Common.Socket {
         }
 
         public connect(url: string): void {
+            this.closingState = false;
+
             this.ws = new WebSocket(url);
             this.ws.onopen = this.onConnect.bind(this);
             this.ws.onmessage = this.on.bind(this);
@@ -73,12 +76,13 @@ module APP.Common.Socket {
         }
 
         public close(): void {
+            this.closingState = true;
             this.ws.close(this.CLOSE_NORMAL_CODE);
         }
 
         private onConnect(): void {
             this.emitPending();
-            _.forEach(this.onEventListeners['connect'], (listenerCallback:Function) => {
+            _.forEach(this.onEventListeners['connect'], (listenerCallback: Function) => {
                 listenerCallback();
             });
         }
@@ -86,7 +90,9 @@ module APP.Common.Socket {
         private reconnect(event: CloseEvent): void {
             if (event.code !== this.CLOSE_NORMAL_CODE) {
                 window.setTimeout(() => {
-                    this.connect.call(this, event.currentTarget['url']);
+                    if (!this.closingState) {
+                        this.connect.call(this, event.currentTarget['url']);
+                    }
                 }, this.TIME_TO_REPEAT_CONNECTION);
             }
         }
