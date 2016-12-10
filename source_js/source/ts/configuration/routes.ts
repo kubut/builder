@@ -43,7 +43,9 @@ module APP.Configuration {
                             }],
                         checklists: ['ChecklistService', '$stateParams',
                             (checklistService: ChecklistService, $stateParams: IStateParamsService) => {
-                                return checklistService.loadListOfChecklists(+$stateParams['id']);
+                                if (!_.isEmpty($stateParams['projectId'])) {
+                                    return checklistService.loadListOfChecklists(+$stateParams['projectId']);
+                                }
                             }]
                     },
                     url: '/project/:projectId',
