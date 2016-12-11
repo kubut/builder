@@ -53,6 +53,11 @@ module APP.Configuration {
                 })
                 .state('app.project.dashboard', {
                     controller: 'DashboardCtrl as dashboardCtrl',
+                    resolve: {
+                        projectId: ['$stateParams', ($stateParams: IStateParamsService) => {
+                            return +$stateParams['projectId'];
+                        }]
+                    },
                     templateUrl: '/templates/dashboard.html',
                     url: '/dashboard'
                 })

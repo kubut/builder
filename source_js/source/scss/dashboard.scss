@@ -1,0 +1,68 @@
+.instance {
+  margin-bottom: 16px;
+
+  .build-date {
+    display: inline-block;
+    font-size: 12px;
+
+    span {
+      height: 24px;
+      line-height: 24px;
+      display: inline-block;
+      float: left;
+    }
+  }
+
+  .instance-status {
+    width: 130px;
+    display: inline-block;
+    margin-right: 15px;
+    float: left;
+    font-size: 12px;
+
+    &.instance-status-processing {
+      span {
+        background: $primary;
+      }
+    }
+
+    &.instance-status-done {
+      span {
+        background: $green500;
+      }
+    }
+
+    &.instance-status-error {
+      span {
+        background: $accent500;
+      }
+    }
+
+    span {
+      border-radius: 15px;
+      padding: 5px 0;
+      color: white;
+      display: inline-block;
+      width: 100%;
+    }
+  }
+
+  .card-footer {
+    border-top: 1px solid $background;
+    padding: 10px 15px 0 5px;
+
+    a, a:hover, a:focus, a:visited, a:active {
+      color: $primary;
+    }
+
+    .author {
+      span {
+        display: inline-block;
+        height: 24px;
+        line-height: 24px;
+        float: left;
+        margin-right: 10px;
+      }
+    }
+  }
+}

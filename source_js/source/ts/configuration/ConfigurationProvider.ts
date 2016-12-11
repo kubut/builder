@@ -1,18 +1,25 @@
 module APP.Configuration {
     export interface IConfigurationService {
         databaseSocketUrl: string;
+        instancesSocketUrl: string;
     }
 
     export class ConfigurationProvider {
         private databaseSocketUrl: string;
+        private instancesSocketUrl: string;
 
-        public setDatabaseSocket(url:string):void {
+        public setDatabaseSocketUrl(url:string):void {
             this.databaseSocketUrl = url;
+        }
+
+        public setInstancesSocketUrl(url:string):void {
+            this.instancesSocketUrl = url;
         }
 
         public $get(): IConfigurationService {
             return {
-                databaseSocketUrl: this.databaseSocketUrl
+                databaseSocketUrl: this.databaseSocketUrl,
+                instancesSocketUrl: this.instancesSocketUrl
             };
         }
     }

@@ -20,7 +20,8 @@
                                 .setUserId(0)
                                 .setUserToken('token')
                                 .createUser();
-                        configurationProvider.setDatabaseSocket('ws://builder-dev.vagrant:3001/databases');
+                        configurationProvider.setDatabaseSocketUrl('ws://builder-dev.vagrant:3001/databases');
+                        configurationProvider.setInstancesSocketUrl('ws://builder-dev.vagrant:3001/instances');
                     }])
                 .run(['ChangePasswordService', '$rootScope', '$urlRouter', '$state', function (changePasswordService, $rootScope, $urlRouter, $state) {
                     if ({{ showModal }}) {

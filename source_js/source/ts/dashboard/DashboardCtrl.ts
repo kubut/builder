@@ -1,13 +1,42 @@
 module APP.Dashboard {
     import ProjectsService = APP.Projects.ProjectsService;
+    import IScope = angular.IScope;
+    import ITimeoutService = angular.ITimeoutService;
+    import IRootScopeService = angular.IRootScopeService;
 
     export class DashboardCtrl {
-        public constructor(public projectsService:ProjectsService) {
+        private _instances: IInstance[] = [];
+
+        public constructor($scope: IScope,
+                           public projectId: number,
+                           public projectsService: ProjectsService,
+                           public dashboardService: DashboardService,
+                           private $rootScope: IRootScopeService,
+                           private $timeout: ITimeoutService) {
+            this.dashboardService.connect();
+            this.dashboardService.sendSynchronizationRequest(projectId);
+
+            $rootScope.$on('Instances:changes', () => {
+                $timeout(this.loadInstances.bind(this));
+            });
+
+            $scope.$on('$destroy', () => {
+                this.dashboardService.close();
+            });
+        }
+
+        public loadInstances(): void {
+            this._instances = this.dashboardService.getInstancesForProjectId(this.projectId);
+        }
+
+        get instances(): APP.Dashboard.IInstance[] {
+            return this._instances;
         }
     }
 }
 
 angular.module('dashboard')
-    .controller('DashboardCtrl', ['ProjectsService', function (projectsService) {
-        return new APP.Dashboard.DashboardCtrl(projectsService);
-    }]);
+    .controller('DashboardCtrl', ['$scope', 'projectId', 'ProjectsService', 'DashboardService', '$rootScope', '$timeout',
+        function ($scope, projectId, projectsService, dashboardService, $rootScope, $timeout) {
+            return new APP.Dashboard.DashboardCtrl($scope, projectId, projectsService, dashboardService, $rootScope, $timeout);
+        }]);

@@ -4,8 +4,28 @@ div
             md-card-title-text Brak aktywnych projektów. Poproś administratora systemu o skonfigurowanie potrzebnych zasobów.
     .container(ng-if="dashboardCtrl.projectsService.projects.length > 0" layout="row")
         div(flex="70")
-            md-card
+            md-card.instance(ng-repeat="instance in dashboardCtrl.instances")
                 md-card-title
-                    md-card-title-text Instancja...
+                    md-card-title-text {{ instance.name }}
+                    .pull-right
+                        .instance-status.instance-status-processing.center-align(ng-show="instance.status == 0")
+                            span klonowanie
+                        .instance-status.instance-status-processing.center-align(ng-show="instance.status == 1")
+                            span budowanie
+                        .instance-status.instance-status-done.center-align(ng-show="instance.status == 2")
+                            span zbudowano
+                        .instance-status.instance-status-error.center-align(ng-show="instance.status == 3")
+                            span błąd
+                        .build-date
+                            span
+                                i.material-icons date_range
+                            span {{ instance.buildDate }}
+                md-card-actions.card-footer
+                    .pull-left.author
+                        span
+                            i.material-icons person
+                        span {{ instance.author }}
+                    .pull-right
+                        a(href="{{ instance.url }}" target="_blank") {{ instance.url }}
         div(flex="30")
             checklist-list
