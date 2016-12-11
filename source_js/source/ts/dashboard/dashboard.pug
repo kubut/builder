@@ -21,9 +21,18 @@ div
                                 i.material-icons date_range
                             span {{ instance.buildDate }}
                 md-card-content
-                    .branch.pull-left
+                    .branch
                         i.fa.fa-code-fork
                         span {{ instance.branchName }}
+                    .content-wrapper
+                        .content
+                            .checklist(ng-if="instance.checklist") Checklista...
+                            .jira(ng-if="instance.jiraInformation")
+                                h4 {{ instance.jiraInformation.title }}
+                                p {{ instance.jiraInformation.description }}
+                                .pull-left Zgłaszający(a): {{ instance.jiraInformation.reporter }}
+                                .pull-right
+                                    a(href="{{instance.jiraInformation.url}}") Zobacz w Jirze
                 md-card-actions.card-footer
                     .pull-left.author
                         span

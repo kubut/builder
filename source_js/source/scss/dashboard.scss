@@ -1,6 +1,10 @@
 .instance {
   margin-bottom: 16px;
 
+  a, a:hover, a:focus, a:visited, a:active {
+    color: $primary;
+  }
+
   .build-date {
     display: inline-block;
     font-size: 12px;
@@ -48,22 +52,37 @@
   }
 
   .branch {
+    height: 20px;
+
     i {
       margin-right: 10px;
+      float: left;
     }
 
     span {
       font-size: 12px;
+      float: left;
+      line-height: 16px;
+    }
+  }
+
+  .content-wrapper {
+    .content {
+      display: flex;
+      justify-content: space-around;
+      color: $background600;
+
+      .checklist {
+      }
+
+      .jira {
+      }
     }
   }
 
   .card-footer {
     border-top: 1px solid $background;
     padding: 10px 15px 0 5px;
-
-    a, a:hover, a:focus, a:visited, a:active {
-      color: $primary;
-    }
 
     .author {
       span {
