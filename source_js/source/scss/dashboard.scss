@@ -47,6 +47,16 @@
     }
   }
 
+  .branch {
+    i {
+      margin-right: 10px;
+    }
+
+    span {
+      font-size: 12px;
+    }
+  }
+
   .card-footer {
     border-top: 1px solid $background;
     padding: 10px 15px 0 5px;

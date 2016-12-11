@@ -3,6 +3,7 @@ module APP.Dashboard {
         id: number;
         name: string;
         status: InstanceStatus;
+        branchName: string;
         buildDate: string;
         author: string;
         url: string;

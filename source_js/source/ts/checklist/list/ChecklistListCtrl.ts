@@ -31,9 +31,9 @@ module APP.Checklist {
                     return;
                 }
 
-                this.checklistService.createChecklist(result).then(() => {
+                this.checklistService.createChecklist(result, +this.$stateParams['projectId']).then(() => {
                     this.page = 1;
-                    this.checklistService.loadListOfChecklists(this.$stateParams['id'], this.page);
+                    this.checklistService.loadListOfChecklists(this.$stateParams['projectId'], this.page);
                 });
             });
         }
@@ -43,11 +43,11 @@ module APP.Checklist {
         }
 
         public nextPage(): void {
-            this.checklistService.loadListOfChecklists(this.$stateParams['id'], ++this.page);
+            this.checklistService.loadListOfChecklists(this.$stateParams['projectId'], ++this.page);
         }
 
         public prevPage(): void {
-            this.checklistService.loadListOfChecklists(this.$stateParams['id'], --this.page);
+            this.checklistService.loadListOfChecklists(this.$stateParams['projectId'], --this.page);
         }
 
         public isPrev(): boolean {

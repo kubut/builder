@@ -29,8 +29,8 @@ module APP.Checklist {
             });
         }
 
-        public createChecklist(name): IPromise<any> {
-            return this.$http.post(this.routing.generate('checklist'), {name: name});
+        public createChecklist(name: string, projectId: number): IPromise<any> {
+            return this.$http.post(this.routing.generate('checklist', {projectId: projectId}), {name: name});
         }
 
         public deleteChecklist(id: number, projectId: number): IPromise<any> {

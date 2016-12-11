@@ -1,5 +1,9 @@
 module.exports = function (gulp, plugins, paths) {
     return {
+        fontAwesome: function () {
+            return gulp.src(paths.libs + 'font-awesome/fonts/**/*')
+                .pipe(gulp.dest(paths.dist + 'fonts'));
+        },
         clean: function () {
             return plugins.del([
                 paths.app_build + '**/*'
