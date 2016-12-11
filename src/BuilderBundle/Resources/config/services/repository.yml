@@ -10,3 +10,15 @@ services:
         factory: ['@doctrine.orm.entity_manager', getRepository]
         arguments:
           - BuilderBundle\Entity\Project
+
+    app.builder.repository.checklist:
+        class: BuilderBundle\Repository\ChecklistRepository
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments:
+          - BuilderBundle\Entity\Checklist
+
+    app.builder.repository.checklist_item:
+        class: BuilderBundle\Repository\ChecklistItemRepository
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments:
+          - BuilderBundle\Entity\ChecklistItem

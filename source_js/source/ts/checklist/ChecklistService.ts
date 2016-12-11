@@ -15,7 +15,7 @@ module APP.Checklist {
         public loadListOfChecklists(projectId, page = 1): IPromise<any> {
             let offset = (page - 1) * this._limit;
 
-            return this.$http.get(this.routing.generate('checklist', {
+            return this.$http.get(this.routing.generate('get_checklists', {
                 offset: offset,
                 limit: this.limit,
                 projectId: projectId
@@ -30,17 +30,17 @@ module APP.Checklist {
         }
 
         public createChecklist(name: string, projectId: number): IPromise<any> {
-            return this.$http.post(this.routing.generate('checklist', {projectId: projectId}), {name: name});
+            return this.$http.post(this.routing.generate('add_checklist', {projectId: projectId}), {name: name});
         }
 
         public deleteChecklist(id: number, projectId: number): IPromise<any> {
-            return this.$http.delete(this.routing.generate('checklist', {id: id})).then(() => {
+            return this.$http.delete(this.routing.generate('delete_checklist', {id: id})).then(() => {
                 this.loadListOfChecklists(projectId);
             });
         }
 
         public saveChecklist(checklist: ChecklistModel): IPromise<any> {
-            return this.$http.put(this.routing.generate('checklist', checklist.id), {
+            return this.$http.put(this.routing.generate('edit_checklist', {id: checklist.id}), {
                 name: checklist.name,
                 items: checklist.items
             });

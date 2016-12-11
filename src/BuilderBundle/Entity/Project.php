@@ -1,6 +1,7 @@
 <?php
 namespace BuilderBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -78,6 +79,19 @@ class Project
      * @ORM\Column(name="git_pass", type="string", length=100)
      */
     protected $gitPass;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Checklist", mappedBy="project", cascade={"persist"})
+     */
+    protected $checklists;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->checklists = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -267,4 +281,23 @@ class Project
         return $this;
     }
 
+    /**
+     * @return ArrayCollection
+     */
+    public function getChecklists()
+    {
+        return $this->checklists;
+    }
+
+    /**
+     * @param Checklist $item
+     *
+     * @return Project
+     */
+    public function addChecklist(Checklist $item)
+    {
+        $this->checklists[] = $item;
+
+        return $this;
+    }
 }

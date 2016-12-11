@@ -22,3 +22,7 @@ validation:
     too_many: Podiadasz juz maksymalną ilość projektów. Usuń jeden aby dodać następny.
     params: Brak obligatoryjnych parametrów.
     not_exist: Projekt nie istnieje
+  checklist:
+      not_exist: Checklista nie istnieje
+  checklist_item:
+      not_exist: Element checklisty nie istnieje

@@ -78,6 +78,7 @@ class ProjectModel
                 $project->$setMethodName($value);
             }
         }
+        $this->projectRepository->save($project);
     }
 
     /**

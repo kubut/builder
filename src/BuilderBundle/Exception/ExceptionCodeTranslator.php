@@ -26,6 +26,8 @@ class ExceptionCodeTranslator
         ExceptionCode::VALIDATION_PROJECT_TOO_MANY => 'validation.project.too_many',
         ExceptionCode::VALIDATION_PROJECT_PARAMS => 'validation.project.params',
         ExceptionCode::PROJECT_NOT_EXIST => 'validation.project.not_exist',
+        ExceptionCode::CHECKLIST_NOT_EXIST => 'validation.checklist.not_exist',
+        ExceptionCode::CHECKLIST_ITEM_NOT_EXIST => 'validation.checklist_item.not_exist',
     ];
 
     /**

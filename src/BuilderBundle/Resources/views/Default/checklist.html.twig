@@ -14,14 +14,13 @@
         <div class="center-box col s12 m6">
             <div class="card">
                 <div class="card-content white-text blue darken-2">
-                    <span class="card-title">Nazwa checklisty</span>
+                    <span class="card-title">{{ checklist.name }}</span>
                 </div>
                 <div class="card-content">
                     <ul>
-                        <li>Ahoy, never desire a mate.</li>
-                        <li>Cold, jolly winds heavily hoist a real, cloudy woodchuck. Sons wave with endurance at the salty madagascar!</li>
-                        <li>With marshmellows drink honey.</li>
-                        <li class="solved">Rob me furner, ye fine anchor!</li>
+                        {% for item in checklist.items %}
+                        <li class="{{ item.solved ? 'solved' }}">{{ item.name }}</li>
+                        {% endfor %}
                     </ul>
                 </div>
             </div>

@@ -19,5 +19,7 @@ class ExceptionCode
     const VALIDATION_PROJECT_TOO_MANY = 674;
     const VALIDATION_PROJECT_PARAMS = 675;
     const PROJECT_NOT_EXIST = 676;
+    const CHECKLIST_NOT_EXIST = 677;
+    const CHECKLIST_ITEM_NOT_EXIST = 678;
 
 }

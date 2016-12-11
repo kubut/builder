@@ -6,3 +6,11 @@ services:
     app.builder.model.project:
         class: BuilderBundle\Model\ProjectModel
         arguments: ['@app.builder.factory.project', '@app.builder.repository.project']
+
+    app.builder.model.checklist_item:
+        class: BuilderBundle\Model\ChecklistItemModel
+        arguments: ['@app.builder.factory.checklist', '@app.builder.repository.checklist_item']
+
+    app.builder.model.checklist:
+        class: BuilderBundle\Model\ChecklistModel
+        arguments: ['@app.builder.factory.checklist', '@app.builder.repository.checklist', '@app.builder.model.checklist_item']

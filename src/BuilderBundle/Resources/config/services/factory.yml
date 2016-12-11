@@ -4,3 +4,10 @@ services:
 
     app.builder.factory.project:
         class: BuilderBundle\Factory\ProjectFactory
+
+    app.builder.factory.checklist:
+        class: BuilderBundle\Factory\ChecklistFactory
+        arguments: ['@app.builder.factory.checklist_item']
+
+    app.builder.factory.checklist_item:
+        class: BuilderBundle\Factory\ChecklistItemFactory
