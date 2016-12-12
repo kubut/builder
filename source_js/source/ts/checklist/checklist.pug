@@ -7,7 +7,7 @@
                     a(href="{{checklistCtrl.getPublicLink()}}" target="_blank" rel="noopener") {{ checklistCtrl.getPublicLink() }}
             md-card-content.checklist-details
                 ul.grey.checklist-items
-                    li(ng-repeat="item in checklistCtrl.checklist.getSortedItems()" ng-class="item.solved ? 'solved-item' : ''")
+                    li(ng-repeat="item in checklistCtrl.checklist.getSortedItems()" ng-show="!item.deleted" ng-class="item.solved ? 'solved-item' : ''")
                         span.item-name {{ item.name }}
                         md-button.md-icon-button.pull-right(ng-click="checklistCtrl.checklist.removeItem(item)")
                             i.material-icons delete

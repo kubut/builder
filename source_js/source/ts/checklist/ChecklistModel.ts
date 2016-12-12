@@ -3,6 +3,7 @@ module APP.Checklist {
         id?: number;
         name: string;
         solved?: boolean;
+        deleted?: boolean;
     }
 
     export class ChecklistModel {
@@ -23,7 +24,7 @@ module APP.Checklist {
         }
 
         public removeItem(item: {id?: number, name: string, solved?: boolean}) {
-            _.remove(this.items, item);
+            _.find(this.items, item).deleted = true;
         }
 
         public getSortedItems(): IChecklistItem[] {
