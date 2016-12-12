@@ -20,7 +20,7 @@ module APP.Users {
         public deleteUser(ev: MouseEvent, user: IUser) {
             let confirm = this.$mdDialog.confirm()
                 .title('Przemyśl to')
-                .textContent('Czy jesteś pewien, że chcesz usunąć uzytkownika ' + user.name + ' ' + user.surname + '?')
+                .textContent('Czy jesteś pewien, że chcesz usunąć użytkownika ' + user.name + ' ' + user.surname + '?')
                 .targetEvent(ev)
                 .ok('Tak, jestem pewien')
                 .cancel('Jeszcze to przemyślę');

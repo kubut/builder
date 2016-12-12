@@ -1,3 +1,21 @@
+.dashboards {
+  position: relative;
+
+  button.new-build {
+    display: flex;
+    margin: 0 auto 16px;
+    color: white;
+
+    i {
+      margin: 0 auto;
+    }
+  }
+}
+
+.new-build-modal {
+  max-width: 700px;
+}
+
 .instance {
   margin-bottom: 16px;
 

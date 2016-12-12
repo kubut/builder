@@ -3,6 +3,7 @@ module APP.Dashboard {
     import IScope = angular.IScope;
     import ITimeoutService = angular.ITimeoutService;
     import IRootScopeService = angular.IRootScopeService;
+    import IDialogService = angular.material.IDialogService;
 
     export class DashboardCtrl {
         private _instances: IInstance[] = [];
@@ -12,7 +13,8 @@ module APP.Dashboard {
                            public projectsService: ProjectsService,
                            public dashboardService: DashboardService,
                            private $rootScope: IRootScopeService,
-                           private $timeout: ITimeoutService) {
+                           private $timeout: ITimeoutService,
+                           private $mdDialog: IDialogService) {
             this.dashboardService.connect();
             this.dashboardService.sendSynchronizationRequest(projectId);
 
@@ -22,6 +24,18 @@ module APP.Dashboard {
 
             $scope.$on('$destroy', () => {
                 this.dashboardService.close();
+            });
+        }
+
+        public newBuildModal(ev: MouseEvent): void {
+            this.$mdDialog.show({
+                templateUrl: '/templates/newBuild.modal.html',
+                controller: 'NewBuildModalCtrl as modalCtrl',
+                clickOutsideToClose: true,
+                locals: {
+                    projectId: this.projectId
+                },
+                targetEvent: ev
             });
         }
 
@@ -36,7 +50,7 @@ module APP.Dashboard {
 }
 
 angular.module('dashboard')
-    .controller('DashboardCtrl', ['$scope', 'projectId', 'ProjectsService', 'DashboardService', '$rootScope', '$timeout',
-        function ($scope, projectId, projectsService, dashboardService, $rootScope, $timeout) {
-            return new APP.Dashboard.DashboardCtrl($scope, projectId, projectsService, dashboardService, $rootScope, $timeout);
+    .controller('DashboardCtrl', ['$scope', 'projectId', 'ProjectsService', 'DashboardService', '$rootScope', '$timeout', '$mdDialog',
+        function ($scope, projectId, projectsService, dashboardService, $rootScope, $timeout, $mdDialog) {
+            return new APP.Dashboard.DashboardCtrl($scope, projectId, projectsService, dashboardService, $rootScope, $timeout, $mdDialog);
         }]);

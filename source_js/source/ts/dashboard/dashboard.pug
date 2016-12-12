@@ -3,7 +3,7 @@ div
         md-card-title
             md-card-title-text Brak aktywnych projektów. Poproś administratora systemu o skonfigurowanie potrzebnych zasobów.
     .container(ng-if="dashboardCtrl.projectsService.projects.length > 0" layout="row")
-        div(flex="70")
+        div.dashboards(flex="70")
             md-card.instance(ng-repeat="instance in dashboardCtrl.instances")
                 md-card-title
                     md-card-title-text {{ instance.name }}
@@ -40,5 +40,7 @@ div
                         span {{ instance.author }}
                     .pull-right
                         a(href="{{ instance.url }}" target="_blank") {{ instance.url }}
+            md-button.md-fab.new-build(ng-click="dashboardCtrl.newBuildModal($event)")
+                i.material-icons.reset-line-height add
         div(flex="30")
             checklist-list
