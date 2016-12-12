@@ -12,7 +12,7 @@ module APP.Checklist {
 
         }
 
-        public loadListOfChecklists(projectId, page = 1): IPromise<any> {
+        public loadListOfChecklists(projectId:number, page = 1): IPromise<any> {
             let offset = (page - 1) * this._limit;
 
             return this.$http.get(this.routing.generate('get_checklists', {

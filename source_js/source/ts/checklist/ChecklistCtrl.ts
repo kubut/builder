@@ -34,15 +34,15 @@ module APP.Checklist {
                 .clickOutsideToClose(true);
 
             this.$mdDialog.show(dialog).then(() => {
-                this.checklistService.deleteChecklist(this.checklist.id, +this.$stateParams['id']).then(() => {
-                    this.$state.go('app.project.dashboard', {projectId: this.$stateParams['id']});
+                this.checklistService.deleteChecklist(this.checklist.id, +this.$stateParams['projectId']).then(() => {
+                    this.$state.go('app.project.dashboard', {projectId: this.$stateParams['projectId']});
                 });
             });
         }
 
         public saveChecklist(): void {
             this.checklistService.saveChecklist(this.checklist).then(() => {
-                this.$state.go('app.project.dashboard', {projectId: this.$stateParams['id']});
+                this.$state.go('app.project.dashboard', {projectId: this.$stateParams['projectId']});
             });
         }
 
