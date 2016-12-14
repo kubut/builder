@@ -36,6 +36,8 @@ module APP.Dashboard {
                     projectId: this.projectId
                 },
                 targetEvent: ev
+            }).then((buildConfiguration: IBuildConfiguration) => {
+                this.dashboardService.sendCreateRequest(this.projectId, buildConfiguration);
             });
         }
 

@@ -8,8 +8,12 @@ module APP.Dashboard {
 
         public constructor(projectId: number,
                            private $mdDialog: IDialogService,
-                           private dashboardService: DashboardService,
                            private buildService: BuildService) {
+            this._buildConfiguration = {
+                name: '',
+                branch: ''
+            };
+
             buildService.getBuildInfo(projectId).then(() => {
                 this._ready = true;
             });
@@ -17,6 +21,10 @@ module APP.Dashboard {
 
         public close(): void {
             this.$mdDialog.cancel();
+        }
+
+        public save(): void {
+            this.$mdDialog.hide(this.buildConfiguration);
         }
 
         get checklistsVisible(): boolean {
@@ -50,7 +58,7 @@ module APP.Dashboard {
 }
 
 angular.module('dashboard')
-    .controller('NewBuildModalCtrl', ['projectId', '$mdDialog', 'DashboardService', 'BuildService',
-        function (projectId, $mdDialog, dashboardService, buildService) {
-            return new APP.Dashboard.NewBuildModalCtrl(projectId, $mdDialog, dashboardService, buildService);
+    .controller('NewBuildModalCtrl', ['projectId', '$mdDialog', 'BuildService',
+        function (projectId, $mdDialog, buildService) {
+            return new APP.Dashboard.NewBuildModalCtrl(projectId, $mdDialog, buildService);
         }]);

@@ -29,6 +29,10 @@ module APP.Dashboard {
             this.socketConnection.emit('synchronize', {projectId: projectId});
         }
 
+        public sendCreateRequest(projectId: number, instance: IBuildConfiguration): void {
+            this.socketConnection.emit('create', {projectId: projectId, instance: instance});
+        }
+
         public getInstancesForProjectId(projectId: number): IInstance[] {
             return _.get(_.find(this._instancesList, {projectId: projectId}), 'instances', []);
         }
@@ -46,6 +50,17 @@ module APP.Dashboard {
                         instances: actionParams['instances']
                     });
                     break;
+                case 'create':
+                    let instancesForProject = _.find(this._instancesList, {projectId: actionParams['projectId']});
+                    if (_.isUndefined(instancesForProject)) {
+                        this._instancesList.push({
+                            projectId: actionParams['projectId'],
+                            instances: [actionParams['instance']]
+                        });
+                    } else {
+                        instancesForProject.instances.push(actionParams['instance']);
+                    }
+                    break;
             }
 
             this.$rootScope.$emit('Instances:changes');
@@ -54,6 +69,13 @@ module APP.Dashboard {
         get instancesList(): {projectId: number; instances: APP.Dashboard.IInstance[]}[] {
             return this._instancesList;
         }
+    }
+
+    export type NewInstance = {
+        name: string,
+        branch: string,
+        checklistId?: number,
+        jiraTaskSymbol?: string
     }
 }
 

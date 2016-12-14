@@ -40,11 +40,11 @@ module APP.Common.Socket {
         }
 
         public emit(action: string, params: Object) {
-            let request = angular.copy(_.merge(this.headers, {
+            let request = _.merge({}, this.headers, {
                 requestId: this.socketStorage.getAvailableId(),
                 action: action,
                 params: params
-            }));
+            });
 
             if (this.ws.readyState === WebSocket.OPEN) {
                 this.socketStorage.add(request);
