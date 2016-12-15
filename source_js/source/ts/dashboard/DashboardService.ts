@@ -44,26 +44,44 @@ module APP.Dashboard {
         private handleMessage(actionType: string, actionParams: Object): void {
             switch (actionType) {
                 case 'synchronize':
-                    _.remove(this._instancesList, {projectId: actionParams['projectId']});
-                    this._instancesList.push({
-                        projectId: actionParams['projectId'],
-                        instances: actionParams['instances']
-                    });
+                    this.synchronizeAction(+actionParams['projectId'], actionParams['instances']);
                     break;
                 case 'create':
-                    let instancesForProject = _.find(this._instancesList, {projectId: actionParams['projectId']});
-                    if (_.isUndefined(instancesForProject)) {
-                        this._instancesList.push({
-                            projectId: actionParams['projectId'],
-                            instances: [actionParams['instance']]
-                        });
-                    } else {
-                        instancesForProject.instances.push(actionParams['instance']);
-                    }
+                    this.createAction(+actionParams['projectId'], actionParams['instance']);
+                    break;
+                case 'update':
+                    this.updateAction(+actionParams['projectId'], +actionParams['instanceId'], +actionParams['status']);
                     break;
             }
 
             this.$rootScope.$emit('Instances:changes');
+        }
+
+        private synchronizeAction(projectId: number, instances: IInstance[]): void {
+            _.remove(this._instancesList, {projectId: projectId});
+            this._instancesList.push({
+                projectId: projectId,
+                instances: instances
+            });
+        }
+
+        private createAction(projectId: number, instance: IInstance): void {
+            let instancesForProject = _.find(this._instancesList, {projectId: projectId});
+            if (_.isUndefined(instancesForProject)) {
+                this._instancesList.push({
+                    projectId: projectId,
+                    instances: [instance]
+                });
+            } else {
+                instancesForProject.instances.push(instance);
+            }
+        }
+
+        private updateAction(projectId: number, instanceId: number, status: InstanceStatus): void {
+            let instancesForProject = _.find(this._instancesList, {projectId: projectId});
+            if (!_.isUndefined(instancesForProject)) {
+                _.find(instancesForProject.instances, {id: instanceId}).status = status;
+            }
         }
 
         get instancesList(): {projectId: number; instances: APP.Dashboard.IInstance[]}[] {
