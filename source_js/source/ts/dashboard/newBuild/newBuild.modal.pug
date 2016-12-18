@@ -3,8 +3,10 @@ md-dialog.new-build-modal
         .md-toolbar-tools Nowy build
     md-dialog-content
         .md-dialog-content(ng-if="modalCtrl.buildService.branches.length === 0")
-            p Nie mogliśmy pobrac listy dostępnych branchy. Jesteś pewien, że ustawienia projektu są poprawne?
-        .md-dialog-content(ng-if="modalCtrl.buildService.branches.length > 0")
+            p Nie mogliśmy pobrać listy dostępnych branchy. Jesteś pewien, że ustawienia projektu są poprawne?
+        .md-dialog-content(ng-if="modalCtrl.buildService.databases.length === 0")
+            p Nie istnieje żadna wolna baza danych. Usuń którąś z instancji, lub poproś administratora o dodanie kolejnych baz
+        .md-dialog-content(ng-if="modalCtrl.buildService.branches.length > 0 && modalCtrl.buildService.databases.length > 0")
             p Aby stworzyć nowe środowisko testowe podaj kilka informacji
             md-progress-circular.center(md-mode="indeterminate" ng-show="!modalCtrl.ready")
             form(name="newBuildForm" layout="column" novalidate ng-if="modalCtrl.ready")
@@ -20,6 +22,12 @@ md-dialog.new-build-modal
                     md-select(name="branch" required ng-model="modalCtrl.buildConfiguration.branch")
                         md-option(ng-repeat="branch in modalCtrl.buildService.branches" ng-value="branch") {{ branch }}
                     div(ng-messages="newBuildForm.branch.$error")
+                        div(ng-message="required") To pole jest wymagane
+                md-input-container
+                    label Wybierz bazę danych
+                    md-select(name="database" required ng-model="modalCtrl.buildConfiguration.databaseId")
+                        md-option(ng-repeat="database in modalCtrl.buildService.databases" ng-value="database.id") {{ database.name }} - {{ database.comment }}
+                    div(ng-messages="newBuildForm.database.$error")
                         div(ng-message="required") To pole jest wymagane
                 md-checkbox.md-primary(ng-if="modalCtrl.buildService.checklists.length > 0" ng-model="modalCtrl.checklistsVisible") Powiąż checklistę
                 md-input-container(ng-if="modalCtrl.checklistsVisible && modalCtrl.buildService.checklists.length > 0")

@@ -11,7 +11,8 @@ module APP.Dashboard {
                            private buildService: BuildService) {
             this._buildConfiguration = {
                 name: '',
-                branch: ''
+                branch: '',
+                databaseId: -1
             };
 
             buildService.getBuildInfo(projectId).then(() => {

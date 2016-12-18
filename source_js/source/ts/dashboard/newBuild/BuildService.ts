@@ -7,6 +7,7 @@ module APP.Dashboard {
         private _checklists: {id: number, name: string}[] = [];
         private _branches: string[] = [];
         private _jiraTasks: {symbol: string, name: string}[] = [];
+        private _databases: {id: number, name: string, comment: string}[] = [];
 
         public constructor(private $http: IHttpService,
                            private routing: IRoutingService) {
@@ -19,7 +20,12 @@ module APP.Dashboard {
                 this._checklists = response.data.checklists;
                 this._branches = response.data.branches;
                 this._jiraTasks = response.data.jiraTasks;
+                this._databases = response.data.databases;
             });
+        }
+
+        get databases(): {id: number; name: string}[] {
+            return this._databases;
         }
 
         get checklists(): {id: number; name: string}[] {
