@@ -1,0 +1,20 @@
+services:
+    app.builder.database.server.action.update:
+        class: BuilderBundle\WebSocket\Channels\Databases\Actions\Server\ServerUpdateAction
+        arguments:
+            databaseService: '@app.builder.service.database'
+
+    app.builder.database.server.action.delete:
+        class: BuilderBundle\WebSocket\Channels\Databases\Actions\Server\ServerDeleteAction
+        arguments:
+            databaseService: '@app.builder.service.database'
+
+    app.builder.instance.server.action.update:
+        class: BuilderBundle\WebSocket\Channels\Instances\Actions\Server\ServerUpdateAction
+        arguments:
+            databaseService: '@app.builder.service.database'
+
+    app.builder.instance.server.action.delete:
+        class: BuilderBundle\WebSocket\Channels\Instances\Actions\Server\ServerDeleteAction
+        arguments:
+            databaseService: '@app.builder.service.database'

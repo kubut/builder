@@ -11,3 +11,6 @@ services:
 
     app.builder.factory.checklist_item:
         class: BuilderBundle\Factory\ChecklistItemFactory
+
+    app.builder.factory.database:
+        class: BuilderBundle\Factory\DatabaseFactory

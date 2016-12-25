@@ -10,3 +10,14 @@ services:
     app.builder.service.file_finder:
         class: BuilderBundle\Services\FileFinderService
         arguments: ['%kernel.root_dir%']
+
+    app.builder.service.database:
+        class: BuilderBundle\WebSocket\Services\DatabaseService
+        arguments: ['@app.builder.model.project','@app.builder.model.database', '%kernel.root_dir%']
+
+    app.builder.service.instance:
+        class: BuilderBundle\WebSocket\Services\DatabaseService
+        arguments: ['@app.builder.model.project','@app.builder.model.database', '%kernel.root_dir%']
+
+    app.builder.service.params_validator:
+        class: BuilderBundle\WebSocket\Settings\ParamsValidator

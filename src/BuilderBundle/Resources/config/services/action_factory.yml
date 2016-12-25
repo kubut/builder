@@ -1,0 +1,17 @@
+services:
+  app.builder.factory.action.database:
+    class: BuilderBundle\WebSocket\Channels\Databases\DatabaseActionHandlerFactory
+    arguments:
+      - '@app.builder.database.action.create'
+      - '@app.builder.database.server.action.update'
+      - '@app.builder.database.action.synchronize'
+      - '@app.builder.database.server.action.delete'
+      - '@app.builder.database.action.delete'
+  app.builder.factory.action.instances:
+    class: BuilderBundle\WebSocket\Channels\Instances\InstancesActionHandlerFactory
+    arguments:
+      - '@app.builder.instance.action.create'
+      - '@app.builder.instance.server.action.update'
+      - '@app.builder.instance.action.synchronize'
+      - '@app.builder.instance.server.action.delete'
+      - '@app.builder.instance.action.delete'
