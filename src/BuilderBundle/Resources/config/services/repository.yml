@@ -22,3 +22,9 @@ services:
         factory: ['@doctrine.orm.entity_manager', getRepository]
         arguments:
           - BuilderBundle\Entity\ChecklistItem
+
+    app.builder.repository.database:
+        class: BuilderBundle\Repository\DatabaseRepository
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments:
+          - BuilderBundle\Entity\Database

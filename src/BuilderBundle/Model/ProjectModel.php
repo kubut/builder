@@ -1,6 +1,7 @@
 <?php
 namespace BuilderBundle\Model;
 
+use BuilderBundle\Entity\Project;
 use BuilderBundle\Exception\ExceptionCode;
 use BuilderBundle\Factory\ProjectFactory;
 use BuilderBundle\Repository\ProjectRepository;
@@ -60,6 +61,18 @@ class ProjectModel
         $projectData = $this->projectRepository->fetchProjectById($id);
 
         return $projectData;
+    }
+    /**
+     * @param integer $id
+     *
+     * @return Project
+     * @throws \Exception
+     */
+    public function getProject($id)
+    {
+        $project = $this->projectRepository->findById($id);
+
+        return $project;
     }
 
     /**

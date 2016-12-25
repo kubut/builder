@@ -21,5 +21,7 @@ class ExceptionCode
     const PROJECT_NOT_EXIST = 676;
     const CHECKLIST_NOT_EXIST = 677;
     const CHECKLIST_ITEM_NOT_EXIST = 678;
+    const INVALID_JSON_STRING = 679;
+    const DATABASE_NOT_EXIST = 680;
 
 }

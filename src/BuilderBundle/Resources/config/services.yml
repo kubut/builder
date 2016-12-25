@@ -1,4 +1,8 @@
 imports:
+  - { resource: services/channels.yml}
+  - { resource: services/action_factory.yml}
+  - { resource: services/server_actions.yml}
+  - { resource: services/actions.yml}
   - { resource: services/listener.yml }
   - { resource: services/factory.yml }
   - { resource: services/sevices.yml }

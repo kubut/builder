@@ -1,0 +1,8 @@
+services:
+    app.builder.websocket.channel.databases:
+        class: BuilderBundle\WebSocket\Channels\Databases\DataBasesChannel
+        arguments: ['@app.builder.factory.action.database', '@app.builder.service.params_validator']
+
+    app.builder.websocket.channel.instances:
+        class: BuilderBundle\WebSocket\Channels\Instances\InstancesChannel
+        arguments: ['@app.builder.factory.action.instances', '@app.builder.service.params_validator']
