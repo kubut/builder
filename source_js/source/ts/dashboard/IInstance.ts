@@ -4,6 +4,7 @@ module APP.Dashboard {
         name: string;
         status: InstanceStatus;
         jiraInformation?: IJiraInformation;
+        checklist?: IDashboardChecklist;
         branchName: string;
         buildDate: string;
         author: string;

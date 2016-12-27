@@ -33,6 +33,16 @@ module APP.Dashboard {
             this.socketConnection.emit('create', {projectId: projectId, instance: instance});
         }
 
+        public sendChecklistItemRequest(projectId: number, instanceId: number, checklistId: number, itemId: number, itemSolved: boolean) {
+            this.socketConnection.emit('checklist_item_update', {
+                projectId: projectId,
+                checklistId: checklistId,
+                instanceId: instanceId,
+                itemId: itemId,
+                itemSolved: itemSolved
+            });
+        }
+
         public getInstancesForProjectId(projectId: number): IInstance[] {
             return _.get(_.find(this._instancesList, {projectId: projectId}), 'instances', []);
         }
@@ -52,6 +62,15 @@ module APP.Dashboard {
                 case 'update':
                     this.updateAction(+actionParams['projectId'], +actionParams['instanceId'], +actionParams['status']);
                     break;
+                case 'checklist_item_update':
+                    this.checklistItemUpdateAction(
+                        +actionParams['projectId'],
+                        +actionParams['instanceId'],
+                        +actionParams['checklistId'],
+                        +actionParams['itemId'],
+                        actionParams['itemSolved']
+                    );
+                    break;
             }
 
             this.$rootScope.$emit('Instances:changes');
@@ -59,6 +78,19 @@ module APP.Dashboard {
 
         private synchronizeAction(projectId: number, instances: IInstance[]): void {
             _.remove(this._instancesList, {projectId: projectId});
+
+            instances = _.map(instances, (instance: IInstance) => {
+                if (instance.checklist) {
+                    instance.checklist = new DashboardChecklistModel(
+                        instance.checklist.id,
+                        instance.checklist.name,
+                        instance.checklist.items
+                    );
+                }
+
+                return instance;
+            });
+
             this._instancesList.push({
                 projectId: projectId,
                 instances: instances
@@ -81,6 +113,21 @@ module APP.Dashboard {
             let instancesForProject = _.find(this._instancesList, {projectId: projectId});
             if (!_.isUndefined(instancesForProject)) {
                 _.find(instancesForProject.instances, {id: instanceId}).status = status;
+            }
+        }
+
+        private checklistItemUpdateAction(projectId: number, instanceId: number, checklistId: number, itemId: number, solved: boolean) {
+            let instancesForProject = _.find(this._instancesList, {projectId: projectId});
+
+            if (!_.isUndefined(instancesForProject)) {
+                let checklistForInstance = <DashboardChecklistModel>_.find(instancesForProject.instances, {id: instanceId}).checklist;
+
+                if (checklistForInstance.id !== checklistId) {
+                    return;
+                }
+
+                _.find(checklistForInstance.items, {id: itemId}).solved = solved;
+                checklistForInstance.reorderItems();
             }
         }
 

@@ -41,6 +41,11 @@ module APP.Dashboard {
             });
         }
 
+        public onChecklistItemStateChanged(instanceId: number, checklist: DashboardChecklistModel, item: DashboardChecklistItem): void {
+            checklist.reorderItems();
+            this.dashboardService.sendChecklistItemRequest(this.projectId, instanceId, checklist.id, item.id, item.solved);
+        }
+
         public loadInstances(): void {
             this._instances = this.dashboardService.getInstancesForProjectId(this.projectId);
         }
@@ -50,6 +55,7 @@ module APP.Dashboard {
         }
     }
 }
+
 
 angular.module('dashboard')
     .controller('DashboardCtrl', ['$scope', 'projectId', 'ProjectsService', 'DashboardService', '$rootScope', '$timeout', '$mdDialog',
