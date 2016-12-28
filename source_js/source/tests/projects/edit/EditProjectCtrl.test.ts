@@ -7,6 +7,9 @@ module APP.Projects {
             $stateMock,
             $mdDialogMock,
             dialogMock,
+            databasesServiceMock,
+            rootScopeMock,
+            scopeMock,
             q;
 
         beforeEach(() => {
@@ -63,19 +66,48 @@ module APP.Projects {
                 show: jasmine.createSpy('mdDialog.show')
             };
 
+            databasesServiceMock = {
+                connect: jasmine. createSpy('databaseService.connect'),
+                sendSynchronizationRequest: jasmine. createSpy('databaseService.sendSynchronizationRequest')
+            };
+
+            rootScopeMock = {
+                $on: jasmine.createSpy('rootScope.on')
+            };
+
+            scopeMock = {
+                $on: jasmine.createSpy('scopeMock.on')
+            };
 
             angular.mock.module(($provide) => {
                 $provide.value('ProjectsService', ProjectsServiceMock);
                 $provide.value('$mdToast', $mdToastMock);
                 $provide.value('$state', $stateMock);
                 $provide.value('$mdDialog', $mdDialogMock);
+                $provide.value('$scope', scopeMock);
+                $provide.value('databasesService', databasesServiceMock);
+                $provide.value('rootScope', rootScopeMock);
+                $provide.value('timeout', {});
+                $provide.value('jiraConfigService', {});
             });
 
-            angular.mock.inject((ProjectsService, $mdToast, $state, $mdDialog, $q) => {
-                q = $q;
+            angular.mock.inject(
+                (ProjectsService, $mdToast, $state, $mdDialog, $q, $scope, databasesService, rootScope, timeout, jiraConfigService) => {
+                    q = $q;
 
-                ctrl = new EditProjectCtrl(ProjectsService, $mdToast, $state, projectMock, $mdDialog);
-            });
+                    ctrl = new EditProjectCtrl(
+                        $scope,
+                        ProjectsService,
+                        $mdToast,
+                        projectMock,
+                        $state,
+                        $mdDialog,
+                        databasesService,
+                        rootScope,
+                        timeout,
+                        jiraConfigService
+                    );
+                });
         });
 
         describe('showToast', () => {

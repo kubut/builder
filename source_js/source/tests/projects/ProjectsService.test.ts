@@ -76,7 +76,7 @@ module APP.Projects {
                 service.loadProjectList();
                 httpBackend.flush();
 
-                expect(routingMock.generate).toHaveBeenCalledWith('projects');
+                expect(routingMock.generate).toHaveBeenCalledWith('get_projects');
             });
         });
 
@@ -121,7 +121,7 @@ module APP.Projects {
                 service.saveProject(new ProjectModel(projectMock));
                 httpBackend.flush();
 
-                expect(routingMock.generate).toHaveBeenCalledWith('projects');
+                expect(routingMock.generate).toHaveBeenCalledWith('add_project');
             });
 
             it('should call proper API for edit project', () => {
@@ -164,7 +164,7 @@ module APP.Projects {
                 service.deleteProject(42);
                 httpBackend.flush();
 
-                expect(routingMock.generate).toHaveBeenCalledWith('projects', {id: 42});
+                expect(routingMock.generate).toHaveBeenCalledWith('delete_project', {id: 42});
             });
         });
     });

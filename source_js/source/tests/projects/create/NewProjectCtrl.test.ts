@@ -56,7 +56,7 @@ module APP.Projects {
                 expect($mdToastMock.showSimple).toHaveBeenCalledWith('Dodano pomyślnie');
             });
             it('should go to edit page', () => {
-                expect($stateMock.go).toHaveBeenCalledWith('app.admin.project.edit', {id: 2});
+                expect($stateMock.go).toHaveBeenCalledWith('app.admin.project.edit', {projectId: 2});
             });
         });
     });

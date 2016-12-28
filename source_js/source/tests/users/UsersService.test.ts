@@ -133,7 +133,7 @@ module APP.Users {
                 service.resetPassword(3);
                 httpBackend.flush();
 
-                expect(routingMock.generate).toHaveBeenCalledWith('delete_user', {id: 3});
+                expect(routingMock.generate).toHaveBeenCalledWith('reset_user_password', {id: 3});
             });
         });
 
