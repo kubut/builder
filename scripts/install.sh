@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
 gitPath="https://github.com/kubut/builder.git"
-quiet=false
-flag=''
-npmFlag=''
+quiet=true
+flag="-q"
+npmFlag="--silent"
 
 printError() {
     echo "$(tput setab 1)$(tput bold)--ERROR:$(tput sgr0) ${1}"
@@ -171,6 +171,16 @@ installBackend() {
     setApache
     requireSuccess
 
+    if [ $(isProgramInstalled apt-get) -eq 1 ]; then
+        installIfNeeded mcrypt
+        installIfNeeded php5-mcrypt
+        sudo php5enmod mcrypt
+        sudo service ${serverService} restart
+    else
+        printError "I can't install php-mcrypt!"
+        printWarning "Make sure that php mcrypt module is installed and enabled"
+    fi
+
     php app/console doctrine:schema:create
     php app/console doctrine:fixtures:load --fixtures=src/BuilderBundle/DataFixtures/Prod/
 }
@@ -224,11 +234,11 @@ if [ "$(whoami)" != "root" ]; then
     exit 4
 fi
 
-if [ "$1" = '-q' ]; then
-    printInfo "Running in quiet mode"
-    quiet=true
-    flag="-q"
-    npmFlag="--silent"
+if [ "$1" = '-v' ]; then
+    printInfo "Running in verbose mode"
+    quiet=false
+    flag=""
+    npmFlag=""
 fi
 
 if [ $(isProgramInstalled apt-get) -eq 1 ]; then
