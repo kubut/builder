@@ -4,13 +4,13 @@
         div(layout="row")
             md-input-container(flex)
                 label Nazwa projektu
-                input(name="name" minlength="3" maxlength="20" required ng-model="projectCtrl.project.name")
+                input(name="name" minlength="3" maxlength="10" required ng-model="projectCtrl.project.name")
                 md-icon.helper
                     i.material-icons.grey help_outline
                     md-tooltip Nazwa projektu widoczna w górnym pasku
                 div(ng-messages="projectForm.name.$error")
                     div(ng-message="required") To pole jest wymagane
-                    div(ng-message="maxlength") Nazwa nie może być dłuższa niż 20 znaków
+                    div(ng-message="maxlength") Nazwa nie może być dłuższa niż 10 znaków
                     div(ng-message="minlength") Nazwa nie może być krótsza niż 3 znaki
             md-input-container(flex)
                 label Domena

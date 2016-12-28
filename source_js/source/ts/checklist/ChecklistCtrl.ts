@@ -51,10 +51,6 @@ module APP.Checklist {
             this.newItem = this.defaultItemValue;
         }
 
-        public showShareChecklistModal(ev: MouseEvent): void {
-            alert('Jeszcze nie zaimplementowano!');
-        }
-
         get newItem(): string {
             return this._newItem;
         }
