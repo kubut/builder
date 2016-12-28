@@ -33,6 +33,10 @@ module APP.Dashboard {
             this.socketConnection.emit('create', {projectId: projectId, instance: instance});
         }
 
+        public sendBuildRequest(projectId: number, instance: IBuildConfiguration):void {
+            this.socketConnection.emit('build', {projectId: projectId, instance: instance});
+        }
+
         public sendChecklistItemRequest(projectId: number, instanceId: number, checklistId: number, itemId: number, itemSolved: boolean) {
             this.socketConnection.emit('checklist_item_update', {
                 projectId: projectId,
@@ -61,6 +65,9 @@ module APP.Dashboard {
                     break;
                 case 'update':
                     this.updateAction(+actionParams['projectId'], +actionParams['instanceId'], +actionParams['status']);
+                    break;
+                case 'build':
+                    this.buildAction(+actionParams['projectId'], actionParams['instance']);
                     break;
                 case 'checklist_item_update':
                     this.checklistItemUpdateAction(
@@ -105,6 +112,20 @@ module APP.Dashboard {
                     instances: [instance]
                 });
             } else {
+                instancesForProject.instances.push(instance);
+            }
+        }
+
+        private buildAction(projectId: number, instance: IInstance): void {
+            let instancesForProject = _.find(this._instancesList, {projectId: projectId});
+            if (_.isUndefined(instancesForProject)) {
+                this._instancesList.push({
+                    projectId: projectId,
+                    instances: [instance]
+                });
+            } else {
+
+                _.remove(instancesForProject.instances, {id: instance.id});
                 instancesForProject.instances.push(instance);
             }
         }

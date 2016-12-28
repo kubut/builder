@@ -7,11 +7,13 @@ module APP.Dashboard {
         private _buildConfiguration: IBuildConfiguration;
 
         public constructor(projectId: number,
+                           instanceId: number,
                            private $mdDialog: IDialogService,
                            private buildService: BuildService) {
             this._buildConfiguration = {
                 name: '',
                 branch: '',
+                instanceId: instanceId,
                 databaseId: -1
             };
 
@@ -25,6 +27,10 @@ module APP.Dashboard {
         }
 
         public save(): void {
+            if (this.buildConfiguration.instanceId < 0) {
+                delete this.buildConfiguration.instanceId;
+            }
+
             this.$mdDialog.hide(this.buildConfiguration);
         }
 
@@ -59,7 +65,7 @@ module APP.Dashboard {
 }
 
 angular.module('dashboard')
-    .controller('NewBuildModalCtrl', ['projectId', '$mdDialog', 'BuildService',
-        function (projectId, $mdDialog, buildService) {
-            return new APP.Dashboard.NewBuildModalCtrl(projectId, $mdDialog, buildService);
+    .controller('NewBuildModalCtrl', ['projectId', 'instanceId', '$mdDialog', 'BuildService',
+        function (projectId, instanceId, $mdDialog, buildService) {
+            return new APP.Dashboard.NewBuildModalCtrl(projectId, instanceId, $mdDialog, buildService);
         }]);

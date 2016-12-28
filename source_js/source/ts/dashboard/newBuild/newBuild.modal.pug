@@ -7,7 +7,8 @@ md-dialog.new-build-modal
         .md-dialog-content(ng-if="modalCtrl.buildService.databases.length === 0")
             p Nie istnieje żadna wolna baza danych. Usuń którąś z instancji, lub poproś administratora o dodanie kolejnych baz
         .md-dialog-content(ng-if="modalCtrl.buildService.branches.length > 0 && modalCtrl.buildService.databases.length > 0")
-            p Aby stworzyć nowe środowisko testowe podaj kilka informacji
+            p(ng-if="modalCtrl.buildConfiguration.instanceId < 0") Aby stworzyć nowe środowisko testowe podaj kilka informacji
+            p(ng-if="modalCtrl.buildConfiguration.instanceId >= 0") Zmiana konfiguracji środowiska spowoduje usunięcie obecnych informacji - dobrze się zastanów!
             md-progress-circular.center(md-mode="indeterminate" ng-show="!modalCtrl.ready")
             form(name="newBuildForm" layout="column" novalidate ng-if="modalCtrl.ready")
                 md-input-container
@@ -41,4 +42,4 @@ md-dialog.new-build-modal
                         md-option(ng-repeat="task in modalCtrl.buildService.jiraTasks" ng-value="task.symbol") {{ task.symbol }} - {{ task.name }}
                 .form-actions
                     md-button(ng-click="modalCtrl.close()") Anuluj
-                    md-button.md-raised.md-primary(ng-click="modalCtrl.save()" ng-if="modalCtrl.buildService.branches.length > 0" ng-disabled="!newBuildForm.$valid") Dodaj
+                    md-button.md-raised.md-primary(ng-click="modalCtrl.save()" ng-if="modalCtrl.buildService.branches.length > 0" ng-disabled="!newBuildForm.$valid") Buduj

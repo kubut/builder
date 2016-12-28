@@ -27,17 +27,22 @@ module APP.Dashboard {
             });
         }
 
-        public newBuildModal(ev: MouseEvent): void {
+        public newBuildModal(ev: MouseEvent, instanceId: number = -1): void {
             this.$mdDialog.show({
                 templateUrl: '/templates/newBuild.modal.html',
                 controller: 'NewBuildModalCtrl as modalCtrl',
                 clickOutsideToClose: true,
                 locals: {
-                    projectId: this.projectId
+                    projectId: this.projectId,
+                    instanceId: instanceId
                 },
                 targetEvent: ev
             }).then((buildConfiguration: IBuildConfiguration) => {
-                this.dashboardService.sendCreateRequest(this.projectId, buildConfiguration);
+                if (!_.isUndefined(buildConfiguration.instanceId)) {
+                    this.dashboardService.sendBuildRequest(this.projectId, buildConfiguration);
+                } else {
+                    this.dashboardService.sendCreateRequest(this.projectId, buildConfiguration);
+                }
             });
         }
 

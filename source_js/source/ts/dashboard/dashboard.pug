@@ -8,6 +8,8 @@ div
                 md-card-title
                     md-card-title-text {{ instance.name }}
                     .pull-right
+                        button.md-icon-button.md-button.change-build(ng-click="dashboardCtrl.newBuildModal($event, instance.id)")
+                            i.material-icons build
                         .instance-status.instance-status-processing.center-align(ng-show="instance.status == 0")
                             span klonowanie
                         .instance-status.instance-status-processing.center-align(ng-show="instance.status == 1")
