@@ -19,6 +19,8 @@
                         span Gotowe
                     td.center-align.database-status.database-status-error(md-cell ng-show="database.status === 2")
                         span Błąd
+                    td.center-align.database-status.database-status-error(md-cell ng-show="database.status === 3")
+                        span Usuwanie...
                     td.center-align(md-cell)
                         md-button.md-icon-button(ng-click="projectCtrl.deleteDatabase($event, database.id)")
                             md-tooltip(md-direction="top") Usuń instancję bazy

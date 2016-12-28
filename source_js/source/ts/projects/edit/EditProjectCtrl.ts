@@ -82,6 +82,7 @@ module APP.Projects {
                 .cancel('Jeszcze to przemyślę');
 
             this.$mdDialog.show(dialog).then(() => {
+                _.find(this.databaseList, {id: databaseId}).status = DatabaseStatus.Deleting;
                 this.databasesService.sendDeleteRequest(this.project.id, databaseId);
             });
         }
