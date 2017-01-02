@@ -40,6 +40,11 @@ class Database
      */
     protected $comment;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Instance", mappedBy="database", cascade={"persist"})
+     */
+    protected $instances;
+
 
     /**
      * @var integer
@@ -158,4 +163,22 @@ class Database
         return $this->projectId;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getInstances()
+    {
+        return $this->instances;
+    }
+
+    /**
+     * @param Instance $instance
+     * @return $this
+     */
+    public function addInstance(Instance $instance)
+    {
+        $this->instances[] = $instance;
+
+        return $this;
+    }
 }

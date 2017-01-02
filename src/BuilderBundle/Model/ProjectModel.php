@@ -5,6 +5,7 @@ use BuilderBundle\Entity\Project;
 use BuilderBundle\Exception\ExceptionCode;
 use BuilderBundle\Factory\ProjectFactory;
 use BuilderBundle\Repository\ProjectRepository;
+use BuilderBundle\Util\GitHelper;
 
 /**
  * Class ProjectModel
@@ -18,18 +19,23 @@ class ProjectModel
     /** @var ProjectRepository  */
     private $projectRepository;
 
+    private $kernelDir;
+
     /**
      * ProjectService constructor.
      * @param ProjectFactory $projectFactory
      * @param ProjectRepository $projectRepository
+     * @param $kernelDir
      */
     public function __construct(
         ProjectFactory $projectFactory,
-        ProjectRepository $projectRepository
+        ProjectRepository $projectRepository,
+        $kernelDir
     )
     {
         $this->projectFactory = $projectFactory;
         $this->projectRepository = $projectRepository;
+        $this->kernelDir = $kernelDir;
     }
 
     /**
@@ -109,5 +115,20 @@ class ProjectModel
     {
         $scope = ['name'];
         return $this->projectRepository->fetchDataWithScope($scope);
+    }
+
+    /**
+     * @param Project $project
+     * @return array
+     */
+    public function fetchAllBranchesFromURL($project)
+    {
+        $gitURL = GitHelper::createSecureGitURL($project);
+
+        $branches = [];
+        $output = [];
+        exec($this->kernelDir.'/../src/BuilderBundle/Scripts/branches.sh '.$gitURL." 2>&1", $branches, $output);
+
+        return $branches;
     }
 }

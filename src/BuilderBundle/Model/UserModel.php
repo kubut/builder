@@ -109,4 +109,18 @@ class UserModel
         $user->setActivationCode($activationCode);
         $this->userRepository->save($user);
     }
+
+    /**
+     * @param User $user
+     */
+    public function removeLastToken($user)
+    {
+        $UserToken = $user->getTokens()[0];
+        $this->userRepository->removeToken($UserToken);
+    }
+
+    public function save($user)
+    {
+        $this->userRepository->save($user);
+    }
 }

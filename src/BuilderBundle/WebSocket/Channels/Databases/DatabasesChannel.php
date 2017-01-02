@@ -1,11 +1,8 @@
 <?php
 namespace BuilderBundle\WebSocket\Channels\Databases;
 
-use BuilderBundle\AsyncAction\Async;
-use BuilderBundle\Command\ScriptRunnerCommand;
-use BuilderBundle\Entity\Database;
-use BuilderBundle\WebSocket\Channels\Databases\Actions\Server\ServerUpdateAction;
-use BuilderBundle\WebSocket\Services\DatabaseService;
+use BuilderBundle\Exception\ExceptionCode;
+use BuilderBundle\WebSocket\Services\WebSocketAuthentication;
 use BuilderBundle\WebSocket\Settings\ActionHandlerInterface;
 use BuilderBundle\WebSocket\Settings\ParamsValidator;
 use Ratchet\ConnectionInterface;
@@ -20,16 +17,26 @@ class DataBasesChannel implements MessageComponentInterface
     protected $actionHandler;
     /** @var ParamsValidator $paramsValidator */
     protected $paramsValidator;
+    /** @var WebSocketAuthentication */
+    protected $authenticateModel;
 
     private $connections = [];
 
+    /**
+     * DataBasesChannel constructor.
+     * @param DatabaseActionHandlerFactory $actionHandler
+     * @param ParamsValidator $paramsValidator
+     * @param WebSocketAuthentication $authenticationModel
+     */
     public function __construct(
         DatabaseActionHandlerFactory $actionHandler,
-        ParamsValidator $paramsValidator
+        ParamsValidator $paramsValidator,
+        WebSocketAuthentication $authenticationModel
     )
     {
         $this->actionHandler = $actionHandler;
         $this->paramsValidator = $paramsValidator;
+        $this->authenticateModel = $authenticationModel;
     }
 
     /**
@@ -43,29 +50,28 @@ class DataBasesChannel implements MessageComponentInterface
     /**
      * @param ConnectionInterface $userConnection
      * @param string $msg
+     * @throws \Exception
      */
     public function onMessage(ConnectionInterface $userConnection, $msg)
     {
-        echo $msg;
         $data = $this->paramsValidator->parseRequest($msg);
-        echo "d`ta->";
         $requestId = $this->paramsValidator->getRequestId($data);
         try {
             $this->paramsValidator->validateParams($data);
             $userId = $data['userId'];
             $token = $data['userToken'];
             $action = $data['action'];
-//
-////            if (!$this->authenticateModel->authenticate($userId, $token)) {
-////                throw new NotesException('Authentication error', NotesExceptionCodes::AUTHENTICATION_ERROR);
-////            }
+
+            if (!$this->authenticateModel->authenticate($userId, $token)) {
+                throw new \Exception('Authentication error', ExceptionCode::AUTHENTICATION_ERROR);
+            }
             /** @var ActionHandlerInterface $action */
             $action = $this->actionHandler->factory($action);
             $this->paramsValidator->validateParams($data['params'], $action->getActionParams());
             $projectId = $data['params']['projectId'];
             $this->connections[$projectId][] = $userConnection;
             $responseData = $action->run($data);
-            $action->sendResponse($userConnection,$this->connections[$projectId], $requestId,$responseData);
+            $action->sendResponse($userConnection, $this->connections[$projectId], $requestId, $responseData);
             $this->asyncAction($action, $responseData);
         } catch (Exception $e) {
             $userConnection->send("dwadaw");
@@ -101,15 +107,14 @@ class DataBasesChannel implements MessageComponentInterface
      */
     private function asyncAction($action, $params)
     {
-
         if ($action->hasAsyncJob()) {
-                $output = [];
-                $return_var = -1;
-                exec(base64_decode($params['command'])." ".$params['successAction']." ".$params['errorAction']. " > /dev/null 2>/dev/null &", $output, $return_var);
+            $output = [];
+            $return_var = -1;
+            exec(base64_decode($params['command']) . " " . $params['successAction'] . " " . $params['errorAction'] . " > /dev/null 2>/dev/null &", $output, $return_var);
 
-                if ($return_var !== 0) {
-                    throw new \Exception(implode("\n", $output));
-                }
+            if ($return_var !== 0) {
+                throw new \Exception(implode("\n", $output));
+            }
         }
-
-}}
+    }
+}

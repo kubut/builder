@@ -16,8 +16,12 @@ services:
         arguments: ['@app.builder.model.project','@app.builder.model.database', '%kernel.root_dir%']
 
     app.builder.service.instance:
-        class: BuilderBundle\WebSocket\Services\DatabaseService
-        arguments: ['@app.builder.model.project','@app.builder.model.database', '%kernel.root_dir%']
+        class: BuilderBundle\WebSocket\Services\InstanceService
+        arguments: ['@app.builder.model.instance', '%kernel.root_dir%']
 
     app.builder.service.params_validator:
         class: BuilderBundle\WebSocket\Settings\ParamsValidator
+
+    app.builder.service.websocket.authentication:
+        class: BuilderBundle\WebSocket\Services\WebSocketAuthentication
+        arguments: ['@app.builder.model.authentication']

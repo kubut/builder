@@ -10,3 +10,7 @@ parameters:
     mailer_user: null
     mailer_password: null
     secret: d7cc3ccae320c60bca9e8fa0d35ad9e0a862557e
+    socket_host: ws://builder.vagrant
+    socket_port: 8080
+    socket_databases: databases
+    socket_instances: instances

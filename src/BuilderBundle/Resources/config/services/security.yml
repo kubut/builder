@@ -1,0 +1,9 @@
+services:
+    app.builder.model.authentication:
+        class: BuilderBundle\Security\AuthenticationModel
+        arguments:
+        - '@security.token_storage'
+        - '@fos_user.user_manager.default'
+        - '@security.encoder_factory'
+        - '@app.builder.model.user_token'
+        - '@app.builder.model.user'

@@ -5,7 +5,7 @@ services:
 
     app.builder.model.project:
         class: BuilderBundle\Model\ProjectModel
-        arguments: ['@app.builder.factory.project', '@app.builder.repository.project']
+        arguments: ['@app.builder.factory.project', '@app.builder.repository.project', '%kernel.root_dir%']
 
     app.builder.model.checklist_item:
         class: BuilderBundle\Model\ChecklistItemModel
@@ -18,3 +18,12 @@ services:
     app.builder.model.database:
         class: BuilderBundle\Model\DatabaseModel
         arguments: ['@app.builder.factory.database', '@app.builder.repository.database']
+
+    app.builder.model.instance:
+        class: BuilderBundle\Model\InstanceModel
+        arguments: ['@app.builder.factory.instance', '@app.builder.repository.instance', '@app.builder.model.database', '@app.builder.model.project', '@app.builder.model.checklist', '@app.builder.model.user']
+
+    app.builder.model.user_token:
+        class: BuilderBundle\Model\UserTokenModel
+        arguments:
+          userTokenRepository: '@app.builder.repository.user_token'

@@ -145,4 +145,24 @@ class ChecklistModel
 
         return $checklist;
     }
+
+    /**
+     * @param integer $projectId
+     * @return array
+     */
+    public function fetchAllCheckLists($projectId)
+    {
+        return $this->checklistRepository->fetchAllForProjectId($projectId, ['name']);
+
+    }
+
+    /**
+     * @param integer $checklistId
+     * @return Checklist
+     * @throws \Exception
+     */
+    public function getById($checklistId)
+    {
+        return $this->checklistRepository->findById($checklistId);
+    }
 }

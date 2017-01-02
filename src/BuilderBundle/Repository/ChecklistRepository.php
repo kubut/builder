@@ -25,7 +25,7 @@ class ChecklistRepository extends EntityRepository
     /**
      * @param integer $id
      *
-     * @return Project
+     * @return Checklist
      * @throws \Exception
      */
     public function findById($id)
@@ -109,5 +109,24 @@ class ChecklistRepository extends EntityRepository
     public function getReference($id)
     {
         return $this->_em->getReference($this->_entityName, $id);
+    }
+
+    /**
+     * @param integer $projectId
+     * @param array $scope
+     * @return array
+     */
+    public function fetchAllForProjectId($projectId, array $scope)
+    {
+        $qb = $this->createQueryBuilder('cl')
+            ->select('cl.id')
+            ->where('cl.projectId = :projectId')
+            ->setParameter('projectId', $projectId);;
+        
+        foreach ($scope as $scopeItem) {
+            $qb->addSelect('cl.' . $scopeItem);
+        }
+
+        return $qb->getQuery()->getArrayResult();
     }
 }

@@ -6,10 +6,10 @@ use BuilderBundle\WebSocket\Settings\ActionHandlerInterface;
 
 
 /**
- * Class CreateAction
- * @package VM\NotesBundle\WebSocket\Action
+ * Class SynchronizeAction
+ * @package BuilderBundle\WebSocket\Channels\Instances\Actions
  */
-class SynchronizeAction extends BaseDatabaseAction implements ActionHandlerInterface
+class SynchronizeAction extends BaseInstanceAction implements ActionHandlerInterface
 {
     const ACTION = 'synchronize';
 
@@ -42,7 +42,7 @@ class SynchronizeAction extends BaseDatabaseAction implements ActionHandlerInter
      */
     public function run(array $params)
     {
-        return $this->databaseService->getAllDatabases($params);
+        return $this->instanceService->getAllInstances($params);
     }
 
     /**

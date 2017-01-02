@@ -43,11 +43,17 @@ class Checklist
     protected $project;
 
     /**
+     * @ORM\OneToMany(targetEntity="Instance", mappedBy="checklist", cascade={"persist"})
+     */
+    protected $instances;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->checklistItems = new ArrayCollection();
+        $this->instances = new ArrayCollection();
     }
 
     /**
@@ -122,6 +128,25 @@ class Checklist
     public function setProject(Project $project)
     {
         $this->project = $project;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getInstances()
+    {
+        return $this->instances;
+    }
+
+    /**
+     * @param Instance $instance
+     * @return $this
+     */
+    public function addInstance(Instance $instance)
+    {
+        $this->instances[] = $instance;
 
         return $this;
     }

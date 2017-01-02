@@ -10,6 +10,7 @@ use BuilderBundle\WebSocket\Channels\Databases\Actions\DeleteAction;
 use BuilderBundle\WebSocket\Channels\Databases\Actions\Server\ServerDeleteAction;
 use BuilderBundle\WebSocket\Channels\Databases\Actions\Server\ServerUpdateAction;
 use BuilderBundle\WebSocket\Channels\Databases\Actions\SynchronizeAction;
+use BuilderBundle\WebSocket\Settings\ServerCredentials;
 
 /**
  * Class DatabaseService
@@ -203,8 +204,8 @@ class DatabaseService
 
         return [
             'action' => ServerUpdateAction::ACTION,
-            'userId' => ServerUpdateAction::SERVER_USER_ID,
-            'userToken' => ServerUpdateAction::SERVER_USER_TOKEN,
+            'userId' => ServerCredentials::USER,
+            'userToken' => ServerCredentials::PASS,
             'params' => [
                 'projectId' => $database->getProjectId(),
                 'databaseId' => $database->getId(),
@@ -234,8 +235,8 @@ class DatabaseService
     {
         return [
             'action' => ServerDeleteAction::ACTION,
-            'userId' => ServerDeleteAction::SERVER_USER_ID,
-            'userToken' => ServerDeleteAction::SERVER_USER_TOKEN,
+            'userId' => ServerCredentials::USER,
+            'userToken' => ServerCredentials::PASS,
             'params' => [
                 'projectId' => $database->getProjectId(),
                 'databaseId' => $database->getId(),

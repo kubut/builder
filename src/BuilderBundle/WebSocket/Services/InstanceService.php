@@ -2,14 +2,18 @@
 namespace BuilderBundle\WebSocket\Services;
 
 use BuilderBundle\Entity\Database;
+use BuilderBundle\Entity\Instance;
 use BuilderBundle\Entity\Project;
 use BuilderBundle\Model\DatabaseModel;
+use BuilderBundle\Model\InstanceModel;
 use BuilderBundle\Model\ProjectModel;
-use BuilderBundle\WebSocket\Channels\Databases\Actions\CreateAction;
-use BuilderBundle\WebSocket\Channels\Databases\Actions\DeleteAction;
-use BuilderBundle\WebSocket\Channels\Databases\Actions\Server\ServerDeleteAction;
-use BuilderBundle\WebSocket\Channels\Databases\Actions\Server\ServerUpdateAction;
-use BuilderBundle\WebSocket\Channels\Databases\Actions\SynchronizeAction;
+use BuilderBundle\Util\GitHelper;
+use BuilderBundle\WebSocket\Channels\Instances\Actions\CreateAction;
+use BuilderBundle\WebSocket\Channels\Instances\Actions\DeleteAction;
+use BuilderBundle\WebSocket\Channels\Instances\Actions\Server\ServerDeleteAction;
+use BuilderBundle\WebSocket\Channels\Instances\Actions\Server\ServerUpdateAction;
+use BuilderBundle\WebSocket\Channels\Instances\Actions\SynchronizeAction;
+use BuilderBundle\WebSocket\Settings\ServerCredentials;
 
 /**
  * Class InstanceService
@@ -17,33 +21,26 @@ use BuilderBundle\WebSocket\Channels\Databases\Actions\SynchronizeAction;
  */
 class InstanceService
 {
-    const CREATE_DATABASE_SCRIPT = "/../src/BuilderBundle/Scripts/createDatabase.sh";
-    const DELETE_DATABASE_SCRIPT = "/../src/BuilderBundle/Scripts/deleteDatabase.sh";
-    const DATABASES_LOCATION = "/../web/sql/";
-    const DATABASE_PREFIX = 'bldrdb_';
+    const CREATE_INSTANCE_SCRIPT = "/../src/BuilderBundle/Scripts/createInstance.sh";
+    const NODE = "/../src/BuilderBundle/Scripts/ServersClient.js";
+    const INSTANCES_LOCATION = "/../web/instances/";
 
-    /** @var ProjectModel $projectModel */
-    protected $projectModel;
-
-    /** @var DatabaseModel $databaseModel */
-    protected $databaseModel;
+    /** @var InstanceModel $instanceModel */
+    protected $instanceModel;
 
     private $kernelDir;
 
     /**
      * DatabaseService constructor.
-     * @param ProjectModel $projectModel
-     * @param DatabaseModel $databaseModel
+     * @param InstanceModel $instanceModel
      * @param string $kernelDir
      */
     public function __construct(
-        ProjectModel $projectModel,
-        DatabaseModel $databaseModel,
+        InstanceModel $instanceModel,
         $kernelDir
     )
     {
-        $this->projectModel = $projectModel;
-        $this->databaseModel = $databaseModel;
+        $this->instanceModel = $instanceModel;
         $this->kernelDir = $kernelDir;
     }
 
@@ -55,73 +52,71 @@ class InstanceService
      */
     public function create($params)
     {
-        /**
-         * @var Database $database
-         * @var Project $project
-         */
-        list($database, $project) = $this->createDatabaseInstanceForProject($params);
-
-        $command = $this->createDatabaseCommand($database, $project->getSqlFile());
+        /** @var Instance $instance */
+        $instance = $this->instanceModel->create($params);
+        $command = $this->createCommand($instance);
 
         return [
             'initResponse' => json_encode([
-                'projectId' => $database->getProjectId(),
-                'database' => [
-                    'id' => $database->getId(),
-                    'name' => $database->getName(),
-                    'comment' => $database->getComment(),
-                    'status' => $database->getStatus()
+                "action" => CreateAction::CREATE_ACTION,
+                "params" => [
+                    "projectId" => $instance->getProjectId(),
+                    "instance" => [
+                        "id" => $instance->getId(),
+                        "name" => $instance->getName(),
+                        "status" => $instance->getStatus(),
+                        "branchName" => $instance->getBranch(),
+                        "buildDate" => $instance->getBuildDate()->format('Y-m-d H:i:s'),
+                        "author" => $instance->getUser(),
+                        "url" => $instance->getUrl()
+                    ]
                 ]
             ]),
             'command' => base64_encode($command),
-            'successAction' => addslashes(json_encode($this->getAsyncUpdateResponse($database, true))),
-            'errorAction' => addslashes(json_encode($this->getAsyncUpdateResponse($database, false))),
+            'successAction' => addslashes(json_encode($this->getAsyncCreateResponse($instance))),
+            'errorAction' => '',
         ];
     }
+
+    private function createCommand(Instance $instance)
+    {
+        $script = realpath($this->kernelDir . self::CREATE_INSTANCE_SCRIPT);
+        $location = $this->kernelDir . self::INSTANCES_LOCATION;
+        $nodeScript = $this->kernelDir.self::NODE;
+        /** @var Project $project */
+        $project = $instance->getProject();
+        $gitURL = GitHelper::createSecureGitURL($project);
+        $buildScript = $project->getInstallScript();
+        $params = [
+            'command' => $script,
+            'instancesLocation' => $location,
+            'projectId' => $instance->getProjectId(),
+            'instanceId' => $instance->getId(),
+            'gitURL' => $gitURL,
+            'buildScript' => $buildScript,
+            'node' => $nodeScript
+        ];
+
+        $command = implode(' ', array_values($params));
+
+        return $command;
+    }
+
     /**
-     * @param $params
+     * @param Instance $instance
      * @return array
-     *
-     * @throws \Exception
      */
-    public function delete($params)
+    private function getAsyncCreateResponse($instance)
     {
-        /**
-         * @var Database $database
-         * @var Project $project
-         */
-        $database = $this->databaseModel->getById($params['params']['databaseId']);
-
-        $command = $this->deleteDatabaseCommand($database);
-
         return [
-            'command' => base64_encode($command),
-            'successAction' => addslashes(json_encode($this->getAsyncDeleteResponse($database))),
-            'errorAction' => addslashes(json_encode($this->getAsyncDeleteResponse($database))),
-        ];
-    }
-
-    /**
-     * @param $params
-     * @return mixed
-     */
-    public function updateStatus($params)
-    {
-        $database = $this->databaseModel->getById($params['params']['databaseId']);
-        $database->setStatus($params['params']['status']);
-        $this->databaseModel->update($database);
-
-        return [
-            'initResponse' => json_encode([
-                'action' => CreateAction::CREATE_ACTION,
-                'projectId' => $database->getProjectId(),
-                "database" => [
-                    "id" => $database->getId(),
-                    "name" => $database->getName(),
-                    "comment" => $database->getComment(),
-                    "status" => $database->getStatus()
-                ]
-            ])
+            "action" => ServerUpdateAction::ACTION,
+            'userId' => ServerCredentials::USER,
+            'userToken' => ServerCredentials::PASS,
+            "params" => [
+                "projectId" => $instance->getProjectId(),
+                "instanceId" => $instance->getId(),
+                "status" => "5T4TU5"
+            ]
         ];
     }
 
@@ -129,117 +124,50 @@ class InstanceService
      * @param array $params
      * @return array
      */
-    public function deleteDatabase(array $params)
+    public function updateStatus(array $params)
     {
-        $this->databaseModel->delete($params['params']['databaseId']);
+        $instanceId = $params['params']['instanceId'];
+        $status = $params['params']['status'];
+        $instance = $this->instanceModel->getById($instanceId);
+        $instance->setStatus($status);
+
+        $this->instanceModel->update($instance);
 
         return [
             'initResponse' => json_encode([
-                'action' => DeleteAction::ACTION,
+                "action" => "update",
                 "params" => [
-                    'projectId' => $params['params']['projectId'],
-                    'databaseId' => $params['params']['databaseId'],
-                ]
-            ])
+                    "projectId" => $instance->getProjectId(),
+                    "instanceId" => $instance->getId(),
+                    "status" => $status
+                ]]
+            ),
         ];
     }
+
+    public function delete($params)
+    {
+        return [];
+    }
+
     /**
      * @param $params
-     *
      * @return array
      */
-    public function createDatabaseInstanceForProject($params)
+    public function getAllInstances(array $params)
     {
         $projectId = $params['params']['projectId'];
-        $comment = $params['params']['comment'];
-        $project = $this->projectModel->getProject($projectId);
-        $name = strtoupper($project->getName()) . $projectId . rand(0, 255);
+        $instances = $this->instanceModel->getByProjectId($projectId);
 
-        /** @var Database $database */
-        $database = $this->databaseModel->createDatabaseForProject($project, $name, $comment);
-
-        return [
-            $database,
-            $project
-        ];
-    }
-
-    /**
-     * @param Database $database
-     * @param $databaseFileName
-     * @return string
-     */
-    public function createDatabaseCommand(Database $database, $databaseFileName)
-    {
-        $script = realpath($this->kernelDir . self::CREATE_DATABASE_SCRIPT);
-        $databaseFile = realpath($this->kernelDir . self::DATABASES_LOCATION . $databaseFileName);
-        $databaseName = self::DATABASE_PREFIX . strtoupper($database->getName()) . $database->getId();
-
-        $command = implode(' ', [$script, $databaseName, $databaseFile]);
-
-        return $command;
-    }
-    /**
-     * @param Database $database
-     * @return string
-     */
-    public function deleteDatabaseCommand(Database $database)
-    {
-        $script = realpath($this->kernelDir . self::DELETE_DATABASE_SCRIPT);
-
-        $command = implode(' ', [$script, "bldrdb_".$database->getName().$database->getId()]);
-
-        return $command;
-    }
-
-    /**
-     * @param Database $database
-     * @param bool $done
-     * @return array
-     */
-    public function getAsyncUpdateResponse($database, $done = true)
-    {
-        $status = $done ? Database::STATUS_BAKED : Database::STATUS_BURNED;
-
-        return [
-            'action' => ServerUpdateAction::ACTION,
-            'userId' => ServerUpdateAction::SERVER_USER_ID,
-            'userToken' => ServerUpdateAction::SERVER_USER_TOKEN,
-            'params' => [
-                'projectId' => $database->getProjectId(),
-                'databaseId' => $database->getId(),
-                'status' => $status
-            ]
-        ];
-    }
-
-    public function getAllDatabases($params)
-    {
         return [
             'initResponse' => json_encode([
-                'action' => SynchronizeAction::ACTION,
-                'params' => [
-                    'projectId' => $params['params']['projectId'],
-                    'databases' => $this->databaseModel->fetchAllDatabases($params['params']['projectId'])
+                    "action" => SynchronizeAction::ACTION,
+                    "params" => [
+                        "projectId" => $projectId,
+                        "instances" => $instances
+                    ]
                 ]
-            ])
-        ];
-    }
-
-    /**
-     * @param Database $database
-     * @return array
-     */
-    public function getAsyncDeleteResponse($database)
-    {
-        return [
-            'action' => ServerDeleteAction::ACTION,
-            'userId' => ServerDeleteAction::SERVER_USER_ID,
-            'userToken' => ServerDeleteAction::SERVER_USER_TOKEN,
-            'params' => [
-                'projectId' => $database->getProjectId(),
-                'databaseId' => $database->getId(),
-            ]
+            ),
         ];
     }
 }

@@ -10,21 +10,6 @@ use Thread;
  */
 abstract class BaseAction  implements ActionHandlerInterface
 {
-//    /** @var UserNoteService $userNoteService */
-//    protected $userNoteService;
-//
-//    /** @var AuthenticateModel $authenticateModel */
-//    protected $authenticateModel;
-//
-//    /**
-//     * BaseAction constructor.
-//     * @param UserNoteService $userNoteService
-//     */
-//    public function __construct(UserNoteService $userNoteService)
-//    {
-//        $this->userNoteService = $userNoteService;
-//    }
-
     /**
      * @param string $action
      *

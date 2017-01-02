@@ -1,7 +1,6 @@
 <?php
 namespace BuilderBundle\WebSocket\Channels\Instances\Actions;
 
-use BuilderBundle\WebSocket\AsyncActions\CreateDatabaseAction;
 use BuilderBundle\WebSocket\Settings\ActionHandlerInterface;
 
 
@@ -9,13 +8,13 @@ use BuilderBundle\WebSocket\Settings\ActionHandlerInterface;
  * Class CreateAction
  * @package VM\NotesBundle\WebSocket\Action
  */
-class CreateAction extends BaseDatabaseAction implements ActionHandlerInterface
+class CreateAction extends BaseInstanceAction implements ActionHandlerInterface
 {
     const CREATE_ACTION = 'create';
 
     private $createActionParams = [
         'projectId',
-        'comment',
+        'instance',
     ];
 
     /**
@@ -43,7 +42,7 @@ class CreateAction extends BaseDatabaseAction implements ActionHandlerInterface
      */
     public function run(array $params)
     {
-        return $this->databaseService->create($params);
+        return $this->instanceService->create($params);
     }
 
     /**

@@ -12,8 +12,6 @@ use BuilderBundle\WebSocket\Settings\ActionHandlerInterface;
 class ServerUpdateAction extends BaseDatabaseAction implements ActionHandlerInterface
 {
     const ACTION = 'serverUpdate';
-    const SERVER_USER_ID = 12;
-    const SERVER_USER_TOKEN = 'abba';
 
     private $createActionParams = [
         'projectId',

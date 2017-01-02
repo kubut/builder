@@ -13,8 +13,6 @@ use BuilderBundle\WebSocket\Settings\ActionHandlerInterface;
 class ServerDeleteAction extends BaseDatabaseAction implements ActionHandlerInterface
 {
     const ACTION = 'serverDelete';
-    const SERVER_USER_ID = 12;
-    const SERVER_USER_TOKEN = 'abba';
 
     private $createActionParams = [
         'projectId',

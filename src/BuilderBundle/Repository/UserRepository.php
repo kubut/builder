@@ -2,6 +2,7 @@
 namespace BuilderBundle\Repository;
 
 use BuilderBundle\Entity\User;
+use BuilderBundle\Entity\UserToken;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -51,5 +52,14 @@ class UserRepository extends EntityRepository
             ])
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @param UserToken $userToken
+     */
+    public function removeToken(UserToken $userToken)
+    {
+        $this->_em->remove($userToken);
+        $this->_em->flush();
     }
 }

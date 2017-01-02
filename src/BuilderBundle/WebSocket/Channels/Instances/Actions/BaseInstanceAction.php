@@ -3,27 +3,29 @@ namespace BuilderBundle\WebSocket\Channels\Instances\Actions;
 
 use BuilderBundle\WebSocket\AsyncActions\CreateDatabaseAction;
 use BuilderBundle\WebSocket\Services\DatabaseService;
+use BuilderBundle\WebSocket\Services\InstanceService;
 use BuilderBundle\WebSocket\Settings\ActionHandlerInterface;
 use BuilderBundle\WebSocket\Settings\BaseAction;
 use Ratchet\ConnectionInterface;
 
 /**
- * Class BaseAction
- * @package BuilderBundle\WebSocket\Settings
+ * Class BaseInstanceAction
+ * @package BuilderBundle\WebSocket\Channels\Instances\Actions
  */
-abstract class BaseDatabaseAction extends BaseAction implements ActionHandlerInterface
+abstract class BaseInstanceAction extends BaseAction implements ActionHandlerInterface
 {
-    /** @var DatabaseService $databaseService */
-    protected $databaseService;
+    /** @var InstanceService $instanceService */
+    protected $instanceService;
 
     /**
-     * BaseDatabaseAction constructor.
-     * @param DatabaseService $databaseService
+     * BaseInstanceAction constructor.
+     * @param InstanceService $instanceService
      */
-    public function __construct(DatabaseService $databaseService)
+    public function __construct(InstanceService $instanceService)
     {
-        $this->databaseService = $databaseService;
+        $this->instanceService = $instanceService;
     }
+
     /**
      *
      * @param ConnectionInterface $userConnection

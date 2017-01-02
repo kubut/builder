@@ -14,3 +14,6 @@ services:
 
     app.builder.factory.database:
         class: BuilderBundle\Factory\DatabaseFactory
+
+    app.builder.factory.instance:
+        class: BuilderBundle\Factory\InstanceFactory

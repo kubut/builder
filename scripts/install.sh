@@ -263,8 +263,8 @@ else
     exit 6
 fi
 
-cloneRepo
-cd builder
+#cloneRepo
+#cd builder
 
-installBackend
+#installBackend
 installFront

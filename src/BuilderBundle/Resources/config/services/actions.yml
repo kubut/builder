@@ -17,14 +17,14 @@ services:
     app.builder.instance.action.create:
         class: BuilderBundle\WebSocket\Channels\Instances\Actions\CreateAction
         arguments:
-            databaseService: '@app.builder.service.instance'
+            instanceService: '@app.builder.service.instance'
 
     app.builder.instance.action.synchronize:
         class: BuilderBundle\WebSocket\Channels\Instances\Actions\SynchronizeAction
         arguments:
-            databaseService: '@app.builder.service.instance'
+            instanceService: '@app.builder.service.instance'
 
     app.builder.instance.action.delete:
         class: BuilderBundle\WebSocket\Channels\Instances\Actions\DeleteAction
         arguments:
-            databaseService: '@app.builder.service.instance'
+            instanceService: '@app.builder.service.instance'

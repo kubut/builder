@@ -1,7 +1,6 @@
 <?php
 namespace BuilderBundle\WebSocket\Channels\Instances\Actions;
 
-use BuilderBundle\WebSocket\AsyncActions\CreateDatabaseAction;
 use BuilderBundle\WebSocket\Settings\ActionHandlerInterface;
 
 
@@ -9,7 +8,7 @@ use BuilderBundle\WebSocket\Settings\ActionHandlerInterface;
  * Class DeleteAction
  * @package BuilderBundle\WebSocket\Channels\Databases\Actions
  */
-class DeleteAction extends BaseDatabaseAction implements ActionHandlerInterface
+class DeleteAction extends BaseInstanceAction implements ActionHandlerInterface
 {
     const ACTION = 'delete';
 
@@ -43,7 +42,7 @@ class DeleteAction extends BaseDatabaseAction implements ActionHandlerInterface
      */
     public function run(array $params)
     {
-        return $this->databaseService->delete($params);
+        return $this->instanceService->delete($params);
     }
 
     /**

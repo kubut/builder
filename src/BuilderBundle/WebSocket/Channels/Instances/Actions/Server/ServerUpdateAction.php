@@ -2,22 +2,22 @@
 namespace BuilderBundle\WebSocket\Channels\Instances\Actions\Server;
 
 use BuilderBundle\WebSocket\Channels\Databases\Actions\BaseDatabaseAction;
+use BuilderBundle\WebSocket\Channels\Instances\Actions\BaseInstanceAction;
 use BuilderBundle\WebSocket\Settings\ActionHandlerInterface;
+use Ratchet\ConnectionInterface;
 
 
 /**
  * Class ServerUpdateAction
  * @package BuilderBundle\WebSocket\Channels\Instanses\Actions\Server
  */
-class ServerUpdateAction extends BaseDatabaseAction implements ActionHandlerInterface
+class ServerUpdateAction extends BaseInstanceAction implements ActionHandlerInterface
 {
-    const ACTION = 'serverUpdate';
-    const SERVER_USER_ID = 12;
-    const SERVER_USER_TOKEN = 'abba';
+    const ACTION = 'serverStatus';
 
     private $createActionParams = [
         'projectId',
-        'databaseId',
+        'instanceId',
         'status',
     ];
 
@@ -46,16 +46,7 @@ class ServerUpdateAction extends BaseDatabaseAction implements ActionHandlerInte
      */
     public function run(array $params)
     {
-        return $this->databaseService->updateStatus($params);
-    }
-
-    /**
-     * @param array $params
-     * @return bool
-     */
-    public function asyncAction(array $params)
-    {
-        return true;
+        return $this->instanceService->updateStatus($params);
     }
 
     /**
@@ -64,5 +55,19 @@ class ServerUpdateAction extends BaseDatabaseAction implements ActionHandlerInte
     public function hasAsyncJob()
     {
         return true;
+    }
+    /**
+     *
+     * @param ConnectionInterface $userConnection
+     * @param array $userConnections
+     * @param integer $requestId
+     * @param array $responseData
+     */
+    public function sendResponse($userConnection, array $userConnections, $requestId, $responseData)
+    {
+        /** @var ConnectionInterface $conn */
+        foreach ($userConnections as $conn) {
+            $conn->send($responseData['initResponse']);
+        }
     }
 }

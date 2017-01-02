@@ -3,7 +3,7 @@
 <title>WebSocket Test</title>
 <script language="javascript" type="text/javascript">
 
-    var wsUri = "ws://builder.vagrant:8080/databases";
+    var wsUri = "ws://builder.vagrant:8080/instances";
     var output;
 
     function init() {
@@ -25,31 +25,37 @@
          websocket.onerror = function(evt) { onError(evt) };
     }
 
+    function onOpen(evt) {
+        writeToScreen("CONNECTED");
+        doSend(JSON.stringify({
+            "userId": 2,
+            "userToken": "token",
+            "requestId": 2,
+            "action": "create",
+            "params": {
+                "projectId": 1,
+                "instance":{
+                    "name": "adwd",
+                    "branch": "master",
+                    "databaseId": 1,
+                    "url": "tmp"
+                }
+            }
+        }));
+    }
 //    function onOpen(evt) {
 //        writeToScreen("CONNECTED");
 //        doSend(JSON.stringify({
 //            "userId": 0,
 //            "userToken": "token",
 //            "requestId": 2,
-//            "action": "create",
+//            "action": "delete",
 //            "params": {
 //                "projectId": 1,
-//                "comment": "Komentarz!"}
+//                "databaseId": 188,
+//            }
 //        }));
 //    }
-    function onOpen(evt) {
-        writeToScreen("CONNECTED");
-        doSend(JSON.stringify({
-            "userId": 0,
-            "userToken": "token",
-            "requestId": 2,
-            "action": "delete",
-            "params": {
-                "projectId": 1,
-                "databaseId": 188,
-            }
-        }));
-    }
 
     function onClose(evt) {
         writeToScreen("DISCONNECTED");

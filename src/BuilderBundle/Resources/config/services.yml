@@ -8,3 +8,4 @@ imports:
   - { resource: services/sevices.yml }
   - { resource: services/repository.yml }
   - { resource: services/model.yml }
+  - { resource: services/security.yml }

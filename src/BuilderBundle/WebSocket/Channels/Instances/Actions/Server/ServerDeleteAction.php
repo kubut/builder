@@ -3,6 +3,7 @@ namespace BuilderBundle\WebSocket\Channels\Instances\Actions\Server;
 
 use BuilderBundle\WebSocket\AsyncActions\CreateDatabaseAction;
 use BuilderBundle\WebSocket\Channels\Databases\Actions\BaseDatabaseAction;
+use BuilderBundle\WebSocket\Channels\Instances\Actions\BaseInstanceAction;
 use BuilderBundle\WebSocket\Settings\ActionHandlerInterface;
 
 
@@ -10,11 +11,9 @@ use BuilderBundle\WebSocket\Settings\ActionHandlerInterface;
  * Class ServerDeleteAction
  * @package BuilderBundle\WebSocket\Channels\Instanses\Actions\Server
  */
-class ServerDeleteAction extends BaseDatabaseAction implements ActionHandlerInterface
+class ServerDeleteAction extends BaseInstanceAction implements ActionHandlerInterface
 {
     const ACTION = 'serverDelete';
-    const SERVER_USER_ID = 12;
-    const SERVER_USER_TOKEN = 'abba';
 
     private $createActionParams = [
         'projectId',
@@ -46,7 +45,7 @@ class ServerDeleteAction extends BaseDatabaseAction implements ActionHandlerInte
      */
     public function run(array $params)
     {
-        return $this->databaseService->deleteDatabase($params);
+        return $this->instanceService->delete($params);
     }
 
     /**

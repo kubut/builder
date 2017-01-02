@@ -12,9 +12,9 @@ services:
     app.builder.instance.server.action.update:
         class: BuilderBundle\WebSocket\Channels\Instances\Actions\Server\ServerUpdateAction
         arguments:
-            databaseService: '@app.builder.service.database'
+            databaseService: '@app.builder.service.instance'
 
     app.builder.instance.server.action.delete:
         class: BuilderBundle\WebSocket\Channels\Instances\Actions\Server\ServerDeleteAction
         arguments:
-            databaseService: '@app.builder.service.database'
+            databaseService: '@app.builder.service.instance'

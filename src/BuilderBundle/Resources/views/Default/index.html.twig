@@ -17,11 +17,11 @@
                         routingProvider.setRouting(Routing);
                         userConfigurationProvider
                                 .setUserRole('{{ USER_ROLE }}')
-                                .setUserId(0)
-                                .setUserToken('token')
+                                .setUserId('{{ USER_ID }}')
+                                .setUserToken('{{ USER_TOKEN }}')
                                 .createUser();
-                        configurationProvider.setDatabaseSocketUrl('ws://builder-dev.vagrant:3001/databases');
-                        configurationProvider.setInstancesSocketUrl('ws://builder-dev.vagrant:3001/instances');
+                        configurationProvider.setDatabaseSocketUrl('{{ WS_DATABASES }}');
+                        configurationProvider.setInstancesSocketUrl('{{ WS_INSTANCES }}');
                     }])
                 .run(['ChangePasswordService', '$rootScope', '$urlRouter', '$state', function (changePasswordService, $rootScope, $urlRouter, $state) {
                     if ({{ showModal }}) {

@@ -28,3 +28,15 @@ services:
         factory: ['@doctrine.orm.entity_manager', getRepository]
         arguments:
           - BuilderBundle\Entity\Database
+
+    app.builder.repository.instance:
+        class: BuilderBundle\Repository\InstanceRepository
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments:
+          - BuilderBundle\Entity\Instance
+
+    app.builder.repository.user_token:
+        class: BuilderBundle\Repository\UserTokenRepository
+        factory: ['@doctrine.orm.entity_manager', getRepository]
+        arguments:
+          - BuilderBundle\Entity\UserToken
