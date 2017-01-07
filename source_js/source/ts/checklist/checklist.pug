@@ -12,9 +12,10 @@
                         md-button.md-icon-button.pull-right(ng-click="checklistCtrl.checklist.removeItem(item)")
                             i.material-icons delete
                 form(name="newItemForm" novalidate ng-submit="checklistCtrl.addItem()")
-                    md-input-container
+                    md-input-container.flex
                         label Nowy element
                         input(name="newItem" required ng-model="checklistCtrl.newItem")
+                        md-button.md-raised.md-primary.add-button(ng-click="checklistCtrl.addItem()") Dodaj
                         div(ng-messages="newItemForm.newItem.$error")
                             div(ng-message="required") To pole jest wymagane
                 md-card-actions.grey.checklist-actions(layout="row")

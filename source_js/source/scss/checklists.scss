@@ -51,6 +51,10 @@
 .checklist-details {
   md-input-container {
     width: 100%;
+
+    .add-button {
+      order: 3;
+    }
   }
 
   .checklist-actions {
