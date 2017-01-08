@@ -17,7 +17,7 @@ services:
 
     app.builder.service.instance:
         class: BuilderBundle\WebSocket\Services\InstanceService
-        arguments: ['@app.builder.model.instance', '%kernel.root_dir%']
+        arguments: ['@app.builder.model.instance', '@app.builder.model.checklist', '%kernel.root_dir%', '%portal_url%']
 
     app.builder.service.params_validator:
         class: BuilderBundle\WebSocket\Settings\ParamsValidator

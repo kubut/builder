@@ -18,3 +18,8 @@ services:
         class: BuilderBundle\WebSocket\Channels\Instances\Actions\Server\ServerDeleteAction
         arguments:
             databaseService: '@app.builder.service.instance'
+
+    app.builder.instance.server.action.update_checklis_item:
+        class: BuilderBundle\WebSocket\Channels\Instances\Actions\Server\UpdateChecklistItem
+        arguments:
+            databaseService: '@app.builder.service.instance'

@@ -21,6 +21,7 @@ class InstancesChannel implements MessageComponentInterface
     protected $authenticateModel;
 
     private $connections = [];
+    private $connectionsData = [];
 
     /**
      * InstancesChannel constructor.
@@ -71,7 +72,8 @@ class InstancesChannel implements MessageComponentInterface
             $this->paramsValidator->validateParams($data['params'], $action->getActionParams());
             $projectId = $data['params']['projectId'];
             if (!$action->check('serverStatus')) {
-                $this->connections[$projectId][] = $userConnection;
+                $this->connections[$projectId][$userConnection->resourceId] = $userConnection;
+                $this->connectionsData[$userConnection->resourceId] = $projectId;
             }
             $responseData = $action->run($data);
             $action->sendResponse($userConnection, $this->connections[$projectId], $requestId, $responseData);
@@ -88,6 +90,8 @@ class InstancesChannel implements MessageComponentInterface
     {
         echo "Closed connection " . $userConnection->resourceId . "\n";
         $userConnection->close();
+        $projectId = $this->connectionsData[$userConnection->resourceId];
+        unset($this->connections[$projectId][$userConnection->resourceId]);
     }
 
     /**

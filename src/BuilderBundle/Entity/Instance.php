@@ -52,7 +52,7 @@ class Instance
     /**
      * @var string
      *
-     * @ORM\Column(name="url", type="string", length=20)
+     * @ORM\Column(name="url", type="string", length=200)
      */
     protected $url;
 

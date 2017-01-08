@@ -15,3 +15,4 @@ services:
       - '@app.builder.instance.action.synchronize'
       - '@app.builder.instance.server.action.delete'
       - '@app.builder.instance.action.delete'
+      - '@app.builder.instance.server.action.update_checklis_item'

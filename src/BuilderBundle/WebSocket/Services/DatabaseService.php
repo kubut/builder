@@ -66,12 +66,15 @@ class DatabaseService
 
         return [
             'initResponse' => json_encode([
-                'projectId' => $database->getProjectId(),
-                'database' => [
-                    'id' => $database->getId(),
-                    'name' => $database->getName(),
-                    'comment' => $database->getComment(),
-                    'status' => $database->getStatus()
+                'action' => CreateAction::CREATE_ACTION,
+                'params' => [
+                    'projectId' => $database->getProjectId(),
+                    'database' => [
+                        'id' => $database->getId(),
+                        'name' => $database->getName(),
+                        'comment' => $database->getComment(),
+                        'status' => $database->getStatus()
+                    ]
                 ]
             ]),
             'command' => base64_encode($command),
@@ -79,6 +82,7 @@ class DatabaseService
             'errorAction' => addslashes(json_encode($this->getAsyncUpdateResponse($database, false))),
         ];
     }
+
     /**
      * @param $params
      * @return array
@@ -114,13 +118,15 @@ class DatabaseService
 
         return [
             'initResponse' => json_encode([
-                'action' => CreateAction::CREATE_ACTION,
-                'projectId' => $database->getProjectId(),
-                "database" => [
-                    "id" => $database->getId(),
-                    "name" => $database->getName(),
-                    "comment" => $database->getComment(),
-                    "status" => $database->getStatus()
+                'action' => 'update',
+                'params' => [
+                    'projectId' => $database->getProjectId(),
+                    "database" => [
+                        "id" => $database->getId(),
+                        "name" => $database->getName(),
+                        "comment" => $database->getComment(),
+                        "status" => $database->getStatus()
+                    ]
                 ]
             ])
         ];
@@ -144,6 +150,7 @@ class DatabaseService
             ])
         ];
     }
+
     /**
      * @param $params
      *
@@ -180,6 +187,7 @@ class DatabaseService
 
         return $command;
     }
+
     /**
      * @param Database $database
      * @return string
@@ -188,7 +196,7 @@ class DatabaseService
     {
         $script = realpath($this->kernelDir . self::DELETE_DATABASE_SCRIPT);
 
-        $command = implode(' ', [$script, "bldrdb_".$database->getName().$database->getId()]);
+        $command = implode(' ', [$script, "bldrdb_" . $database->getName() . $database->getId()]);
 
         return $command;
     }

@@ -28,6 +28,9 @@ class InstanceModel
     /** @var UserModel $userModel */
     private $userModel;
 
+    /** @var string */
+    private $portalUrl;
+
     /**
      * InstanceModel constructor.
      * @param InstanceFactory $instanceFactory
@@ -36,6 +39,7 @@ class InstanceModel
      * @param ProjectModel $projectModel
      * @param ChecklistModel $checklistModel
      * @param UserModel $userModel
+     * @param $portalUrl
      */
     public function __construct(
         InstanceFactory $instanceFactory,
@@ -43,7 +47,8 @@ class InstanceModel
         DatabaseModel $databaseModel,
         ProjectModel $projectModel,
         ChecklistModel $checklistModel,
-        UserModel $userModel
+        UserModel $userModel,
+        $portalUrl
     )
     {
         $this->instanceFactory = $instanceFactory;
@@ -52,6 +57,7 @@ class InstanceModel
         $this->projectModel = $projectModel;
         $this->checklistModel = $checklistModel;
         $this->userModel = $userModel;
+        $this->portalUrl = $portalUrl;
     }
 
     /**
@@ -67,7 +73,7 @@ class InstanceModel
         $factoryParams = [
             'name' => $instanceData['name'],
             'branch' => $instanceData['branch'],
-            'url' => '',
+            'url' => 'http://'.$instanceData['name'].$this->portalUrl,
             'database' => $this->databaseModel->getById($instanceData['databaseId']),
             'project' => $this->projectModel->getProject($projectId),
             'user' => sprintf('%s %s', $user->getName(), $user->getSurname())
@@ -114,6 +120,8 @@ class InstanceModel
         $data = [];
         /** @var Instance $instance */
         foreach ($instances as $instance) {
+            $checklists = !is_null(($instance->getChecklistId())) ? $this->checklistModel->getChecklistPreviewById($instance->getChecklistId()) : [];
+
             $data[] = [
                 'id' => $instance->getId(),
                 'name' => $instance->getName(),
@@ -121,7 +129,8 @@ class InstanceModel
                 'branchName' => $instance->getBranch(),
                 'buildDate' => $instance->getBuildDate()->format('Y-m-d H:i:s'),
                 'author' => $instance->getUser(),
-                'url' => $instance->getUrl(),
+                "url" => $instance->getUrl(),
+                'checklist' => $checklists
             ];
         }
 

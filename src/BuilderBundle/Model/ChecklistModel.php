@@ -73,6 +73,18 @@ class ChecklistModel
     }
 
     /**
+     * @param $checkListId
+     * @param $value
+     *
+     */
+    public function editChecklistItem($checkListId, $value)
+    {
+        $checklist = $this->checklistItemModel->editChecklistItem($checkListId, $value);
+
+        $this->checklistItemModel->saveItem($checklist);
+    }
+
+    /**
      * @param integer $id
      */
     public function removeChecklist($id)

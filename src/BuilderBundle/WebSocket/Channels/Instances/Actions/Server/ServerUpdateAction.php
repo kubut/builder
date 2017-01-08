@@ -1,7 +1,6 @@
 <?php
 namespace BuilderBundle\WebSocket\Channels\Instances\Actions\Server;
 
-use BuilderBundle\WebSocket\Channels\Databases\Actions\BaseDatabaseAction;
 use BuilderBundle\WebSocket\Channels\Instances\Actions\BaseInstanceAction;
 use BuilderBundle\WebSocket\Settings\ActionHandlerInterface;
 use Ratchet\ConnectionInterface;

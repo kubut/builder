@@ -4,6 +4,7 @@ namespace BuilderBundle\WebSocket\Services;
 use BuilderBundle\Entity\Database;
 use BuilderBundle\Entity\Instance;
 use BuilderBundle\Entity\Project;
+use BuilderBundle\Model\ChecklistModel;
 use BuilderBundle\Model\DatabaseModel;
 use BuilderBundle\Model\InstanceModel;
 use BuilderBundle\Model\ProjectModel;
@@ -12,6 +13,7 @@ use BuilderBundle\WebSocket\Channels\Instances\Actions\CreateAction;
 use BuilderBundle\WebSocket\Channels\Instances\Actions\DeleteAction;
 use BuilderBundle\WebSocket\Channels\Instances\Actions\Server\ServerDeleteAction;
 use BuilderBundle\WebSocket\Channels\Instances\Actions\Server\ServerUpdateAction;
+use BuilderBundle\WebSocket\Channels\Instances\Actions\Server\UpdateChecklistItem;
 use BuilderBundle\WebSocket\Channels\Instances\Actions\SynchronizeAction;
 use BuilderBundle\WebSocket\Settings\ServerCredentials;
 
@@ -28,20 +30,33 @@ class InstanceService
     /** @var InstanceModel $instanceModel */
     protected $instanceModel;
 
+    /** @var ChecklistModel $checklistModel */
+    protected $checklistModel;
+
+    /** @var string  */
     private $kernelDir;
+
+    /** @var string  */
+    private $portalUrl;
 
     /**
      * DatabaseService constructor.
      * @param InstanceModel $instanceModel
+     * @param ChecklistModel $checklistModel
      * @param string $kernelDir
+     * @param $portalUrl
      */
     public function __construct(
         InstanceModel $instanceModel,
-        $kernelDir
+        ChecklistModel $checklistModel,
+        $kernelDir,
+        $portalUrl
     )
     {
         $this->instanceModel = $instanceModel;
         $this->kernelDir = $kernelDir;
+        $this->checklistModel = $checklistModel;
+        $this->portalUrl = $portalUrl;
     }
 
     /**
@@ -68,7 +83,8 @@ class InstanceService
                         "branchName" => $instance->getBranch(),
                         "buildDate" => $instance->getBuildDate()->format('Y-m-d H:i:s'),
                         "author" => $instance->getUser(),
-                        "url" => $instance->getUrl()
+                        "url" => $instance->getName().$this->portalUrl,
+                        "checklist" =>!is_null(($instance->getChecklistId())) ? $this->checklistModel->getChecklistPreviewById($instance->getChecklistId()) : []
                     ]
                 ]
             ]),
@@ -94,10 +110,12 @@ class InstanceService
             'instanceId' => $instance->getId(),
             'gitURL' => $gitURL,
             'buildScript' => $buildScript,
-            'node' => $nodeScript
+            'node' => $nodeScript,
+            'instanceName' => $instance->getName().$this->portalUrl
         ];
 
         $command = implode(' ', array_values($params));
+        echo $command;
 
         return $command;
     }
@@ -145,6 +163,11 @@ class InstanceService
         ];
     }
 
+    /**
+     * @param $params
+     * @return array
+     */
+
     public function delete($params)
     {
         return [];
@@ -167,6 +190,32 @@ class InstanceService
                         "instances" => $instances
                     ]
                 ]
+            ),
+        ];
+    }
+
+    /**
+     * @param array $params
+     *
+     * @return array
+     */
+    public function updateChecklistItem(array $params)
+    {
+        $checkListItemId = $params['params']['itemId'];
+        $isSolved = $params['params']['itemSolved'];
+
+        $this->checklistModel->editChecklistItem($checkListItemId, $isSolved);
+
+        return [
+            'initResponse' => json_encode([
+                    "action" => UpdateChecklistItem::ACTION,
+                    "params" => [
+                        "projectId" => $params['params']['itemId'],
+                        "instanceId" => $params['params']['itemId'],
+                        "checkListId" => $params['params']['itemId'],
+                        "itemId" => $checkListItemId,
+                        "itemSolved" => $isSolved,
+                    ]]
             ),
         ];
     }

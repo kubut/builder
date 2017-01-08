@@ -5,8 +5,15 @@ INSTANCE_ID=$3
 GIT_URL=$4
 BUILD_SCRIPT=$5
 NODE_CLIENT=$6
-SUCCESS=$7
+INSTANCE_NAME=$7
+SUCCESS=$8
 WEBSOCKET_URL="ws://builder.vagrant:8080/instances"
+
+sendError() {
+ second="3"
+    first=${SUCCESS/5T4TU5/$second}
+    nodejs $NODE_CLIENT $WEBSOCKET_URL ""$first""
+}
 
 cd $INSTANCES_LOCATION;
 
@@ -18,9 +25,8 @@ fi
 cd $PROJECT_ID
 
 if [ -d "$INSTANCE_ID" ]; then
-    second="3"
-    first=${SUCCESS/5T4TU5/$second}
-    nodejs $NODE_CLIENT $WEBSOCKET_URL ""$first""
+    sendError
+    exit 0
 
 fi
     {
@@ -28,29 +34,58 @@ fi
         first=${SUCCESS/5T4TU5/$second}
         nodejs  $NODE_CLIENT $WEBSOCKET_URL ""$first""
         git clone $GIT_URL $INSTANCE_ID;
-        mkdir $INSTANCE_ID
         } || {
-        second="3"
-        first=${SUCCESS/5T4TU5/$second}
-        nodejs $NODE_CLIENT $WEBSOCKET_URL ""$first""
+        sendError
+        exit 1
     }
     {
         cd $INSTANCE_ID;
         second="1"
         first=${SUCCESS/5T4TU5/$second}
         nodejs  $NODE_CLIENT $WEBSOCKET_URL ""$first""
-        sudo sh $BUILD_SCRIPT
+#        sudo sh $BUILD_SCRIPT
         second="2"
         first=${SUCCESS/5T4TU5/$second}
         nodejs  $NODE_CLIENT $WEBSOCKET_URL ""$first""
     } || {
-    second="3"
-    first=${SUCCESS/5T4TU5/$second}
-    nodejs $NODE_CLIENT $WEBSOCKET_URL ""$first""
+    sendError
+    exit 2
+}
+{
+  if [ -d "/etc/apache2/sites-enabled" ]; then
+        serverPath="/etc/apache2/sites-enabled"
+        serverService="apache2"
+    elif [ -d "/etc/httpd/sites-enabled" ]; then
+        serverPath="/etc/httpd/sites-enabled"
+        serverService="httpd"
+    fi
+    path=$(pwd)"/web"
+    domain=${INSTANCE_NAME}
+
+    sudo touch ${serverPath}/${INSTANCE_ID}_builder.conf
+    sudo bash -c "cat >> ${serverPath}/${INSTANCE_ID}_builder.conf" << EOF
+<VirtualHost *:80>
+    ServerName www.${domain}
+    ServerAlias ${domain}
+    DocumentRoot "${path}"
+    <Directory "${path}">
+        Options Indexes FollowSymLinks
+        AllowOverride All
+        Require all granted
+    </Directory>
+</VirtualHost>
+EOF
+
+    sudo -- sh -c -e "echo '
+    127.0.0.1  ${domain}' >> /etc/hosts"
+
+    sudo service ${serverService} restart
+} || {
+    sendError
+    exit 3
 }
 
 } || {
-    second="3"
-    first=${SUCCESS/5T4TU5/$second}
-        nodejs $NODE_CLIENT $WEBSOCKET_URL ""$first""
+    sendError
+    exit 4
 }

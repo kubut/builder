@@ -37,16 +37,18 @@ class ChecklistItemModel
 
     /**
      * @param integer $id
-     * @param array $params
+     * @param integer $isSolved
      *
+     * @return ChecklistItem
      * @throws \Exception
      */
-    public function editChecklistItem($id, array $params)
+    public function editChecklistItem($id, $isSolved)
     {
         /** @var ChecklistItem $checklistItem */
         $checklistItem = $this->checklistItemRepository->findById($id);
-        $checklistItem->setName($params['name']);
+        $checklistItem->setIsSolved($isSolved);
 
+        return $checklistItem;
     }
 
     /**
@@ -83,5 +85,13 @@ class ChecklistItemModel
     public function getChecklistItemsByChecklistId($checklistIds)
     {
         return $this->checklistItemRepository->fetchChecklistItemByChecklistIds($checklistIds);
+    }
+
+    /**
+     * @param ChecklistItem $checklistItem
+     */
+    public function saveItem(ChecklistItem $checklistItem)
+    {
+        $this->checklistItemRepository->save($checklistItem);
     }
 }
