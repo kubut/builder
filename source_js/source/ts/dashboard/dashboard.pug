@@ -32,8 +32,8 @@ div
                                 span.checklist-title {{ instance.checklist.name }} ({{ instance.checklist.getSolvedCount() }}/{{ instance.checklist.items.length }})
                                 ul.grey.build-checklist-items
                                     li.item-name(ng-repeat="item in instance.checklist.items track by $index" ng-class="item.solved ? 'solved-item' : ''")
-                                        input(id="checklist-{{instance.checklist.id}}-item-{{item.id}}" type="checkbox" ng-change="dashboardCtrl.onChecklistItemStateChanged(instance.id, instance.checklist, item)" ng-model="item.solved")
-                                        label(for="checklist-{{instance.checklist.id}}-item-{{item.id}}") {{ item.name }}
+                                        input(id="instance-{{instance.id}}-checklist-{{instance.checklist.id}}-item-{{item.id}}" type="checkbox" ng-change="dashboardCtrl.onChecklistItemStateChanged(instance.id, instance.checklist, item)" ng-model="item.solved")
+                                        label(for="instance-{{instance.id}}-checklist-{{instance.checklist.id}}-item-{{item.id}}") {{ item.name }}
                             .jira(ng-if="instance.jiraInformation" style="flex: 70")
                                 h4 {{ instance.jiraInformation.title }}
                                 p {{ instance.jiraInformation.description }}
