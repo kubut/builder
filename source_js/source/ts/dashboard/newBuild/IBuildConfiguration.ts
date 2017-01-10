@@ -5,6 +5,5 @@ module APP.Dashboard {
         databaseId: number;
         instanceId?: number;
         checklistId?: number;
-        jiraTaskSymbol?: string;
     }
 }

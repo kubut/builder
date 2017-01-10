@@ -6,7 +6,6 @@ module APP.Dashboard {
     export class BuildService {
         private _checklists: {id: number, name: string}[] = [];
         private _branches: string[] = [];
-        private _jiraTasks: {symbol: string, name: string}[] = [];
         private _databases: {id: number, name: string, comment: string}[] = [];
 
         public constructor(private $http: IHttpService,
@@ -19,7 +18,6 @@ module APP.Dashboard {
             // return this.$http.get('http://builder-dev.vagrant:3000/buildoptions').then((response:any) => {
                 this._checklists = response.data.checklists;
                 this._branches = response.data.branches;
-                this._jiraTasks = response.data.jiraTasks;
                 this._databases = response.data.databases;
             });
         }
@@ -34,10 +32,6 @@ module APP.Dashboard {
 
         get branches(): string[] {
             return this._branches;
-        }
-
-        get jiraTasks(): {symbol: string; name: string}[] {
-            return this._jiraTasks;
         }
     }
 }

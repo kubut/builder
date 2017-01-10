@@ -3,7 +3,6 @@ module APP.Dashboard {
     export class NewBuildModalCtrl {
         private _ready: boolean = false;
         private _checklistsVisible: boolean = false;
-        private _jiraVisible: boolean = false;
         private _buildConfiguration: IBuildConfiguration;
 
         public constructor(projectId: number,
@@ -40,14 +39,6 @@ module APP.Dashboard {
 
         set checklistsVisible(value: boolean) {
             this._checklistsVisible = value;
-        }
-
-        get jiraVisible(): boolean {
-            return this._jiraVisible;
-        }
-
-        set jiraVisible(value: boolean) {
-            this._jiraVisible = value;
         }
 
         get ready(): boolean {

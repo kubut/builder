@@ -36,11 +36,6 @@ md-dialog.new-build-modal
                         label Wybierz checklistę do podpięcia
                         md-select(name="checklist" required ng-model="modalCtrl.buildConfiguration.checklistId")
                             md-option(ng-repeat="checklist in modalCtrl.buildService.checklists" ng-value="checklist.id") {{ checklist.name }}
-                    md-checkbox.md-primary(ng-if="modalCtrl.buildService.jiraTasks.length > 0" ng-model="modalCtrl.jiraVisible") Powiąż z taskiem w Jirze
-                    md-input-container(ng-if="modalCtrl.jiraVisible && modalCtrl.buildService.jiraTasks.length > 0")
-                        label Wybierz task z Jiry
-                        md-select(name="task" required ng-model="modalCtrl.buildConfiguration.jiraTaskSymbol")
-                            md-option(ng-repeat="task in modalCtrl.buildService.jiraTasks" ng-value="task.symbol") {{ task.symbol }} - {{ task.name }}
                     .form-actions
                         md-button(ng-click="modalCtrl.close()") Anuluj
                         md-button.md-raised.md-primary(ng-click="modalCtrl.save()" ng-if="modalCtrl.buildService.branches.length > 0" ng-disabled="!newBuildForm.$valid") Buduj
