@@ -17,7 +17,7 @@ module APP.Checklist {
 
         public addChecklist(ev: MouseEvent): void {
             let dialog = this.$mdDialog.prompt()
-                .title('Stwórz nową checkliste')
+                .title('Dodaj nową checkliste')
                 .placeholder('Nazwa checlisty')
                 .initialValue('Nowa checklista')
                 .targetEvent(ev)

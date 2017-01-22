@@ -62,7 +62,7 @@ module APP.Projects {
                     'Jej nazwa zostanie wygenerowana dynamicznie.')
                 .placeholder('Komentarz do bazy...')
                 .targetEvent(ev)
-                .ok('Stwórz')
+                .ok('Utwórz')
                 .cancel('Rozmyśliłem się')
                 .clickOutsideToClose(true);
 
