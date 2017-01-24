@@ -34,7 +34,7 @@ class DefaultController extends AbstractController
             /** @var User $user */
             $user = $this->getUser();
             $token = $request->getSession()->get('userToken');
-            $userId = $request->getSession()->get('userId');
+            $userId = $user->getId();
             $websocketServer = $this->getParameter('socket_host').":".$this->getParameter('socket_port');
             $databaseSocket = $websocketServer."/".$this->getParameter('socket_databases');
             $instancesSocket = $websocketServer."/".$this->getParameter('socket_instances');
@@ -51,23 +51,5 @@ class DefaultController extends AbstractController
         } catch (\Exception $e) {
             return $this->redirectToRoute('fos_user_security_login');
         }
-    }
-    /**
-     * @Route("/jira/{projectId}", name="get_jira_configuration", options={"expose"=true})
-     *
-     * @Method("GET"),
-     *  requirements={
-     *      {"name"="projectId", "dataType"="int", "requirement"="int", "description"="projectId"}
-     *  }
-     *
-     * @ApiDoc(
-     *  description="Main page"
-     * )
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function defAction(Request $request)
-    {
-       return $this->returnSuccess();
     }
 }

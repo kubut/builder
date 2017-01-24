@@ -21,7 +21,7 @@ services:
 
     app.builder.model.instance:
         class: BuilderBundle\Model\InstanceModel
-        arguments: ['@app.builder.factory.instance', '@app.builder.repository.instance', '@app.builder.model.database', '@app.builder.model.project', '@app.builder.model.checklist', '@app.builder.model.user', '%portal_url%']
+        arguments: ['@app.builder.factory.instance', '@app.builder.repository.instance', '@app.builder.model.database', '@app.builder.model.project', '@app.builder.model.checklist', '@app.builder.model.user', '@app.builder.service.jira', '%portal_url%']
 
     app.builder.model.user_token:
         class: BuilderBundle\Model\UserTokenModel

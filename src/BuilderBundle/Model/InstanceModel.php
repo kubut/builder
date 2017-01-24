@@ -4,6 +4,7 @@ namespace BuilderBundle\Model;
 use BuilderBundle\Entity\Instance;
 use BuilderBundle\Factory\InstanceFactory;
 use BuilderBundle\Repository\InstanceRepository;
+use BuilderBundle\Services\JiraService;
 
 /**
  * Class InstanceModel
@@ -28,6 +29,9 @@ class InstanceModel
     /** @var UserModel $userModel */
     private $userModel;
 
+    /** @var  JiraService */
+    private $jiraService;
+
     /** @var string */
     private $portalUrl;
 
@@ -39,6 +43,7 @@ class InstanceModel
      * @param ProjectModel $projectModel
      * @param ChecklistModel $checklistModel
      * @param UserModel $userModel
+     * @param JiraService $jiraService
      * @param $portalUrl
      */
     public function __construct(
@@ -48,6 +53,7 @@ class InstanceModel
         ProjectModel $projectModel,
         ChecklistModel $checklistModel,
         UserModel $userModel,
+        JiraService $jiraService,
         $portalUrl
     )
     {
@@ -58,6 +64,7 @@ class InstanceModel
         $this->checklistModel = $checklistModel;
         $this->userModel = $userModel;
         $this->portalUrl = $portalUrl;
+        $this->jiraService = $jiraService;
     }
 
     /**
@@ -104,7 +111,7 @@ class InstanceModel
     /**
      * @param Instance $instance
      */
-    public function update(Instance $instance)
+    public function save(Instance $instance)
     {
         $this->instanceRepository->save($instance);
     }
@@ -121,8 +128,7 @@ class InstanceModel
         /** @var Instance $instance */
         foreach ($instances as $instance) {
             $checklists = !is_null(($instance->getChecklistId())) ? $this->checklistModel->getChecklistPreviewById($instance->getChecklistId()) : [];
-
-            $data[] = [
+            $data[$instance->getId()] = [
                 'id' => $instance->getId(),
                 'name' => $instance->getName(),
                 'status' => $instance->getStatus(),
@@ -130,10 +136,47 @@ class InstanceModel
                 'buildDate' => $instance->getBuildDate()->format('Y-m-d H:i:s'),
                 'author' => $instance->getUser(),
                 "url" => $instance->getUrl(),
-                'checklist' => $checklists
+                'checklist' => $checklists,
             ];
+            $jiraInfo = $this->jiraService->getTaskInfo($instance);
+            if (!empty($jiraInfo)) {
+                $data[$instance->getId()]["jiraInformation"] = $jiraInfo;
+            }
+
         }
 
-        return $data;
+        return array_values($data);
+    }
+
+    /**
+     * @param $params
+     * @return Instance
+     */
+    public function update($params)
+    { /** @var Instance $instance */
+        $instance = $this->getById($params['params']['instance']['instanceId']);
+        $instanceData = $params['params']['instance'];
+
+        $updateParams = [
+            'name' => $instanceData['name'],
+            'branch' => $instanceData['branch'],
+            'database' => $this->databaseModel->getById($instanceData['databaseId']),
+        ];
+        if (isset($instanceData['checklistId'])) {
+            $updateParams['checklist'] = $this->checklistModel->getById($instanceData['checklistId']);
+        }
+        if (isset($instanceData['jiraTaskSymbol'])) {
+            $updateParams['jiraTaskSymbol'] = $instanceData['jiraTaskSymbol'];
+        }
+        foreach ($updateParams as $name => $value) {
+            $setMethodName = sprintf('set%s', ucfirst($name));
+            if (method_exists($instance, $setMethodName)) {
+                $instance->$setMethodName($value);
+            }
+        }
+
+        $this->save($instance);
+
+        return $instance;
     }
 }

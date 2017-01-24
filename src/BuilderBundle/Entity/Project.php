@@ -91,6 +91,33 @@ class Project
     protected $instances;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="jira_login", type="string", length=100)
+     */
+    protected $jiraLogin;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="jira_pass", type="string", length=100)
+     */
+    protected $jiraPass;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="jira_prefix", type="string", length=100)
+     */
+    protected $jiraPrefix;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="jira_url", type="string", length=100)
+     */
+    protected $jiraUrl;
+
+    /**
      * Constructor
      */
     public function __construct()
@@ -322,6 +349,86 @@ class Project
     public function addInstance(Instance $instance)
     {
         $this->instances[] = $instance;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getJiraLogin()
+    {
+        return $this->jiraLogin;
+    }
+
+    /**
+     * @param string $jiraLogin
+     *
+     * @return Project
+     */
+    public function setJiraLogin($jiraLogin)
+    {
+        $this->jiraLogin = $jiraLogin;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getJiraPass()
+    {
+        return $this->jiraPass;
+    }
+
+    /**
+     * @param string $jiraPass
+     *
+     * @return Project
+     */
+    public function setJiraPass($jiraPass)
+    {
+        $this->jiraPass = $jiraPass;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getJiraPrefix()
+    {
+        return $this->jiraPrefix;
+    }
+
+    /**
+     * @param string $jiraPrefix
+     *
+     * @return Project
+     */
+    public function setJiraPrefix($jiraPrefix)
+    {
+        $this->jiraPrefix = $jiraPrefix;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getJiraUrl()
+    {
+        return $this->jiraUrl;
+    }
+
+    /**
+     * @param string $jiraUrl
+     *
+     * @return Project
+     */
+    public function setJiraUrl($jiraUrl)
+    {
+        $this->jiraUrl = $jiraUrl;
 
         return $this;
     }

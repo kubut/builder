@@ -28,3 +28,8 @@ services:
         class: BuilderBundle\WebSocket\Channels\Instances\Actions\DeleteAction
         arguments:
             instanceService: '@app.builder.service.instance'
+
+    app.builder.instance.action.build:
+        class: BuilderBundle\WebSocket\Channels\Instances\Actions\BuildAction
+        arguments:
+            instanceService: '@app.builder.service.instance'

@@ -6,7 +6,8 @@ GIT_URL=$4
 BUILD_SCRIPT=$5
 NODE_CLIENT=$6
 INSTANCE_NAME=$7
-SUCCESS=$8
+DATABASE_NAME=$8
+SUCCESS=$9
 WEBSOCKET_URL="ws://builder.vagrant:8080/instances"
 
 sendError() {
@@ -39,11 +40,24 @@ fi
         exit 1
     }
     {
+         if [ ! -f $INSTANCES_LOCATION'config/'$PROJECT_ID'/parameters.yml' ]; then
+            sudo sed "s/DATABASE_NAME/"$DATABASE_NAME"/" $INSTANCES_LOCATION'config/'$PROJECT_ID'/database.php' > $INSTANCES_LOCATION$PROJECT_ID'/'$INSTANCE_ID'/app/config/database.php'
+         else
+            sudo sed "s/DATABASE_NAME/"$DATABASE_NAME"/" $INSTANCES_LOCATION'config/'$PROJECT_ID'/parameters.yml' > $INSTANCES_LOCATION$PROJECT_ID'/'$INSTANCE_ID'/app/config/parameters.yml'
+         fi
+    } || {
+        sendError
+        exit 5
+    }
+    {
         cd $INSTANCE_ID;
         second="1"
         first=${SUCCESS/5T4TU5/$second}
         nodejs  $NODE_CLIENT $WEBSOCKET_URL ""$first""
-#        sudo sh $BUILD_SCRIPT
+        if ![ -z "${BUILD_SCRIPT}" ]
+        then
+            sudo sh $BUILD_SCRIPT
+        fi
         second="2"
         first=${SUCCESS/5T4TU5/$second}
         nodejs  $NODE_CLIENT $WEBSOCKET_URL ""$first""

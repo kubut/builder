@@ -85,6 +85,7 @@ class AuthenticationModel
     {
         /** @var User $user */
         $user = $this->userManager->findUserBy(['id' => $user_id]);
+        $this->userManager->reloadUser($user);
         if (empty($user)) {
             return false;
         }

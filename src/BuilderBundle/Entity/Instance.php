@@ -259,7 +259,7 @@ class Instance
     }
 
     /**
-     * @return mixed
+     * @return Database
      */
     public function getDatabase()
     {

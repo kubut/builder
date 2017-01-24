@@ -48,13 +48,6 @@ class UserToken
     protected $token;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="device", type="string", length=255, nullable=true)
-     */
-    protected $device;
-
-    /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="tokens")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
@@ -192,28 +185,5 @@ class UserToken
     public function getUser()
     {
         return $this->user;
-    }
-
-    /**
-     * Set device
-     *
-     * @param string $device
-     * @return UserToken
-     */
-    public function setDevice($device)
-    {
-        $this->device = $device;
-
-        return $this;
-    }
-
-    /**
-     * Get device
-     *
-     * @return string
-     */
-    public function getDevice()
-    {
-        return $this->device;
     }
 }

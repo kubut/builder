@@ -6,6 +6,7 @@ use BuilderBundle\Exception\ExceptionCode;
 use BuilderBundle\Factory\ProjectFactory;
 use BuilderBundle\Repository\ProjectRepository;
 use BuilderBundle\Util\GitHelper;
+use Symfony\Component\Yaml\Yaml;
 
 /**
  * Class ProjectModel
@@ -52,8 +53,11 @@ class ProjectModel
 
         $project = $this->projectFactory->createFromArray($params);
         $this->projectRepository->save($project);
+        $projectId = $project->getId();
+        $this->saveConfigFile($projectId, $params);
 
-        return ['id' => $project->getId()];
+
+        return ['id' => $projectId];
     }
 
     /**
@@ -90,13 +94,24 @@ class ProjectModel
     public function editProject($id, array $params)
     {
         $this->projectFactory->validateParams($params);
+        $this->saveConfigFile($id, $params);
         $project = $this->projectRepository->findById($id);
+        $this->update($project, $params);
+    }
+
+    /**
+     * @param Project $project
+     * @param $params
+     */
+    public function update(Project $project, $params)
+    {
         foreach ($params as $name => $value) {
             $setMethodName = sprintf('set%s', ucfirst($name));
             if (method_exists($project, $setMethodName)) {
                 $project->$setMethodName($value);
             }
         }
+
         $this->projectRepository->save($project);
     }
 
@@ -130,5 +145,30 @@ class ProjectModel
         exec($this->kernelDir.'/../src/BuilderBundle/Scripts/branches.sh '.$gitURL." 2>&1", $branches, $output);
 
         return $branches;
+    }
+
+    /**
+     * @param integer $projectId
+     * @param array $data
+     */
+    private function saveConfigFile($projectId, $data)
+    {
+        if (isset($data['configScript'])) {
+            $directory = $this->kernelDir.'/../web/instances/config/'.$projectId.'/';
+            if (!file_exists($directory)) {
+                mkdir($directory, 0777, true);
+            }
+            $filename = $this->isYaml($data) ? 'parameters.yml' : 'database.php';
+            file_put_contents($directory.$filename, $data);
+        }
+    }
+
+    /**
+     * @param string $yaml
+     * @return bool
+     */
+    private function isYaml($yaml)
+    {
+        return strpos($yaml, 'parameters:') !== false;
     }
 }

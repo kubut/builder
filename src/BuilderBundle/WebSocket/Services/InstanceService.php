@@ -9,11 +9,13 @@ use BuilderBundle\Model\DatabaseModel;
 use BuilderBundle\Model\InstanceModel;
 use BuilderBundle\Model\ProjectModel;
 use BuilderBundle\Util\GitHelper;
+use BuilderBundle\WebSocket\Channels\Instances\Actions\BuildAction;
 use BuilderBundle\WebSocket\Channels\Instances\Actions\CreateAction;
 use BuilderBundle\WebSocket\Channels\Instances\Actions\DeleteAction;
 use BuilderBundle\WebSocket\Channels\Instances\Actions\Server\ServerDeleteAction;
 use BuilderBundle\WebSocket\Channels\Instances\Actions\Server\ServerUpdateAction;
 use BuilderBundle\WebSocket\Channels\Instances\Actions\Server\UpdateChecklistItem;
+use BuilderBundle\WebSocket\Channels\Instances\Actions\ServerBuildAction;
 use BuilderBundle\WebSocket\Channels\Instances\Actions\SynchronizeAction;
 use BuilderBundle\WebSocket\Settings\ServerCredentials;
 
@@ -24,6 +26,7 @@ use BuilderBundle\WebSocket\Settings\ServerCredentials;
 class InstanceService
 {
     const CREATE_INSTANCE_SCRIPT = "/../src/BuilderBundle/Scripts/createInstance.sh";
+    const BUILD_INSTANCE_SCRIPT = "/../src/BuilderBundle/Scripts/buildInstance.sh";
     const NODE = "/../src/BuilderBundle/Scripts/ServersClient.js";
     const INSTANCES_LOCATION = "/../web/instances/";
 
@@ -94,6 +97,38 @@ class InstanceService
         ];
     }
 
+    /**
+     * @param $params
+     * @return array
+     */
+    public function build($params)
+    {
+        $instance = $this->instanceModel->update($params);
+        $command = $this->buildCommand($instance);
+
+        return [
+            'initResponse' => json_encode([
+                "action" => BuildAction::ACTION,
+                "params" => [
+                    "projectId" => $instance->getProjectId(),
+                    "instance" => [
+                        "id" => $instance->getId(),
+                        "name" => $instance->getName(),
+                        "status" => $instance->getStatus(),
+                        "branchName" => $instance->getBranch(),
+                        "buildDate" => $instance->getBuildDate()->format('Y-m-d H:i:s'),
+                        "author" => $instance->getUser(),
+                        "url" => $instance->getUrl(),
+                        "checklist" =>!is_null(($instance->getChecklistId())) ? $this->checklistModel->getChecklistPreviewById($instance->getChecklistId()) : []
+                    ]
+                ]
+            ]),
+            'command' => base64_encode($command),
+            'successAction' => addslashes(json_encode($this->getAsyncCreateResponse($instance))),
+            'errorAction' => '',
+        ];
+    }
+
     private function createCommand(Instance $instance)
     {
         $script = realpath($this->kernelDir . self::CREATE_INSTANCE_SCRIPT);
@@ -103,15 +138,17 @@ class InstanceService
         $project = $instance->getProject();
         $gitURL = GitHelper::createSecureGitURL($project);
         $buildScript = $project->getInstallScript();
+        $database = $instance->getDatabase();
         $params = [
             'command' => $script,
             'instancesLocation' => $location,
             'projectId' => $instance->getProjectId(),
             'instanceId' => $instance->getId(),
             'gitURL' => $gitURL,
-            'buildScript' => $buildScript,
+            'buildScript' => empty($buildScript) ? '/': $buildScript,
             'node' => $nodeScript,
-            'instanceName' => $instance->getName().$this->portalUrl
+            'instanceName' => $instance->getName().".".parse_url($instance->getUrl())['host'],
+            'databaseName' => $database->getName().$database->getId()
         ];
 
         $command = implode(' ', array_values($params));
@@ -149,7 +186,7 @@ class InstanceService
         $instance = $this->instanceModel->getById($instanceId);
         $instance->setStatus($status);
 
-        $this->instanceModel->update($instance);
+        $this->instanceModel->save($instance);
 
         return [
             'initResponse' => json_encode([
@@ -218,5 +255,35 @@ class InstanceService
                     ]]
             ),
         ];
+    }
+
+    /**
+     * @param Instance $instance
+     * @return string
+     */
+    private function buildCommand(Instance $instance)
+    {
+        $script = realpath($this->kernelDir . self::BUILD_INSTANCE_SCRIPT);
+        $location = $this->kernelDir . self::INSTANCES_LOCATION;
+        $nodeScript = $this->kernelDir.self::NODE;
+        /** @var Project $project */
+        $project = $instance->getProject();
+        $buildScript = $project->getInstallScript();
+        $database = $instance->getDatabase();
+        $params = [
+            'command' => $script,
+            'instancesLocation' => $location,
+            'projectId' => $instance->getProjectId(),
+            'instanceId' => $instance->getId(),
+            'gitBranch' => $instance->getBranch(),
+            'buildScript' => empty($buildScript) ? '/': $buildScript,
+            'node' => $nodeScript,
+            'databaseName' => $database->getName().$database->getId()
+        ];
+
+        $command = implode(' ', array_values($params));
+        echo $command;
+
+        return $command;
     }
 }

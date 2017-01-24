@@ -21,7 +21,10 @@ class ProjectFactory implements EntityFactoryInterface
         "gitPath" => '',
         "gitLogin" => '',
         "gitPass" => '',
-
+        "jiraUrl" => '',
+        "jiraLogin" => '',
+        "jiraPass" => '',
+        "jiraPrefix" => '',
     ];
     /**
      * @param array $parameters
@@ -43,8 +46,11 @@ class ProjectFactory implements EntityFactoryInterface
             ->setDomain($parameters['domain'])
             ->setGitPath($parameters['gitPath'])
             ->setGitLogin($parameters['gitLogin'])
-            ->setGitPass($parameters['gitPass']);
-
+            ->setGitPass($parameters['gitPass'])
+            ->setJiraUrl($parameters['jiraUrl'])
+            ->setJiraLogin($parameters['jiraLogin'])
+            ->setJiraPass($parameters['jiraPass'])
+            ->setJiraPrefix($parameters['jiraPrefix']);
 
         return $project;
     }

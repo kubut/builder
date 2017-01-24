@@ -7,6 +7,7 @@ services:
       - '@app.builder.database.action.synchronize'
       - '@app.builder.database.server.action.delete'
       - '@app.builder.database.action.delete'
+
   app.builder.factory.action.instances:
     class: BuilderBundle\WebSocket\Channels\Instances\InstancesActionHandlerFactory
     arguments:
@@ -16,3 +17,4 @@ services:
       - '@app.builder.instance.server.action.delete'
       - '@app.builder.instance.action.delete'
       - '@app.builder.instance.server.action.update_checklis_item'
+      - '@app.builder.instance.action.build'

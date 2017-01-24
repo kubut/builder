@@ -25,3 +25,7 @@ services:
     app.builder.service.websocket.authentication:
         class: BuilderBundle\WebSocket\Services\WebSocketAuthentication
         arguments: ['@app.builder.model.authentication']
+
+    app.builder.service.jira:
+        class: BuilderBundle\Services\JiraService
+        arguments: ['@app.builder.model.project']
