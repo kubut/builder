@@ -121,12 +121,8 @@ class DatabaseService
                 'action' => 'update',
                 'params' => [
                     'projectId' => $database->getProjectId(),
-                    "database" => [
-                        "id" => $database->getId(),
-                        "name" => $database->getName(),
-                        "comment" => $database->getComment(),
-                        "status" => $database->getStatus()
-                    ]
+                    'databaseId' => $database->getId(),
+                    'status' => $database->getStatus()
                 ]
             ])
         ];
@@ -181,7 +177,9 @@ class DatabaseService
     {
         $script = realpath($this->kernelDir . self::CREATE_DATABASE_SCRIPT);
         $databaseFile = realpath($this->kernelDir . self::DATABASES_LOCATION . $databaseFileName);
-        $databaseName = self::DATABASE_PREFIX . strtoupper($database->getName()) . $database->getId();
+        $databaseDisplayName = strtoupper(str_replace(' ', '', $database->getName()));
+
+        $databaseName = self::DATABASE_PREFIX . $databaseDisplayName . $database->getId();
 
         $command = implode(' ', [$script, $databaseName, $databaseFile]);
 
@@ -195,8 +193,9 @@ class DatabaseService
     public function deleteDatabaseCommand(Database $database)
     {
         $script = realpath($this->kernelDir . self::DELETE_DATABASE_SCRIPT);
+        $databaseDisplayName = strtoupper(str_replace(' ', '', $database->getName()));
 
-        $command = implode(' ', [$script, "bldrdb_" . $database->getName() . $database->getId()]);
+        $command = implode(' ', [$script, "bldrdb_" . $databaseDisplayName . $database->getId()]);
 
         return $command;
     }

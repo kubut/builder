@@ -55,6 +55,7 @@ class InstancesChannel implements MessageComponentInterface
      */
     public function onMessage(ConnectionInterface $userConnection, $msg)
     {
+        echo $msg;
         $data = $this->paramsValidator->parseRequest($msg);
         $requestId = $this->paramsValidator->getRequestId($data);
         echo $msg."\n\n";

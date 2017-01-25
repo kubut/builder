@@ -64,11 +64,11 @@ class JiraService
     {
         /** @var Project $project */
         $project = $instance->getProject();
-        $taskPrefix = $project->getJiraPrefix();
-        $branchName = $instance->getBranch();
+        $branchElements = explode('/',$instance->getBranch());
+        $branchName = end($branchElements);
         $result = [];
 
-        if (strpos($branchName, $taskPrefix) !== false) {
+        if ($this->isJiraParamsValid($branchName, $project)) {
             $taskName = $branchName;
             $username = $project->getJiraLogin();
             $password = $project->getJiraPass();
@@ -107,6 +107,21 @@ class JiraService
                 curl_close($ch);
             }
         }
+
         return $result;
+    }
+
+    /**
+     * @param string $branchName
+     * @param Project $project
+     *
+     * @return bool
+     */
+    private function isJiraParamsValid($branchName, Project $project)
+    {
+        $taskPrefix = !empty($project->getJiraPrefix()) ? $project->getJiraPrefix() : '';
+        $dataNotEmpty = !empty($project->getJiraLogin()) && !empty($project->getJiraPass()) && !empty($project->getJiraUrl()) && !empty($project->getJiraPrefix());
+
+        return $dataNotEmpty && (strpos($branchName, $taskPrefix) !== false);
     }
 }

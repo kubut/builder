@@ -11,7 +11,7 @@ SUCCESS=$9
 WEBSOCKET_URL="ws://builder.vagrant:8080/instances"
 
 sendError() {
- second="3"
+    second="3"
     first=${SUCCESS/5T4TU5/$second}
     nodejs $NODE_CLIENT $WEBSOCKET_URL ""$first""
 }
@@ -54,8 +54,7 @@ fi
         second="1"
         first=${SUCCESS/5T4TU5/$second}
         nodejs  $NODE_CLIENT $WEBSOCKET_URL ""$first""
-        if ![ -z "${BUILD_SCRIPT}" ]
-        then
+        if [ "$BUILD_SCRIPT" != "/" ]; then
             sudo sh $BUILD_SCRIPT
         fi
         second="2"

@@ -158,8 +158,8 @@ class ProjectModel
             if (!file_exists($directory)) {
                 mkdir($directory, 0777, true);
             }
-            $filename = $this->isYaml($data) ? 'parameters.yml' : 'database.php';
-            file_put_contents($directory.$filename, $data);
+            $filename = $this->isYaml($data['configScript']) ? 'parameters.yml' : 'database.php';
+            file_put_contents($directory.$filename, $data['configScript']);
         }
     }
 

@@ -13,4 +13,4 @@ parameters:
     socket_port: 8080
     socket_databases: databases
     socket_instances: instances
-    portal_url: .builder.vagrant
+    portal_url: builder.vagrant

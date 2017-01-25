@@ -86,7 +86,7 @@ class InstanceService
                         "branchName" => $instance->getBranch(),
                         "buildDate" => $instance->getBuildDate()->format('Y-m-d H:i:s'),
                         "author" => $instance->getUser(),
-                        "url" => $instance->getName().$this->portalUrl,
+                        "url" => $instance->getUrl(),
                         "checklist" =>!is_null(($instance->getChecklistId())) ? $this->checklistModel->getChecklistPreviewById($instance->getChecklistId()) : []
                     ]
                 ]
@@ -139,6 +139,7 @@ class InstanceService
         $gitURL = GitHelper::createSecureGitURL($project);
         $buildScript = $project->getInstallScript();
         $database = $instance->getDatabase();
+        $projectDisplayName = strtolower(str_replace(' ', '', $project->getName()));
         $params = [
             'command' => $script,
             'instancesLocation' => $location,
@@ -147,8 +148,8 @@ class InstanceService
             'gitURL' => $gitURL,
             'buildScript' => empty($buildScript) ? '/': $buildScript,
             'node' => $nodeScript,
-            'instanceName' => $instance->getName().".".parse_url($instance->getUrl())['host'],
-            'databaseName' => $database->getName().$database->getId()
+            'instanceName' => $instance->getName()."-".$projectDisplayName.".".$this->portalUrl,
+            'databaseName' => str_replace(' ', '', $database->getName()).$database->getId()
         ];
 
         $command = implode(' ', array_values($params));
@@ -278,7 +279,7 @@ class InstanceService
             'gitBranch' => $instance->getBranch(),
             'buildScript' => empty($buildScript) ? '/': $buildScript,
             'node' => $nodeScript,
-            'databaseName' => $database->getName().$database->getId()
+            'databaseName' => str_replace(' ', '', $database->getName()).$database->getId()
         ];
 
         $command = implode(' ', array_values($params));

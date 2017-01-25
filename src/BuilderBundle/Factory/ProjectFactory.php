@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ProjectFactory implements EntityFactoryInterface
 {
-    private  $template = [
+    private $obligatoryParams = [
         "name" => '',
         "installScript" => null,
         "sqlFile" => '',
@@ -20,11 +20,7 @@ class ProjectFactory implements EntityFactoryInterface
         "domain" => '',
         "gitPath" => '',
         "gitLogin" => '',
-        "gitPass" => '',
-        "jiraUrl" => '',
-        "jiraLogin" => '',
-        "jiraPass" => '',
-        "jiraPrefix" => '',
+        "gitPass" => ''
     ];
     /**
      * @param array $parameters
@@ -35,7 +31,13 @@ class ProjectFactory implements EntityFactoryInterface
     {
         $this->validateParams($parameters);
 
-        $parameters = array_merge($this->template, $parameters);
+        $additionalParams= [
+            "jiraUrl" => '',
+            "jiraLogin" => '',
+            "jiraPass" => '',
+            "jiraPrefix" => ''
+        ];
+        $parameters = array_merge($additionalParams, $this->obligatoryParams, $parameters);
 
         $project = new Project();
         $project->setName($parameters['name'])
@@ -68,7 +70,7 @@ class ProjectFactory implements EntityFactoryInterface
             throw new \Exception('Name too short', ExceptionCode::VALIDATION_PROJECT_NAME);
         }
         $omittedParams = [];
-        foreach ($this->template as $templateItemKey => $templateItemValue) {
+        foreach ($this->obligatoryParams as $templateItemKey => $templateItemValue) {
             if (is_null($templateItemValue)) {
                continue;
             }

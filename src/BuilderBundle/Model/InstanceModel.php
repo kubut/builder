@@ -75,14 +75,16 @@ class InstanceModel
     public function create(array $params)
     {
         $projectId = $params['params']['projectId'];
+        $project = $this->projectModel->getProject($projectId);
+        $projectDisplayName = strtolower(str_replace(' ', '', $project->getName()));
         $instanceData = $params['params']['instance'];
         $user = $this->userModel->getUserById($params['userId']);
         $factoryParams = [
             'name' => $instanceData['name'],
             'branch' => $instanceData['branch'],
-            'url' => 'http://'.$instanceData['name'].$this->portalUrl,
+            'url' => 'http://'.$instanceData['name']."-".$projectDisplayName.".".$this->portalUrl,
             'database' => $this->databaseModel->getById($instanceData['databaseId']),
-            'project' => $this->projectModel->getProject($projectId),
+            'project' => $project,
             'user' => sprintf('%s %s', $user->getName(), $user->getSurname())
         ];
         if (isset($instanceData['checklistId'])) {
@@ -142,6 +144,7 @@ class InstanceModel
             if (!empty($jiraInfo)) {
                 $data[$instance->getId()]["jiraInformation"] = $jiraInfo;
             }
+
 
         }
 
