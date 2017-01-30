@@ -26,6 +26,7 @@ cloneRepo() {
     installIfNeeded git
 
     git clone ${gitPath} builder ${flag}
+    cd builder
     git pull
 }
 
@@ -263,8 +264,7 @@ else
     exit 6
 fi
 
-#cloneRepo
-#cd builder
+cloneRepo
 
-#installBackend
+installBackend
 installFront
