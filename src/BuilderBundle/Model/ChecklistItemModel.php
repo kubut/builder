@@ -60,9 +60,14 @@ class ChecklistItemModel
     public function updateItems(Checklist $checklist, array $items)
     {
         $itemsToCreate = [];
+        $itemsToDelete = [];
         foreach ($items as $item) {
             if (!isset($item['id'])) {
                 $itemsToCreate[] = $item;
+                continue;
+            }
+            if (isset($item['deleted']) && ($item['deleted'])) {
+                $itemsToDelete[] = $item['id'];
                 continue;
             }
             /** @var ChecklistItem $checklistItem */
@@ -74,7 +79,9 @@ class ChecklistItemModel
             $checklist->addChecklistItem($checklistItem);
         }
 
-       return $this->checklistFactory->addItemsFromArray($checklist, $itemsToCreate);
+        $this->checklistItemRepository->removeItemsById($itemsToDelete);
+
+        return $this->checklistFactory->addItemsFromArray($checklist, $itemsToCreate);
     }
 
     /**

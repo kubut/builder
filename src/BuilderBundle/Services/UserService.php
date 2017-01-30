@@ -46,7 +46,9 @@ class UserService
      */
     public function removeUser($userId)
     {
-        //TODO: remove mock
+        $user = $this->userModel->getUserById($userId);
+
+        $this->userModel->removeUser($user);
     }
 
     /**

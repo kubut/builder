@@ -62,4 +62,13 @@ class UserRepository extends EntityRepository
         $this->_em->remove($userToken);
         $this->_em->flush();
     }
+
+    /**
+     * @param $user
+     */
+    public function remove($user)
+    {
+        $this->_em->remove($user);
+        $this->_em->flush();
+    }
 }

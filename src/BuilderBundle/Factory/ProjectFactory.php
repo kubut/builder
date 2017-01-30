@@ -63,8 +63,8 @@ class ProjectFactory implements EntityFactoryInterface
      */
     public function validateParams(array $params)
     {
-        if (strpos($params['configScript'], '$DATABASE_NAME$') === false) {
-            throw new \Exception('Config file does not contain $DATABASE_NAME$', ExceptionCode::VALIDATION_PROJECT_CONFIG_FILE);
+        if (strpos($params['configScript'], 'DATABASE_NAME') === false) {
+            throw new \Exception('Config file does not contain DATABASE_NAME', ExceptionCode::VALIDATION_PROJECT_CONFIG_FILE);
         }
         if (strlen($params['name']) < 3) {
             throw new \Exception('Name too short', ExceptionCode::VALIDATION_PROJECT_NAME);

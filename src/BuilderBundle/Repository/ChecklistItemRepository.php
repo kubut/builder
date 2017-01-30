@@ -74,4 +74,17 @@ class ChecklistItemRepository extends EntityRepository
             ->getQuery()
             ->getArrayResult();
     }
+
+    /**
+     * @param array $itemsIds
+     */
+    public function removeItemsById(array $itemsIds)
+    {
+        $this->createQueryBuilder('cli')
+            ->delete()
+            ->where('cli.id IN (:itemIds)')
+            ->setParameter('itemIds', $itemsIds)
+            ->getQuery()
+            ->execute();
+    }
 }

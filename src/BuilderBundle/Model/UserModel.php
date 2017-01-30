@@ -119,8 +119,19 @@ class UserModel
         $this->userRepository->removeToken($UserToken);
     }
 
+    /**
+     * @param $user
+     */
     public function save($user)
     {
         $this->userRepository->save($user);
+    }
+
+    /**
+     * @param $user
+     */
+    public function removeUser($user)
+    {
+        $this->userRepository->remove($user);
     }
 }

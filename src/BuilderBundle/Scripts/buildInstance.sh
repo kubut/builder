@@ -14,6 +14,7 @@ sendError() {
     first=${SUCCESS/5T4TU5/$second}
     nodejs $NODE_CLIENT $WEBSOCKET_URL ""$first""
 }
+
 cd $INSTANCES_LOCATION
 cd $PROJECT_ID
 cd $INSTANCE_ID
@@ -27,7 +28,6 @@ cd $INSTANCE_ID
     git pull
     git checkout origin/${BRANCH}
 
-    echo "done1\n";
     } || {
     sendError
     exit 1
