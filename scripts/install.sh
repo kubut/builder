@@ -32,7 +32,7 @@ cloneRepo() {
 
 checkPHPVersion() {
     PHPVersion=$(php -v|grep --only-matching --perl-regexp "5\.\\d+\.\\d+");
-    currentVersion=${PHPVersion:0:2};
+    currentVersion=${PHPVersion:0:3};
     minimumRequiredVersion=$1;
     if [ $(echo " $currentVersion >= $minimumRequiredVersion" | bc) -eq 1 ]; then
         printInfo "PHP Version is valid ...";
@@ -137,7 +137,7 @@ setDatabase() {
 }
 
 installBackend() {
-    checkPHPVersion 5
+    checkPHPVersion 5.6
 
     printInfo "Downloading composer.phar..."
     curl -sS https://getcomposer.org/installer | php
