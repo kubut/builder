@@ -36,19 +36,16 @@ class UserController extends AbstractController
     public function registerAction(Request $request)
     {
         $this->requireRole(Role::ADMIN);
-        $responseData = [];
         $inputData = $this->parseRequest($request);
         if ($request->isMethod('POST')){
             try {
                 $generatedPassword = $this->get('app.builder.service.register')->register($inputData);
 
-                $responseData = $this->returnSuccess(['password' => $generatedPassword]);
+                return $this->returnSuccess(['password' => $generatedPassword]);
             } catch (\Exception $exception) {
                 return $this->returnError($exception->getMessage());
             }
         }
-
-        return $this->returnSuccess($responseData);
     }
 
     /**
