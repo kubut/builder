@@ -72,7 +72,7 @@ class ProjectController extends AbstractController
         $inputData = $this->parseRequest($request);
 
         $this->container->get('app.builder.model.project')->editProject($id, $inputData);
-        return $this->returnSuccess();
+        return $this->returnSuccess(['id' => $id]);
     }
 
     /**
