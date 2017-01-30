@@ -38,7 +38,9 @@ class WebSocketServerCommand extends ContainerAwareCommand
     {
         $databasesChannel = $this->getContainer()->get('app.builder.websocket.channel.databases');
         $instancesChannel = $this->getContainer()->get('app.builder.websocket.channel.instances');
-        $app = new App("builder.vagrant", 8080, '0.0.0.0');
+        $serverUrl = $this->getContainer()->getParameter('socket_host');
+        $serverPort = $this->getContainer()->getParameter('socket_port');
+        $app = new App($serverUrl, $serverPort, '0.0.0.0');
         $app->route('/databases', $databasesChannel, array('*'));
         $app->route('/instances', $instancesChannel, array('*'));
         $app->run();
