@@ -16,7 +16,7 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 
-class WebSockerServerCommand extends ContainerAwareCommand
+class WebSocketServerCommand extends ContainerAwareCommand
 {
     /**
      * Configure function

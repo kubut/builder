@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Security\Acl\Exception\Exception;
 
-class DataBasesChannel implements MessageComponentInterface
+class DatabasesChannel implements MessageComponentInterface
 {
     /** @var DatabaseActionHandlerFactory */
     protected $actionHandler;
