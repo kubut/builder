@@ -165,6 +165,7 @@ class InstanceModel
             'branch' => $instanceData['branch'],
             'database' => $this->databaseModel->getById($instanceData['databaseId']),
         ];
+        $updateParams['checklist'] = null;
         if (isset($instanceData['checklistId'])) {
             $updateParams['checklist'] = $this->checklistModel->getById($instanceData['checklistId']);
         }

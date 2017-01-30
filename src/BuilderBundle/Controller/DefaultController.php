@@ -35,7 +35,7 @@ class DefaultController extends AbstractController
             $user = $this->getUser();
             $token = $request->getSession()->get('userToken');
             $userId = $user->getId();
-            $websocketServer = $this->getParameter('socket_host').":".$this->getParameter('socket_port');
+            $websocketServer = "ws://".$this->getParameter('socket_host').":".$this->getParameter('socket_port');
             $databaseSocket = $websocketServer."/".$this->getParameter('socket_databases');
             $instancesSocket = $websocketServer."/".$this->getParameter('socket_instances');
 
