@@ -14,8 +14,7 @@ module APP.Dashboard {
         }
 
         public getBuildInfo(projectId: number): IPromise<any> {
-            return this.$http.get(this.routing.generate('get_build_options', {projectId: projectId})).then((response) => {
-            // return this.$http.get('http://builder-dev.vagrant:3000/buildoptions').then((response:any) => {
+            return this.$http.get(this.routing.generate('get_build_options', {projectId: projectId})).then((response:any) => {
                 this._checklists = response.data.checklists;
                 this._branches = response.data.branches;
                 this._databases = response.data.databases;

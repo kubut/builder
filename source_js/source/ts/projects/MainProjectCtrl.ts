@@ -9,7 +9,7 @@ module APP.Projects {
         public constructor(public projectsService: ProjectsService,
                            protected $mdToast: IToastService,
                            protected $state: IStateService) {
-            this.regex = /[\s\S]*\$DATABASE_NAME\$+[\s\S]*/;
+            this.regex = /[\s\S]*DATABASE_NAME+[\s\S]*/;
         }
 
         public saveProject() {

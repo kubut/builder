@@ -12,12 +12,9 @@ module APP.Projects {
         }
 
         public loadJiraConfiguration(projectId: number): IPromise<any> {
-            return this.http.get(this.routing.generate('get_jira_configuration', {projectId: projectId})).then((config:any) => {
-                this.jiraConfig = config;
+            return this.http.get(this.routing.generate('get_jira_configuration', {projectId: projectId})).then((response:any) => {
+                this.jiraConfig = response.data;
             });
-            // return this.http.get('http://builder-dev.vagrant:3000/jira').then((response: any) => {
-            //     this.jiraConfig = response.data;
-            // });
         }
 
         public saveConfiguration(projectId: number): IPromise<any> {

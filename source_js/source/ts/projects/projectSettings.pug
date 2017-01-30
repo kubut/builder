@@ -69,11 +69,11 @@
                 i.material-icons.grey help_outline
                 md-tooltip Skrypt instalacyjny zostanie wykonany po każdorazowym wystawieniu środowiska (git checkout). Powinien zawierać wszystkie niezbędne kroki potrzebne do działania projektu (instalacja bibliotek itp.) oraz być napisany w Bashu
         md-input-container
-            label Plik konfiguracyjny (parameters.yml)
+            label Ścieżka do pliku konfiguracyjnego (parameters.yml lub database.php)
             textarea(name="configScript" ng-model="projectCtrl.project.configScript" required ng-pattern="projectCtrl.regex")
             div(ng-messages="projectForm.configScript.$error")
                 div(ng-message="required") To pole jest wymagane
-                div(ng-message="pattern") To pole wymaga umeijscowienia zmiennej $DATABASE_NAME$
+                div(ng-message="pattern") To pole wymaga umiejscowienia zmiennej DATABASE_NAME
             md-icon.helper
                 i.material-icons.grey help_outline
-                md-tooltip Plik konfiguracji Symfony. Musi zawierać zmienną $DATABASE_NAME$ pod którą zostanie wstawiona nazwa bazy danych wwygenerowanej z podanego wyżej pliku SQL. Pamiętaj o zdefiniowaniu w nim pozostałych dostępów do bazy danych oraz wszystkich potrzebnych parametrów
+                md-tooltip Plik konfiguracji Symfony. Musi zawierać zmienną DATABASE_NAME pod którą zostanie wstawiona nazwa bazy danych wwygenerowanej z podanego wyżej pliku SQL. Pamiętaj o zdefiniowaniu w nim pozostałych dostępów do bazy danych oraz wszystkich potrzebnych parametrów
