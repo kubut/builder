@@ -16,3 +16,15 @@ KUBUT:
   surname: Górowski
   password: cosistupik
   roles: ["ROLE_ADMIN"]
+ADMIN_II:
+  email: admin-inz@ii.pl
+  name: Admin
+  surname: Instytut
+  password: pracainzynierska
+  roles: ["ROLE_ADMIN"]
+USER_II:
+  email: user-inz@ii.pl
+  name: User
+  surname: Instytut
+  password: pracainzynierska
+  roles: ["ROLE_USER"]
