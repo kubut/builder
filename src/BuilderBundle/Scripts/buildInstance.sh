@@ -67,7 +67,7 @@ cd $INSTANCE_ID
     first=${SUCCESS/5T4TU5/$second}
     nodejs  $NODE_CLIENT $WEBSOCKET_URL ""$first""
     if [ "$BUILD_SCRIPT" != "/" ]; then
-        sudo sh $BUILD_SCRIPT
+        sh $BUILD_SCRIPT
     fi
     second="2"
     first=${SUCCESS/5T4TU5/$second}
