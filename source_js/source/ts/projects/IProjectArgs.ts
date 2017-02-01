@@ -6,7 +6,6 @@ module APP.Projects {
         sqlFile: string;
         sqlUser: string;
         configScript: string;
-        domain: string;
         gitPath: string;
         gitLogin: string;
         gitPass: string;

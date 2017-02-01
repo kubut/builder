@@ -13,15 +13,6 @@
                     div(ng-message="maxlength") Nazwa nie może być dłuższa niż 10 znaków
                     div(ng-message="minlength") Nazwa nie może być krótsza niż 3 znaki
             md-input-container(flex)
-                label Domena
-                input(name="domain" required ng-model="projectCtrl.project.domain")
-                md-icon.helper
-                    i.material-icons.grey help_outline
-                    md-tooltip Domena pod którą będą dostępne poszczególne środowiska testerskie. Pamiętaj o rejestracji jej w systemie DNS
-                div(ng-messages="projectForm.domain.$error")
-                    div(ng-message="required") To pole jest wymagane
-        div(layout="row")
-            md-input-container(flex)
                 label Użytkownik bazy danych
                 input(name="sqlUser" required ng-model="projectCtrl.project.sqlUser")
                 md-icon.helper

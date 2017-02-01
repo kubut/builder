@@ -6,7 +6,6 @@ module APP.Projects {
         private _sqlFile: string;
         private _sqlUser: string;
         private _configScript: string;
-        private _domain: string;
         private _gitPath: string;
         private _gitLogin: string;
         private _gitPass: string;
@@ -53,14 +52,6 @@ module APP.Projects {
 
         set configScript(value: string) {
             this._configScript = value;
-        }
-
-        get domain(): string {
-            return this._domain;
-        }
-
-        set domain(value: string) {
-            this._domain = value;
         }
 
         get gitPath(): string {

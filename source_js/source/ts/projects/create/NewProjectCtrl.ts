@@ -15,7 +15,6 @@ module APP.Projects {
                 sqlFile: '',
                 sqlUser: '',
                 configScript: '',
-                domain: '',
                 gitPath: '',
                 gitLogin: '',
                 gitPass: ''

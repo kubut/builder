@@ -32,7 +32,6 @@ module APP.Projects {
                     sqlFile: respond.data.sqlFile,
                     sqlUser: respond.data.sqlUser,
                     configScript: respond.data.configScript,
-                    domain: respond.data.domain,
                     gitPath: respond.data.gitPath,
                     gitLogin: respond.data.gitLogin,
                     gitPass: respond.data.gitPass
@@ -55,7 +54,7 @@ module APP.Projects {
                 sqlFile: project.sqlFile,
                 sqlUser: project.sqlUser,
                 configScript: project.configScript,
-                domain: project.domain,
+                domain: '',
                 gitPath: project.gitPath,
                 gitLogin: project.gitLogin,
                 gitPass: project.gitPass

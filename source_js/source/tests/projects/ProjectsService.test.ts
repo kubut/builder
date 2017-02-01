@@ -100,7 +100,7 @@ module APP.Projects {
                     sqlFile: 'sqlFile',
                     sqlUser: 'sqlUser',
                     configScript: 'configScript',
-                    domain: 'domain',
+                    domain: '',
                     gitPath: 'gitPath',
                     gitLogin: 'gitLogin',
                     gitPass: 'gitPass'
@@ -132,7 +132,7 @@ module APP.Projects {
                     sqlFile: 'sqlFile',
                     sqlUser: 'sqlUser',
                     configScript: 'configScript',
-                    domain: 'domain',
+                    domain: '',
                     gitPath: 'gitPath',
                     gitLogin: 'gitLogin',
                     gitPass: 'gitPass'
