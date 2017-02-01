@@ -18,7 +18,7 @@ eval $(parse_yaml ~/www/app/config/parameters.yml "config_")
 
 DB_USER=$config_database_user
 DB_PASS=$config_database_password
-WEBSOCKET_URL="ws://builder.vagrant:8080/databases"
+WEBSOCKET_URL="ws://"$config_portal_url":"$config_socket_port"/"$config_socket_databases
 MESSAGE_SUCCESS=$3
 MESSAGE_ERROR=$4
 

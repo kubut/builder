@@ -1,4 +1,20 @@
-#!/usr/bin/env bash
+#!/bin/bash
+parse_yaml() {
+   local prefix=$2
+   local s='[[:space:]]*' w='[a-zA-Z0-9_]*' fs=$(echo @|tr @ '\034')
+   sed -ne "s|^\($s\)\($w\)$s:$s\"\(.*\)\"$s\$|\1$fs\2$fs\3|p" \
+        -e "s|^\($s\)\($w\)$s:$s\(.*\)$s\$|\1$fs\2$fs\3|p"  $1 |
+   awk -F$fs '{
+      indent = length($1)/2;
+      vname[indent] = $2;
+      for (i in vname) {if (i > indent) {delete vname[i]}}
+      if (length($3) > 0) {
+         printf("%s%s=\"%s\"\n", "'$prefix'", $2, $3);
+      }
+   }'
+}
+
+eval $(parse_yaml ~/www/app/config/parameters.yml "config_")
 INSTANCES_LOCATION=$1
 PROJECT_ID=$2
 INSTANCE_ID=$3
@@ -7,7 +23,7 @@ BUILD_SCRIPT=$5
 NODE_CLIENT=$6
 DATABASE_NAME=$7
 SUCCESS=$8
-WEBSOCKET_URL="ws://builder.vagrant:8080/instances"
+WEBSOCKET_URL="ws://"$config_portal_url":"$config_socket_port"/"$config_socket_instances
 
 sendError() {
     second="3"
