@@ -26,8 +26,6 @@ cloneRepo() {
     installIfNeeded git
 
     git clone ${gitPath} builder ${flag}
-    cd builder
-    git pull
 }
 
 checkPHPVersion() {
@@ -141,6 +139,20 @@ installBackend() {
 
     printInfo "Downloading composer.phar..."
     curl -sS https://getcomposer.org/installer | php
+    sudo /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024
+    sudo /sbin/mkswap /var/swap.1
+    sudo /sbin/swapon /var/swap.1
+
+    setDatabase
+    requireSuccess
+
+    setApache
+    requireSuccess
+
+    printQuestion "Specify port for socket server"
+    read socketPort
+
+    shost=${domain} sport=${socketPort} purl=${domain} dbname=${dbName} dbpass=${dbPassword} dbuser=${dbUser} bash  -c 'php composer.phar install'
 
     printInfo "Setting permissions for Symfony cache"
     HTTPDUSER=`ps axo user,comm | grep -E '[a]pache|[h]ttpd|[_]www|[w]ww-data|[n]ginx' | grep -v root | head -1 | cut -d\  -f1`
@@ -161,17 +173,6 @@ installBackend() {
         installIfNeeded php-mysql
     fi
 
-    setDatabase
-    requireSuccess
-
-    sudo /bin/dd if=/dev/zero of=/var/swap.1 bs=1M count=1024
-    sudo /sbin/mkswap /var/swap.1
-    sudo /sbin/swapon /var/swap.1
-    dbname=${dbName} dbpass=${dbPassword} dbuser=${dbUser} bash  -c 'php composer.phar install'
-
-    setApache
-    requireSuccess
-
     if [ $(isProgramInstalled apt-get) -eq 1 ]; then
         installIfNeeded mcrypt
         installIfNeeded php5-mcrypt
@@ -184,6 +185,10 @@ installBackend() {
 
     php app/console doctrine:schema:create
     php app/console doctrine:fixtures:load --fixtures=src/BuilderBundle/DataFixtures/Prod/
+
+    printInfo "Restarting server..."
+    sudo service ${serverService} restart
+    requireSuccess
 }
 
 installFront() {
@@ -265,6 +270,9 @@ else
 fi
 
 cloneRepo
+
+sudo chown -R $SUDO_USER:$SUDO_USER builder
+cd builder
 
 installBackend
 installFront

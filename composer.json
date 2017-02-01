@@ -59,7 +59,10 @@
             "env-map": {
                 "database_name": "dbname",
                 "database_password": "dbpass",
-                "database_user": "dbuser"
+                "database_user": "dbuser",
+                "socket_host": "shost",
+                "socket_port": "sport",
+                "portal_url": "purl"
             }
         },
         "branch-alias": {
