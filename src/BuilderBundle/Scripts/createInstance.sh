@@ -14,7 +14,7 @@ parse_yaml() {
    }'
 }
 
-eval $(parse_yaml ~/public_html/builder/app/config/parameters.yml "config_")
+eval $(parse_yaml ../../../app/config/parameters.yml "config_")
 
 INSTANCES_LOCATION=$1
 PROJECT_ID=$2
