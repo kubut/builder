@@ -14,8 +14,8 @@ parse_yaml() {
    }'
 }
 
-eval $(parse_yaml ../../../app/config/parameters.yml "config_")
-
+PARAMETERS=$(pwd)"/app/config/parameters.yml"
+eval $(parse_yaml $PARAMETERS "config_")
 DB_USER=$config_database_user
 DB_PASS=$config_database_password
 WEBSOCKET_URL="ws://"$config_portal_url":"$config_socket_port"/"$config_socket_databases
