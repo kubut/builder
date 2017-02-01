@@ -274,5 +274,9 @@ cloneRepo
 sudo chown -R $SUDO_USER:$SUDO_USER builder
 cd builder
 
+installIfNeeded pv
+
 installBackend
 installFront
+
+sudo chown -R $SUDO_USER:$SUDO_USER builder
