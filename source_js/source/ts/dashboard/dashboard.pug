@@ -28,7 +28,7 @@ div
                         span {{ instance.branchName }}
                     .content-wrapper
                         .content
-                            .build-checklist(ng-if="instance.checklist")
+                            .build-checklist(ng-if="instance.checklist.items && instance.checklist.items.length > 0")
                                 span.checklist-title {{ instance.checklist.name }} ({{ instance.checklist.getSolvedCount() }}/{{ instance.checklist.items.length }})
                                 ul.grey.build-checklist-items
                                     li.item-name(ng-repeat="item in instance.checklist.items track by $index" ng-class="item.solved ? 'solved-item' : ''")
