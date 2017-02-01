@@ -118,7 +118,7 @@ class InstancesChannel implements MessageComponentInterface
         if ($action->hasAsyncJob()) {
             $output = [];
             $return_var = -1;
-            exec(base64_decode($params['command']) . " " . $params['successAction'] . " " . $params['errorAction'] . " > /dev/null 2>/dev/null &", $output, $return_var);
+            exec(base64_decode($params['command']) . " '" . $params['successAction'] . "' '" . $params['errorAction'] . "' > /dev/null 2>/dev/null &", $output, $return_var);
 
             if ($return_var !== 0) {
                 throw new \Exception(implode("\n", $output));

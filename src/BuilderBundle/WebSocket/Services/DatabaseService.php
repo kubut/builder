@@ -78,8 +78,8 @@ class DatabaseService
                 ]
             ]),
             'command' => base64_encode($command),
-            'successAction' => addslashes(json_encode($this->getAsyncUpdateResponse($database, true))),
-            'errorAction' => addslashes(json_encode($this->getAsyncUpdateResponse($database, false))),
+            'successAction' => json_encode($this->getAsyncUpdateResponse($database, true)),
+            'errorAction' => json_encode($this->getAsyncUpdateResponse($database, false)),
         ];
     }
 
@@ -101,8 +101,8 @@ class DatabaseService
 
         return [
             'command' => base64_encode($command),
-            'successAction' => addslashes(json_encode($this->getAsyncDeleteResponse($database))),
-            'errorAction' => addslashes(json_encode($this->getAsyncDeleteResponse($database))),
+            'successAction' => json_encode($this->getAsyncDeleteResponse($database)),
+            'errorAction' => json_encode($this->getAsyncDeleteResponse($database)),
         ];
     }
 

@@ -92,7 +92,7 @@ class InstanceService
                 ]
             ]),
             'command' => base64_encode($command),
-            'successAction' => addslashes(json_encode($this->getAsyncCreateResponse($instance))),
+            'successAction' => json_encode($this->getAsyncCreateResponse($instance)),
             'errorAction' => '',
         ];
     }
@@ -124,7 +124,7 @@ class InstanceService
                 ]
             ]),
             'command' => base64_encode($command),
-            'successAction' => addslashes(json_encode($this->getAsyncCreateResponse($instance))),
+            'successAction' => json_encode($this->getAsyncCreateResponse($instance)),
             'errorAction' => '',
         ];
     }
