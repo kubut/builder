@@ -10,13 +10,14 @@ use Doctrine\ORM\EntityRepository;
  * Class ChecklistItemRepository
  * @package BuilderBundle\Repository
  */
-class ChecklistItemRepository extends EntityRepository
+class ChecklistItemRepository extends AbstractRepository
 {
     /**
      * @param ChecklistItem $checklistItem
      */
     public function save(ChecklistItem $checklistItem)
     {
+        $this->refresh();
         $this->_em->persist($checklistItem);
         $this->_em->flush();
         $this->_em->refresh($checklistItem);
@@ -27,6 +28,7 @@ class ChecklistItemRepository extends EntityRepository
      */
     public function persist(ChecklistItem $checklistItem)
     {
+        $this->refresh();
         $this->_em->persist($checklistItem);
     }
 
@@ -38,6 +40,8 @@ class ChecklistItemRepository extends EntityRepository
      */
     public function findById($id)
     {
+        $this->refresh();
+
         $checklistItem = $this->find($id);
         if (is_null($checklistItem)) {
             throw new \Exception('Checklist item does not exist', ExceptionCode::CHECKLIST_ITEM_NOT_EXIST);
@@ -52,6 +56,8 @@ class ChecklistItemRepository extends EntityRepository
      */
     public function fetchDataWithScope(array $scope)
     {
+        $this->refresh();
+
         $qb = $this->createQueryBuilder('cli')
             ->select('cli.id');
 
@@ -68,6 +74,8 @@ class ChecklistItemRepository extends EntityRepository
      */
     public function fetchChecklistItemByChecklistIds(array $checklistIds)
     {
+        $this->refresh();
+
         return $this->createQueryBuilder('cli')
             ->where('cli.checklistId IN (:checklistIds)')
             ->setParameter('checklistIds', $checklistIds)
@@ -80,6 +88,8 @@ class ChecklistItemRepository extends EntityRepository
      */
     public function removeItemsById(array $itemsIds)
     {
+        $this->refresh();
+
         $this->createQueryBuilder('cli')
             ->delete()
             ->where('cli.id IN (:itemIds)')

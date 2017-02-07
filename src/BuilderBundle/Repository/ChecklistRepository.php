@@ -10,13 +10,15 @@ use Doctrine\ORM\EntityRepository;
  * Class ChecklistRepository
  * @package BuilderBundle\Repository
  */
-class ChecklistRepository extends EntityRepository
+class ChecklistRepository extends AbstractRepository
 {
     /**
      * @param Checklist $checklist
      */
     public function save(Checklist $checklist)
     {
+        $this->refresh();
+
         $this->_em->persist($checklist);
         $this->_em->flush();
         $this->_em->refresh($checklist);
@@ -30,6 +32,8 @@ class ChecklistRepository extends EntityRepository
      */
     public function findById($id)
     {
+        $this->refresh();
+
         $checklist = $this->find($id);
         if (is_null($checklist)) {
             throw new \Exception('Checklist does not exist', ExceptionCode::CHECKLIST_NOT_EXIST);
@@ -45,6 +49,8 @@ class ChecklistRepository extends EntityRepository
      */
     public function fetchDataWithScope($id, array $scope)
     {
+        $this->refresh();
+
         $qb = $this->createQueryBuilder('cl')
             ->select('cl.id')
             ->where('cl.id = :id')
@@ -62,6 +68,8 @@ class ChecklistRepository extends EntityRepository
      */
     public function remove($id)
     {
+        $this->refresh();
+
         $checklist = $this->findById($id);
         $this->_em->remove($checklist);
         $this->_em->flush();
@@ -76,6 +84,8 @@ class ChecklistRepository extends EntityRepository
      */
     public function fetchChecklistByProjectId($id, $offset, $limit)
     {
+        $this->refresh();
+
         return $this->createQueryBuilder('cl')
             ->select('cl.id, cl.name')
             ->where('cl.projectId = :id')
@@ -93,6 +103,8 @@ class ChecklistRepository extends EntityRepository
      */
     public function countChecklistsForProject($projectId)
     {
+        $this->refresh();
+
         return $this->createQueryBuilder('cl')
             ->select('count(cl.id)')
             ->where('cl.projectId = :id')
@@ -108,6 +120,8 @@ class ChecklistRepository extends EntityRepository
      */
     public function getReference($id)
     {
+        $this->refresh();
+
         return $this->_em->getReference($this->_entityName, $id);
     }
 
@@ -118,6 +132,8 @@ class ChecklistRepository extends EntityRepository
      */
     public function fetchAllForProjectId($projectId, array $scope)
     {
+        $this->refresh();
+
         $qb = $this->createQueryBuilder('cl')
             ->select('cl.id')
             ->where('cl.projectId = :projectId')

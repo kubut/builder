@@ -9,13 +9,15 @@ use Doctrine\ORM\EntityRepository;
  * Class UserRepository
  * @package BuilderBundle\Repository
  */
-class UserRepository extends EntityRepository
+class UserRepository extends AbstractRepository
 {
     /**
      * @param User $user
      */
     public function save(User $user)
     {
+        $this->refresh();
+
         $this->_em->persist($user);
         $this->_em->flush();
         $this->_em->refresh($user);
@@ -28,6 +30,8 @@ class UserRepository extends EntityRepository
      */
     public function checkUserUniqueness($email)
     {
+        $this->refresh();
+
         $user = $this->createQueryBuilder('u')
             ->where('u.email = :email')
             ->setParameters([
@@ -45,6 +49,8 @@ class UserRepository extends EntityRepository
      */
     public function fetchAllUserBesides($userId)
     {
+        $this->refresh();
+
         return $this->createQueryBuilder('u')
             ->where('u.id != :id')
             ->setParameters([
@@ -59,6 +65,8 @@ class UserRepository extends EntityRepository
      */
     public function removeToken(UserToken $userToken)
     {
+        $this->refresh();
+
         $this->_em->remove($userToken);
         $this->_em->flush();
     }
@@ -68,6 +76,8 @@ class UserRepository extends EntityRepository
      */
     public function remove($user)
     {
+        $this->refresh();
+
         $this->_em->remove($user);
         $this->_em->flush();
     }

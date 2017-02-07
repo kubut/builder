@@ -8,13 +8,15 @@ use BuilderBundle\Entity\UserToken;
  * Class UserTokenRepository
  * @package BuilderBundle\Repository
  */
-class UserTokenRepository extends EntityRepository
+class UserTokenRepository extends AbstractRepository
 {
     /**
      * @param UserToken $userToken
      */
     public function save($userToken)
     {
+        $this->refresh();
+
         $this->_em->persist($userToken);
         $this->_em->flush($userToken);
     }
@@ -24,6 +26,8 @@ class UserTokenRepository extends EntityRepository
      */
     public function remove($userToken)
     {
+        $this->refresh();
+
         $this->_em->remove($userToken);
         $this->_em->flush($userToken);
     }

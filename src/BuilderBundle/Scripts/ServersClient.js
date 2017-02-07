@@ -30,7 +30,7 @@ client.on('connect', function (connection) {
     function sendResponse() {
         if (connection.connected) {
             connection.sendUTF(response);
-            setTimeout(sendResponse, 1000);
+            client.close();
         }
     }
 

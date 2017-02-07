@@ -9,13 +9,15 @@ use Doctrine\ORM\EntityRepository;
  * Class ProjectRepository
  * @package BuilderBundle\Repository
  */
-class ProjectRepository extends EntityRepository
+class ProjectRepository extends AbstractRepository
 {
     /**
      * @param Project $project
      */
     public function save(Project $project)
     {
+        $this->refresh();
+
         $this->_em->persist($project);
         $this->_em->flush();
         $this->_em->refresh($project);
@@ -26,6 +28,8 @@ class ProjectRepository extends EntityRepository
      */
     public function getCountProjects()
     {
+        $this->refresh();
+
         return $this->createQueryBuilder('p')
             ->select('count(p.id)')
             ->getQuery()
@@ -40,6 +44,8 @@ class ProjectRepository extends EntityRepository
      */
     public function fetchProjectById($id)
     {
+        $this->refresh();
+
         $projectData = $this->createQueryBuilder('p')
             ->where('p.id = :id')
             ->setParameters([
@@ -63,6 +69,8 @@ class ProjectRepository extends EntityRepository
      */
     public function findById($id)
     {
+        $this->refresh();
+
         $project = $this->find($id);
         if (is_null($project)) {
             throw new \Exception('Project does not exist', ExceptionCode::PROJECT_NOT_EXIST);
@@ -77,6 +85,8 @@ class ProjectRepository extends EntityRepository
      */
     public function fetchDataWithScope(array $scope)
     {
+        $this->refresh();
+
         $qb = $this->createQueryBuilder('p')
             ->select('p.id');
 
